@@ -1,0 +1,33 @@
+# Tasks - NivasaAI Execution
+
+- [x] Install python packages (`bcrypt`, `PyJWT`)
+- [x] Backend Implementation (FastAPI)
+  - [x] Write `backend/database.py` (Session & engine setup)
+  - [x] Write `backend/models.py` (SQLAlchemy models)
+  - [x] Write `backend/schemas.py` (Pydantic models)
+  - [x] Write `backend/auth.py` (Password hashing, JWT helper, routes security)
+  - [x] Write `backend/ml_service.py` (Priority predictor, similarity, forecasting, RAG helper)
+  - [x] Write `backend/routers/auth.py`
+  - [x] Write `backend/routers/complaints.py`
+  - [x] Write `backend/routers/notices.py`
+  - [x] Write `backend/routers/assets.py`
+  - [x] Write `backend/routers/analytics.py`
+  - [x] Write `backend/routers/assistant.py`
+  - [x] Write `backend/routers/notifications.py`
+  - [x] Write `backend/main.py`
+  - [x] Write `backend/seed.py`
+- [x] Database Seeding
+  - [x] Run seed script to populate PostgreSQL with realistic demo data
+- [x] Frontend Implementation (Next.js)
+  - [x] Initialize Next.js app in `./frontend`
+  - [x] Configure Tailwind CSS & global styles
+  - [x] Implement Landing & Login screens
+  - [x] Implement Resident Dashboard (Complaint list, creation with AI check, notice board, notifications)
+  - [x] Implement Admin Dashboard (KPIs, analytics charts, complaint manager, asset risk page, AI chatbot assistant)
+- [x] Documentation & Configuration
+  - [x] Create `.env.example`
+  - [x] Create `docker-compose.yml` and `Dockerfile` files
+  - [x] Create `README.md` and database schema/ER documentation
+- [x] Verification
+  - [x] Run tests and verify AI prediction, cosine similarity, forecasting
+  - [x] Create `walkthrough.md` with verification status
