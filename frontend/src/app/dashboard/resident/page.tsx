@@ -97,8 +97,8 @@ export default function ResidentDashboard() {
       // Simulate quick predictor call or hit backend helper if we want.
       // We can hit a small mock/custom calculation since predict_complaint_attributes runs on python.
       // Let's create a temp prediction on the client using key terms matching our backend ML training preset!
-      const descLower = description.lower ? description.toLowerCase() : "";
-      const titleLower = title.lower ? title.toLowerCase() : "";
+      const descLower = description ? description.toLowerCase() : "";
+      const titleLower = title ? title.toLowerCase() : "";
       const full = `${titleLower} ${descLower}`;
       
       let predictedCat = "Plumbing";

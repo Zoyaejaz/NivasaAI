@@ -310,7 +310,7 @@ export default function AdminDashboard() {
                     cx="50%"
                     cy="50%"
                     outerRadius={80}
-                    label={({ category, percent }) => `${category} (${(percent * 100).toFixed(0)}%)`}
+                    label={(props: any) => `${props.category || ""} (${((props.percent || 0) * 100).toFixed(0)}%)`}
                   >
                     {analytics?.category_distribution?.map((entry: any, index: number) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

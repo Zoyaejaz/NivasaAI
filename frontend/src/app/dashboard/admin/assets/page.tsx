@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { 
-  Brain, User, LogOut, ArrowLeft, Activity, Tool, Calendar, 
+  Brain, User, LogOut, ArrowLeft, Activity, Calendar, 
   AlertTriangle, CheckCircle2, ShieldAlert, RefreshCw, Sparkles
 } from "lucide-react";
 
