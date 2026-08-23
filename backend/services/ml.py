@@ -332,40 +332,94 @@ class LocalRAGAssistant:
         
     def query(self, user_question: str) -> Tuple[str, List[str]]:
         from models import Complaint, Asset, Notice, User
+        import pandas as pd
+        import numpy as np
         
         # 1. Pull data from DB
         complaints = self.db.query(Complaint).all()
         assets = self.db.query(Asset).all()
         notices = self.db.query(Notice).all()
         
-        # Check simple statistics helper queries
         q_lower = user_question.lower()
         
+        # Greetings check
+        greetings = ["hello", "hi", "hey", "greetings", "good morning", "good afternoon", "who are you", "what is your name"]
+        if any(greet in q_lower for greet in greetings):
+            return (
+                "Hello! I am the Nivasa AI Operations Assistant. How can I help you manage complaints, notices, or assets today?",
+                ["View Complaints List", "Check Asset Health"]
+            )
+            
+        # Domain keyword validation
+        domain_keywords = [
+            "complaint", "ticket", "maintenance", "notice", "asset", "risk", "water", "pipe", 
+            "elevator", "leak", "security", "electricity", "flat", "society", "building", 
+            "system", "log", "user", "admin", "issue", "problem", "fault", "defect", "repair",
+            "boiler", "pump", "generator", "bulletin", "board", "alert", "SLA", "priority", 
+            "status", "open", "progress", "resolved", "analyt", "forecast", "nlp", "rag"
+        ]
+        is_domain = any(keyword in q_lower for keyword in domain_keywords)
+        if not is_domain:
+            return (
+                "I am the Nivasa Operations Assistant, specialized in managing complaints, notice bulletins, and asset risks for this estate. I am unable to answer general questions outside of property operations.",
+                ["Check Dashboard Analytics"]
+            )
+
+        # Keyword matching answers:
+        # A. Specific Complaint status / counting checks
+        if "open" in q_lower and ("complaint" in q_lower or "ticket" in q_lower or "issue" in q_lower):
+            open_list = [c for c in complaints if c.status == "Open"]
+            count = len(open_list)
+            if count > 0:
+                response = f"There are currently **{count} open complaints**:\n"
+                for c in open_list[:5]:
+                    response += f"- **ID {c.id}**: {c.title} (Location: {c.location}, Priority: {c.priority})\n"
+                if count > 5:
+                    response += f"- *And {count - 5} more...*"
+                actions = ["Manage Tickets"]
+            else:
+                response = "There are no open complaints in the system right now!"
+                actions = ["View Complaints List"]
+            return response, actions
+
+        if "resolved" in q_lower and ("complaint" in q_lower or "ticket" in q_lower or "issue" in q_lower):
+            resolved_list = [c for c in complaints if c.status == "Resolved"]
+            count = len(resolved_list)
+            if count > 0:
+                response = f"There are **{count} resolved complaints** in the database.\n"
+                for c in resolved_list[:5]:
+                    response += f"- **ID {c.id}**: {c.title} (Location: {c.location}, Category: {c.category})\n"
+                actions = ["View Complaints List"]
+            else:
+                response = "No complaints have been marked as resolved yet."
+                actions = ["View Complaints List"]
+            return response, actions
+
         if "how many complaints" in q_lower or "total complaints" in q_lower:
             total = len(complaints)
             open_c = len([c for c in complaints if c.status == "Open"])
             prog_c = len([c for c in complaints if c.status == "In Progress"])
             res_c = len([c for c in complaints if c.status == "Resolved"])
             response = (
-                f"There are currently {total} total complaints in the system.\n"
-                f"- Open: {open_c}\n"
-                f"- In Progress: {prog_c}\n"
-                f"- Resolved: {res_c}"
+                f"There are currently **{total} total complaints** in the system:\n"
+                f"- **Open**: {open_c}\n"
+                f"- **In Progress**: {prog_c}\n"
+                f"- **Resolved**: {res_c}"
             )
-            actions = ["View Complaints List", "Check Analytics Dashboard"]
+            actions = ["Manage Tickets", "Check Analytics Dashboard"]
             return response, actions
-            
+
+        # B. Asset / Maintenance checks
         if "risk" in q_lower or "asset" in q_lower or "maintenance" in q_lower:
             high_risk = []
             for asset in assets:
-                # Dynamically compile risk scores
                 risk_data = calculate_asset_risk(asset, complaints)
                 if risk_data["risk_level"] == "High":
-                    high_risk.append(f"{asset.name} in {asset.location} (Score: {risk_data['risk_score']} - {risk_data['recommendation']})")
+                    high_risk.append(f"**{asset.name}** in {asset.location} (Score: {risk_data['risk_score']} - {risk_data['recommendation']})")
             
             if high_risk:
                 response = "The following society assets are flag-marked as **High Risk** and need immediate attention:\n\n" + "\n".join([f"- {item}" for item in high_risk])
-                actions = ["Schedule Asset Maintenance", "View Assets Portal"]
+                actions = ["Inspect High Risk Assets", "View Assets Portal"]
             else:
                 response = "All society assets are currently running in **Low** or **Medium** risk levels. No critical maintenance items are overdue."
                 actions = ["View Assets Portal"]
@@ -374,7 +428,7 @@ class LocalRAGAssistant:
         if "recurring" in q_lower or "repeating" in q_lower:
             rec_c = [c for c in complaints if c.is_recurring]
             if rec_c:
-                response = f"I detected {len(rec_c)} recurring issues in the system. The most common repeated categories are:\n"
+                response = f"I detected **{len(rec_c)} recurring issues** in the system. The most common repeated categories are:\n"
                 cat_counts = pd.Series([c.category for c in rec_c]).value_counts()
                 for cat, val in cat_counts.items():
                     response += f"- **{cat}**: {val} repetitions.\n"
@@ -397,6 +451,23 @@ class LocalRAGAssistant:
                 actions = ["Create New Notice"]
             return response, actions
             
+        # C. Keyword search match (specific lookup fallback)
+        # Search complaints by matching words
+        words = q_lower.split()
+        search_words = [w for w in words if w not in ["the", "a", "an", "is", "are", "what", "find", "search", "show", "tell", "about", "status", "of"]]
+        if search_words:
+            matched_c = []
+            for c in complaints:
+                if any(sw in c.title.lower() or sw in c.description.lower() for sw in search_words):
+                    matched_c.append(c)
+            if matched_c:
+                response = f"I found **{len(matched_c)} matching complaints**:\n\n"
+                for c in matched_c[:3]:
+                    response += f"- **{c.title}** (ID: {c.id}, Location: {c.location}, Status: **{c.status}**)\n"
+                    response += f"  *Description: {c.description}*\n\n"
+                actions = ["Manage Tickets"]
+                return response, actions
+
         # General corpus search using similarity
         corpus = []
         mapping = []
