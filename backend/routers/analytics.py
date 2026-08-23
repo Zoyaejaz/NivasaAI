@@ -7,7 +7,7 @@ from database import get_db
 from models import User, Complaint, Asset
 from schemas import AnalyticsDashboard, StatusCount, CategoryCount, LocationCount, DateCount
 from auth import get_current_user, require_admin
-from ml_service import forecast_complaint_volume
+from services.ml import forecast_complaint_volume
 
 router = APIRouter(prefix="/analytics", tags=["Dashboard Analytics & Forecasting"])
 

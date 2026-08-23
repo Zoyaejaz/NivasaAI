@@ -1,5 +1,5 @@
 import pytest
-from ml_service import (
+from services.ml import (
     predict_complaint_attributes,
     detect_recurring_complaint,
     calculate_asset_risk,

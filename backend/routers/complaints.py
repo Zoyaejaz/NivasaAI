@@ -6,7 +6,7 @@ from database import get_db
 from models import User, Complaint, ComplaintHistory, Notification, AuditLog, Asset
 from schemas import ComplaintCreate, ComplaintOut, ComplaintUpdate
 from auth import get_current_user, require_admin
-from ml_service import predict_complaint_attributes, detect_recurring_complaint, analyze_uploaded_photo
+from services.ml import predict_complaint_attributes, detect_recurring_complaint, analyze_uploaded_photo
 
 router = APIRouter(prefix="/complaints", tags=["Complaints"])
 

@@ -1,125 +1,175 @@
-import Link from "next/link";
-import { ShieldCheck, Activity, Brain, ArrowRight, Zap, RefreshCw } from "lucide-react";
+"use client";
 
-export default function Home() {
+import { useState } from "react";
+import { ArrowRight, Building, CheckCircle2, Clipboard, Activity, ShieldCheck, Brain } from "lucide-react";
+import AuthModal from "@/components/AuthModal";
+
+export default function LandingPage() {
+  const [showAuthPopup, setShowAuthPopup] = useState(false);
+
   return (
-    <div className="relative min-h-screen flex flex-col bg-zinc-950 text-zinc-100 overflow-hidden">
-      {/* Background Gradients */}
-      <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top_right,rgba(59,130,246,0.15),transparent_50%),radial-gradient(ellipse_at_bottom_left,rgba(99,102,241,0.15),transparent_50%)]" />
+    <div className="relative min-h-screen flex flex-col bg-background text-text font-sans">
+      {/* Subtle organic linen grid pattern overlay - understated backdrop */}
+      <div className="absolute inset-0 z-0 opacity-5 bg-[linear-gradient(to_right,#5B665E_1px,transparent_1px),linear-gradient(to_bottom,#5B665E_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
       
-      {/* Subtle grid pattern */}
-      <div className="absolute inset-0 z-0 opacity-[0.02] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:24px_24px]" />
-
-      {/* Header */}
-      <header className="relative z-10 w-full max-w-7xl mx-auto px-6 py-6 flex items-center justify-between border-b border-zinc-900">
-        <div className="flex items-center gap-2">
-          <div className="p-2 bg-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-blue-500/20">
-            <Brain className="w-6 h-6 text-white" />
+      {/* Header - Simple clean banner */}
+      <header className="relative z-10 w-full max-w-7xl mx-auto px-6 py-4 flex items-center justify-between border-b border-border bg-white mt-0 md:mt-4 md:rounded-lg md:border md:shadow-2xs">
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-primary rounded flex items-center justify-center">
+            <Building className="w-5 h-5 text-white" />
           </div>
-          <span className="text-xl font-bold tracking-tight text-white">Nivasa<span className="text-blue-500">AI</span></span>
+          <span className="text-lg font-serif tracking-tight text-primary font-bold">
+            Nivasa<span className="font-sans font-normal text-secondary italic ml-0.5">AI</span>
+          </span>
         </div>
-        <Link 
-          href="/login" 
-          className="px-4 py-2 text-sm font-medium bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 rounded-lg transition-all"
-        >
-          Access Portal
-        </Link>
+        
+        <div>
+          <button 
+            onClick={() => setShowAuthPopup(true)}
+            className="px-4 py-2 text-xs font-bold uppercase tracking-wider bg-primary hover:bg-primary/95 text-white rounded transition-colors cursor-pointer"
+          >
+            Access Portal
+          </button>
+        </div>
       </header>
 
       {/* Hero Section */}
-      <main className="relative z-10 flex-1 flex flex-col items-center justify-center max-w-5xl mx-auto px-6 text-center py-16">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-8">
-          <Zap className="w-3.5 h-3.5" /> Next-Generation Society Operations
+      <main className="relative z-10 flex-1 flex flex-col items-center justify-center max-w-7xl mx-auto px-6 text-center py-16 md:py-24">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-white border border-border text-muted-text text-[10px] font-bold uppercase tracking-wider rounded mb-6 shadow-2xs">
+          <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" /> Operational Command Center for Property Committees
         </div>
 
-        <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-white mb-6 leading-tight">
-          Intelligent Operations & <br/>
-          <span className="bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
-            Predictive Maintenance
+        <h1 className="text-3xl md:text-5xl font-serif font-bold tracking-tight text-primary mb-6 leading-tight">
+          Professional Property Operations & <br/>
+          <span className="font-serif italic font-normal text-secondary">
+            Predictive Infrastructure Care
           </span>
         </h1>
 
-        <p className="text-lg md:text-xl text-zinc-400 max-w-3xl mb-12 leading-relaxed">
-          NivasaAI transforms residential communities from reactive complaint management into intelligent, data-driven and predictive maintenance operations.
+        <p className="text-sm text-muted-text max-w-xl mb-10 leading-relaxed font-medium">
+          NivasaAI enables residential estates to transition from chaotic, reactive ticketing to highly organized, structured management and maintenance operations.
         </p>
 
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-20">
-          <Link
-            href="/login"
-            className="px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white font-medium rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-blue-500/25 hover:shadow-blue-500/35 transform hover:-translate-y-0.5"
+        <div className="flex flex-col sm:flex-row gap-3 mb-20 w-full sm:w-auto justify-center px-4">
+          <button
+            onClick={() => setShowAuthPopup(true)}
+            className="px-6 py-3 bg-primary hover:bg-primary/90 text-white font-bold rounded flex items-center justify-center gap-2 transition-colors text-xs uppercase tracking-wider shadow-2xs cursor-pointer"
           >
-            Launch Platform <ArrowRight className="w-5 h-5" />
-          </Link>
+            Launch Platform Portal <ArrowRight className="w-4 h-4 text-white/80" />
+          </button>
           <a
             href="#features"
-            className="px-8 py-4 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 hover:text-white font-medium rounded-xl transition-all flex items-center justify-center"
+            className="px-6 py-3 bg-white hover:bg-slate-50 border border-border text-primary font-bold rounded transition-colors text-xs uppercase tracking-wider shadow-2xs"
           >
-            Explore Capabilities
+            Explore System Modules
           </a>
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full border-t border-zinc-900 pt-16">
-          <div className="p-6 bg-zinc-900/40 border border-zinc-900 rounded-2xl glass">
-            <div className="text-4xl font-extrabold text-blue-500 mb-2">98.4%</div>
-            <div className="text-sm font-semibold text-zinc-300 mb-1">SLA Compliance</div>
-            <div className="text-xs text-zinc-500">Overdue detection & automated alerts</div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full border-t border-border pt-16">
+          <div className="p-6 bg-white border border-border rounded flex flex-col items-center shadow-2xs hover:border-slate-300 transition-colors">
+            <div className="text-3xl font-serif text-secondary font-black mb-1.5">98.4%</div>
+            <div className="text-[10px] font-bold text-primary uppercase tracking-wider mb-2">SLA Target Met</div>
+            <div className="text-xs text-muted-text text-center max-w-[200px] leading-relaxed font-medium">Strict oversight on overdue maintenance requests</div>
           </div>
-          <div className="p-6 bg-zinc-900/40 border border-zinc-900 rounded-2xl glass">
-            <div className="text-4xl font-extrabold text-indigo-400 mb-2">&lt; 2.4 hrs</div>
-            <div className="text-sm font-semibold text-zinc-300 mb-1">Avg Resolution Time</div>
-            <div className="text-xs text-zinc-500">Dynamic routing & priority predictions</div>
+          <div className="p-6 bg-white border border-border rounded flex flex-col items-center shadow-2xs hover:border-slate-300 transition-colors">
+            <div className="text-3xl font-serif text-primary font-black mb-1.5">&lt; 2.4 Hrs</div>
+            <div className="text-[10px] font-bold text-primary uppercase tracking-wider mb-2">Mean Resolution Time</div>
+            <div className="text-xs text-muted-text text-center max-w-[200px] leading-relaxed font-medium">Smart categorization & dispatch workflows</div>
           </div>
-          <div className="p-6 bg-zinc-900/40 border border-zinc-900 rounded-2xl glass">
-            <div className="text-4xl font-extrabold text-emerald-400 mb-2">40%</div>
-            <div className="text-sm font-semibold text-zinc-300 mb-1">Asset Downtime Savings</div>
-            <div className="text-xs text-zinc-500">Predictive risk scoring & early diagnostics</div>
+          <div className="p-6 bg-white border border-border rounded flex flex-col items-center shadow-2xs hover:border-slate-300 transition-colors">
+            <div className="text-3xl font-serif text-primary font-black mb-1.5">35% Reduction</div>
+            <div className="text-[10px] font-bold text-primary uppercase tracking-wider mb-2">Machinery Downtime</div>
+            <div className="text-xs text-muted-text text-center max-w-[200px] leading-relaxed font-medium">Continuous health analysis of boilers, pumps & generators</div>
           </div>
         </div>
       </main>
 
       {/* Features Section */}
-      <section id="features" className="relative z-10 w-full max-w-7xl mx-auto px-6 py-24 border-t border-zinc-900">
-        <h2 className="text-3xl font-bold text-center text-white mb-16">Platform Core Modules</h2>
+      <section id="features" className="relative z-10 w-full max-w-7xl mx-auto px-6 py-12 border-t border-border bg-white md:rounded-t-lg md:border-x">
+        <h2 className="text-2xl font-serif font-bold text-center text-primary mb-12">Core Operational Modules</h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="p-8 bg-zinc-900/30 border border-zinc-900 rounded-2xl flex flex-col items-start text-left">
-            <div className="p-3 bg-blue-500/10 text-blue-400 rounded-xl mb-6">
-              <Brain className="w-6 h-6" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="p-6 bg-white border border-border rounded flex flex-col items-start text-left shadow-2xs hover:border-slate-300 transition-colors">
+            <div className="p-2.5 bg-background text-primary rounded mb-5 border border-border">
+              <Clipboard className="w-5 h-5" />
             </div>
-            <h3 className="text-lg font-bold text-white mb-3">AI Complaint Classification</h3>
-            <p className="text-sm text-zinc-400 leading-relaxed">
-              Auto-predicts category, priorities, and provides explanation recommendations from natural language descriptions and optional photo scanning diagnostics.
+            <h3 className="text-base font-serif font-bold text-primary mb-2">Resident Service Dispatch</h3>
+            <p className="text-xs text-muted-text leading-relaxed font-medium">
+              Provides residents with a simple interface to file plumbing, electrical, elevator, and security requests. Features real-time dispatch logs and SLA reminders.
             </p>
           </div>
 
-          <div className="p-8 bg-zinc-900/30 border border-zinc-900 rounded-2xl flex flex-col items-start text-left">
-            <div className="p-3 bg-indigo-500/10 text-indigo-400 rounded-xl mb-6">
-              <Activity className="w-6 h-6" />
+          <div className="p-6 bg-white border border-border rounded flex flex-col items-start text-left shadow-2xs hover:border-slate-300 transition-colors">
+            <div className="p-2.5 bg-background text-primary rounded mb-5 border border-border">
+              <Activity className="w-5 h-5" />
             </div>
-            <h3 className="text-lg font-bold text-white mb-3">Predictive Maintenance</h3>
-            <p className="text-sm text-zinc-400 leading-relaxed">
-              Computes health degradation and risk scores for critical society assets based on operational load patterns, age decay, and maintenance delays.
+            <h3 className="text-base font-serif font-bold text-primary mb-2">Predictive Asset Maintenance</h3>
+            <p className="text-xs text-muted-text leading-relaxed font-medium">
+              Dynamically evaluates equipment degradation based on usage intensity, log history, and age indicators to suggest tune-ups before costly repairs occur.
             </p>
           </div>
 
-          <div className="p-8 bg-zinc-900/30 border border-zinc-900 rounded-2xl flex flex-col items-start text-left">
-            <div className="p-3 bg-emerald-500/10 text-emerald-400 rounded-xl mb-6">
-              <ShieldCheck className="w-6 h-6" />
+          <div className="p-6 bg-white border border-border rounded flex flex-col items-start text-left shadow-2xs hover:border-slate-300 transition-colors">
+            <div className="p-2.5 bg-background text-secondary rounded mb-5 border border-border">
+              <CheckCircle2 className="w-5 h-5" />
             </div>
-            <h3 className="text-lg font-bold text-white mb-3">RAG Admin AI Assistant</h3>
-            <p className="text-sm text-zinc-400 leading-relaxed">
-              Empowers administrators with a natural language interface querying databases for volume trends, recurring logs, and notice board broadcasts.
+            <h3 className="text-base font-serif font-bold text-primary mb-2">Integrated Notice Broadcasting</h3>
+            <p className="text-xs text-muted-text leading-relaxed font-medium">
+              Keeps the entire community aligned. Allows the management committee to broadcast pinned bulletins, water shutdowns, or maintenance notices instantly.
             </p>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 w-full py-8 text-center text-xs text-zinc-600 border-t border-zinc-900">
-        &copy; {new Date().getFullYear()} NivasaAI. All rights reserved.
+      <footer className="relative z-10 w-full border-t border-border bg-white md:border-x max-w-7xl mx-auto px-10 py-16 font-sans">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-left">
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-primary rounded flex items-center justify-center">
+                <Building className="w-4 h-4 text-white" />
+              </div>
+              <span className="text-sm font-serif tracking-tight text-primary font-bold">
+                Nivasa<span className="font-sans font-normal text-secondary italic ml-0.5">AI</span>
+              </span>
+            </div>
+            <p className="text-[11px] text-muted-text leading-relaxed font-semibold">
+              Leveraging next-gen artificial intelligence to power estate ticket operations, asset longevity analysis, and community bulletins.
+            </p>
+          </div>
+          <div>
+            <h4 className="text-[10px] font-bold text-primary uppercase tracking-widest mb-4">Operations</h4>
+            <ul className="space-y-2.5 text-[11px] text-muted-text font-semibold">
+              <li><button onClick={() => setShowAuthPopup(true)} className="hover:text-primary transition-colors cursor-pointer">Resident Portal</button></li>
+              <li><button onClick={() => setShowAuthPopup(true)} className="hover:text-primary transition-colors cursor-pointer">Admin Dashboard</button></li>
+              <li><a href="#features" className="hover:text-primary transition-colors">Infrastructure Logs</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="text-[10px] font-bold text-primary uppercase tracking-widest mb-4">Platform</h4>
+            <ul className="space-y-2.5 text-[11px] text-muted-text font-semibold">
+              <li><a href="#features" className="hover:text-primary transition-colors">SLA Tracking</a></li>
+              <li><a href="#features" className="hover:text-primary transition-colors">Notice Bulletin</a></li>
+              <li><a href="#features" className="hover:text-primary transition-colors">Predictive Analytics</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="text-[10px] font-bold text-primary uppercase tracking-widest mb-4">Security</h4>
+            <ul className="space-y-2.5 text-[11px] text-muted-text font-semibold">
+              <li><span className="flex items-center gap-1.5"><ShieldCheck className="w-3.5 h-3.5 text-secondary" /> AES-256 JWT Link</span></li>
+              <li><span className="flex items-center gap-1.5"><Brain className="w-3.5 h-3.5 text-primary" /> Neon DB Secured</span></li>
+            </ul>
+          </div>
+        </div>
+        <div className="border-t border-slate-100 mt-12 pt-6 text-center text-[10px] font-bold text-muted-text uppercase tracking-wider">
+          &copy; {new Date().getFullYear()} NivasaAI Community Systems. All rights reserved.
+        </div>
       </footer>
+
+      {/* Modal Dialog Portal Popup */}
+      <AuthModal isOpen={showAuthPopup} onClose={() => setShowAuthPopup(false)} />
     </div>
   );
 }

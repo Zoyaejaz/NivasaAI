@@ -4,7 +4,7 @@ from database import get_db
 from models import User
 from schemas import AssistantQuery, AssistantResponse
 from auth import require_admin
-from ml_service import LocalRAGAssistant
+from services.ml import LocalRAGAssistant
 
 router = APIRouter(prefix="/assistant", tags=["Admin AI Assistant"])
 

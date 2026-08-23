@@ -10,6 +10,12 @@ router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 @router.post("/register", response_model=UserOut, status_code=status.HTTP_201_CREATED)
 def register(user_in: UserCreate, db: Session = Depends(get_db)):
+    if user_in.role == "admin":
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Registration for Administrator role is not allowed"
+        )
+
     # Check if email already exists
     existing = db.query(User).filter(User.email == user_in.email).first()
     if existing:

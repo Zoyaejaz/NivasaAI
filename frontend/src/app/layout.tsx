@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Lora, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-sans",
+});
+
+const lora = Lora({
+  subsets: ["latin"],
+  variable: "--font-serif",
 });
 
 export const metadata: Metadata = {
@@ -18,10 +23,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} dark h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-zinc-950 text-zinc-100 font-sans">
+    <html lang="en" className={`${plusJakartaSans.variable} ${lora.variable} h-full antialiased`}>
+      <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
         {children}
       </body>
     </html>
   );
 }
+

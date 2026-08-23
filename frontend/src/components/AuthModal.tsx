@@ -2,15 +2,22 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Building, Mail, Lock, AlertCircle, Loader2, User, Home, Phone, ArrowLeft, CheckCircle2, Sparkles, Eye, EyeOff } from "lucide-react";
+import { 
+  Building, User, Home, Phone, ArrowLeft, Mail, AlertCircle, Loader2, CheckCircle2, Sparkles, X 
+} from "lucide-react";
+import PasswordInput from "./PasswordInput";
+import { api } from "@/lib/api";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+interface AuthModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  defaultIsSignUp?: boolean;
+}
 
-export default function Login() {
-  const [isSignUp, setIsSignUp] = useState(false);
+export default function AuthModal({ isOpen, onClose, defaultIsSignUp = false }: AuthModalProps) {
+  const [isSignUp, setIsSignUp] = useState(defaultIsSignUp);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const [fullName, setFullName] = useState("");
   const [flatNumber, setFlatNumber] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -21,7 +28,8 @@ export default function Login() {
   const [success, setSuccess] = useState("");
   const router = useRouter();
 
-  // Quick seed fill helper (Only for sign in)
+  if (!isOpen) return null;
+
   const handleQuickFill = (selectedRole: "resident" | "admin") => {
     setRole(selectedRole);
     if (selectedRole === "admin") {
@@ -42,23 +50,14 @@ export default function Login() {
     try {
       if (isSignUp) {
         // Register Call
-        const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email,
-            password,
-            full_name: fullName,
-            role,
-            flat_number: flatNumber || null,
-            phone_number: phoneNumber || null,
-          }),
+        await api.post("/api/auth/register", {
+          email,
+          password,
+          full_name: fullName,
+          role,
+          flat_number: flatNumber || null,
+          phone_number: phoneNumber || null,
         });
-
-        if (!response.ok) {
-          const errData = await response.json();
-          throw new Error(errData.detail || "Registration failed");
-        }
 
         setSuccess("Account created successfully! You can now log in.");
         setIsSignUp(false);
@@ -67,22 +66,13 @@ export default function Login() {
         setPhoneNumber("");
       } else {
         // Login Call
-        const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
-        });
-
-        if (!response.ok) {
-          const errData = await response.json();
-          throw new Error(errData.detail || "Authentication failed");
-        }
-
-        const data = await response.json();
+        const data = await api.post("/api/auth/login", { email, password });
         
         // Save Token and user details
         localStorage.setItem("token", data.access_token);
         localStorage.setItem("user", JSON.stringify(data.user));
+
+        onClose();
 
         // Redirect depending on user role
         if (data.user.role === "admin") {
@@ -99,20 +89,28 @@ export default function Login() {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-background text-text px-4 py-12 font-sans overflow-hidden">
-      
-      {/* Background decoration - subtle organic grid pattern overlay */}
-      <div className="absolute inset-0 z-0 opacity-[0.03] bg-[linear-gradient(to_right,#5B665E_1px,transparent_1px),linear-gradient(to_bottom,#5B665E_1px,transparent_1px)] bg-[size:48px_48px] pointer-events-none" />
-
-      {/* Main card container */}
-      <div className="relative z-10 w-full max-w-md p-8 rounded border border-border bg-white shadow-xs space-y-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs px-4 animate-in fade-in duration-200">
+      <div 
+        className="absolute inset-0 bg-transparent cursor-default" 
+        onClick={onClose} 
+      />
+      <div className="relative z-10 w-full max-w-md p-8 rounded border border-border bg-white shadow-2xl space-y-6 animate-in zoom-in-95 duration-200">
         
+        {/* Close Button */}
+        <button 
+          onClick={onClose}
+          className="absolute top-4 right-4 text-muted-text hover:text-primary p-1 cursor-pointer transition-colors"
+          aria-label="Close Auth Modal"
+        >
+          <X className="w-5 h-5" />
+        </button>
+
         {/* Branding & Logo */}
         <div className="text-center">
           <div className="inline-flex p-2.5 bg-primary rounded shadow-3xs mb-3">
             <Building className="w-5.5 h-5.5 text-white" />
           </div>
-          <h2 className="text-xl font-serif font-bold tracking-tight text-primary">
+          <h2 className="text-xl font-serif font-bold tracking-tight text-primary font-sans">
             Nivasa<span className="font-sans text-secondary font-normal italic ml-0.5">AI</span> Portal
           </h2>
           <p className="text-[10.5px] text-muted-text mt-1.5 font-medium leading-relaxed max-w-xs mx-auto">
@@ -122,7 +120,7 @@ export default function Login() {
 
         {/* Success/Error displays */}
         {error && (
-          <div className="p-3 bg-status-danger/5 border border-status-danger/25 rounded flex items-start gap-2.5 text-status-danger text-xs animate-in fade-in duration-100">
+          <div className="p-3 bg-status-danger/5 border border-status-danger/25 rounded flex items-start gap-2.5 text-status-danger text-xs animate-in fade-in duration-100 font-sans">
             <AlertCircle className="w-4 h-4 mt-0.5 shrink-0 text-status-danger" />
             <div className="font-semibold leading-relaxed">
               <span className="font-bold">Access Issue:</span> {error}
@@ -131,7 +129,7 @@ export default function Login() {
         )}
 
         {success && (
-          <div className="p-3 bg-status-success/5 border border-status-success/25 rounded flex items-start gap-2.5 text-status-success text-xs animate-in fade-in duration-100">
+          <div className="p-3 bg-status-success/5 border border-status-success/25 rounded flex items-start gap-2.5 text-status-success text-xs animate-in fade-in duration-100 font-sans">
             <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0 text-status-success" />
             <div className="font-semibold leading-relaxed">
               <span className="font-bold">Success:</span> {success}
@@ -143,7 +141,7 @@ export default function Login() {
         <form onSubmit={handleSubmit} className="space-y-4">
           
           {isSignUp && (
-            <div className="space-y-4 animate-in fade-in duration-100">
+            <div className="space-y-4 animate-in fade-in duration-100 font-sans">
               <div>
                 <label className="block text-[10px] font-bold text-primary/85 uppercase tracking-wider mb-1.5">
                   Full Name
@@ -204,7 +202,7 @@ export default function Login() {
             </div>
           )}
 
-          <div>
+          <div className="font-sans">
             <label className="block text-[10px] font-bold text-primary/85 uppercase tracking-wider mb-1.5">
               Email Address
             </label>
@@ -223,40 +221,15 @@ export default function Login() {
             </div>
           </div>
 
-          <div>
-            <label className="block text-[10px] font-bold text-primary/85 uppercase tracking-wider mb-1.5">
-              Password
-            </label>
-            <div className="relative">
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-muted-text/50 pointer-events-none">
-                <Lock className="w-3.5 h-3.5" />
-              </span>
-              <input
-                type={showPassword ? "text" : "password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                placeholder="••••••••"
-                className="w-full pl-9 pr-10 py-2 bg-white border border-border rounded text-xs text-text placeholder-muted-text/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all shadow-3xs font-semibold"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-muted-text/50 hover:text-primary transition-colors cursor-pointer"
-                title={showPassword ? "Hide password" : "Show password"}
-              >
-                {showPassword ? (
-                  <EyeOff className="w-3.5 h-3.5" />
-                ) : (
-                  <Eye className="w-3.5 h-3.5" />
-                )}
-              </button>
-            </div>
-          </div>
+          <PasswordInput 
+            value={password}
+            onChange={setPassword}
+            label="Password"
+          />
 
           {/* Role selection (Resident vs Admin toggle) - Only show during sign in */}
           {!isSignUp && (
-            <div>
+            <div className="font-sans">
               <label className="block text-[10px] font-bold text-primary/85 uppercase tracking-wider mb-1.5">
                 Account Level Role
               </label>
@@ -289,7 +262,7 @@ export default function Login() {
 
           {/* Quick login hint (Only in sign in mode) */}
           {!isSignUp && (
-            <div className="text-center pt-1.5">
+            <div className="text-center pt-1.5 font-sans">
               <button
                 type="button"
                 onClick={() => handleQuickFill(role)}
@@ -303,7 +276,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2.5 bg-primary hover:bg-primary/95 text-white text-xs font-bold uppercase tracking-wider rounded transition-colors shadow-2xs flex items-center justify-center gap-2 transform active:scale-98 disabled:opacity-50 cursor-pointer mt-6"
+            className="w-full py-2.5 bg-primary hover:bg-primary/95 text-white text-xs font-bold uppercase tracking-wider rounded transition-colors shadow-2xs flex items-center justify-center gap-2 transform active:scale-98 disabled:opacity-50 cursor-pointer mt-6 font-sans"
           >
             {loading ? (
               <>
@@ -318,7 +291,7 @@ export default function Login() {
         </form>
 
         {/* Toggle Mode Link */}
-        <div className="mt-6 text-center border-t border-slate-100 pt-4">
+        <div className="mt-6 text-center border-t border-slate-100 pt-4 font-sans">
           <button
             type="button"
             onClick={() => {
@@ -343,6 +316,7 @@ export default function Login() {
             )}
           </button>
         </div>
+
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ from database import get_db
 from models import User, Asset, Complaint
 from schemas import AssetOut
 from auth import get_current_user, require_admin
-from ml_service import calculate_asset_risk
+from services.ml import calculate_asset_risk
 
 router = APIRouter(prefix="/assets", tags=["Society Assets & Maintenance"])
 
