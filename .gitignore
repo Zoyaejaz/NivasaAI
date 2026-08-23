@@ -1,0 +1,41 @@
+# Dependency directories
+node_modules/
+.venv/
+env/
+venv/
+ENV/
+
+# Next.js build output
+.next/
+out/
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+backend/.env
+frontend/.env
+frontend/.env.local
+
+# Python caches and virtualenv
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.cache/
+
+# Databases
+db_data/
+*.db
+*.sqlite3
+
+# Logs
+*.log
+postgres.log
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -11,11 +11,11 @@ export default function Unauthorized() {
       <div className="absolute inset-0 z-0 opacity-[0.03] bg-[linear-gradient(to_right,#5B665E_1px,transparent_1px),linear-gradient(to_bottom,#5B665E_1px,transparent_1px)] bg-[size:48px_48px] pointer-events-none" />
 
       {/* Main card container */}
-      <div className="relative z-10 w-full max-w-md p-8 rounded border border-border bg-white shadow-xs text-center space-y-6">
+      <div className="relative z-10 w-full max-w-md p-8 rounded border border-border bg-surface shadow-xs text-center space-y-6">
         
         {/* Branding & Logo */}
         <div className="flex flex-col items-center">
-          <div className="inline-flex p-2 bg-slate-50 border border-slate-100 rounded mb-2.5">
+          <div className="inline-flex p-2 bg-background border border-border/40 rounded mb-2.5">
             <Building className="w-4 h-4 text-primary" />
           </div>
           <span className="text-xs font-serif font-bold tracking-tight text-primary">
@@ -35,7 +35,7 @@ export default function Unauthorized() {
         </div>
 
         {/* Action Controls */}
-        <div className="flex flex-col gap-2 pt-2 border-t border-slate-100/60">
+        <div className="flex flex-col gap-2 pt-2 border-t border-border/40/60">
           <Link
             href="/dashboard/resident"
             className="w-full py-2.5 bg-primary hover:bg-primary/95 text-white text-xs font-bold uppercase tracking-wider rounded transition-colors shadow-2xs flex items-center justify-center gap-1.5 transform active:scale-98 cursor-pointer"
@@ -44,7 +44,7 @@ export default function Unauthorized() {
           </Link>
           <Link
             href="/login"
-            className="w-full py-2 bg-white hover:bg-slate-50 border border-border text-primary text-xs font-bold uppercase tracking-wider rounded transition-colors shadow-3xs flex items-center justify-center cursor-pointer"
+            className="w-full py-2 bg-surface hover:bg-background border border-border text-primary text-xs font-bold uppercase tracking-wider rounded transition-colors shadow-3xs flex items-center justify-center cursor-pointer"
           >
             Sign In with different account
           </Link>

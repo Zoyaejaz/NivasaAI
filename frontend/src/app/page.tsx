@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ArrowRight, Building, CheckCircle2, Clipboard, Activity, ShieldCheck, Brain } from "lucide-react";
 import AuthModal from "@/components/AuthModal";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function LandingPage() {
   const [showAuthPopup, setShowAuthPopup] = useState(false);
@@ -19,7 +20,7 @@ export default function LandingPage() {
       />
       
       {/* Header - Floating Capsule Navbar */}
-      <header className="sticky top-4 z-20 w-full max-w-7xl mx-auto px-8 py-3.5 flex items-center justify-between border border-border bg-white/90 backdrop-blur-md rounded-full shadow-md mt-4 transition-all">
+      <header className="sticky top-4 z-20 w-full max-w-7xl mx-auto px-8 py-3.5 flex items-center justify-between border border-border bg-surface/90 backdrop-blur-md rounded-full shadow-md mt-4 transition-all">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 bg-primary rounded-full flex items-center justify-center shadow-3xs border border-white/10">
             <Building className="w-4.5 h-4.5 text-white" />
@@ -30,7 +31,8 @@ export default function LandingPage() {
         </div>
         
         {/* Center/Right Links */}
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
           <button 
             onClick={() => setShowAuthPopup(true)}
             className="px-5 py-2 text-[10px] font-bold uppercase tracking-wider bg-primary hover:bg-primary/95 text-white rounded-full transition-all cursor-pointer shadow-3xs active:scale-95"
@@ -42,7 +44,7 @@ export default function LandingPage() {
 
       {/* Hero Section */}
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center max-w-7xl mx-auto px-6 text-center py-16 md:py-24">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-white border border-border text-muted-text text-[10px] font-bold uppercase tracking-wider rounded mb-6 shadow-2xs">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-surface border border-border text-muted-text text-[10px] font-bold uppercase tracking-wider rounded mb-6 shadow-2xs">
           <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" /> Operational Command Center for Property Committees
         </div>
 
@@ -67,7 +69,7 @@ export default function LandingPage() {
           </button>
           <a
             href="#features"
-            className="px-6 py-3 bg-white hover:bg-slate-50 border border-border text-primary font-bold rounded transition-colors text-xs uppercase tracking-wider shadow-2xs"
+            className="px-6 py-3 bg-surface hover:bg-background border border-border text-primary font-bold rounded transition-colors text-xs uppercase tracking-wider shadow-2xs"
           >
             Explore System Modules
           </a>
@@ -75,17 +77,17 @@ export default function LandingPage() {
 
         {/* Stats Grid */}
         <div id="stats" className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full border-t border-border pt-16 scroll-mt-24">
-          <div className="p-6 bg-white border border-border rounded flex flex-col items-center shadow-2xs hover:border-slate-300 transition-colors">
+          <div className="p-6 bg-surface border border-border rounded flex flex-col items-center shadow-2xs hover:border-slate-300 transition-colors">
             <div className="text-3xl font-serif text-secondary font-black mb-1.5">98.4%</div>
             <div className="text-[10px] font-bold text-primary uppercase tracking-wider mb-2">SLA Target Met</div>
             <div className="text-xs text-muted-text text-center max-w-[200px] leading-relaxed font-medium">Strict oversight on overdue maintenance requests</div>
           </div>
-          <div className="p-6 bg-white border border-border rounded flex flex-col items-center shadow-2xs hover:border-slate-300 transition-colors">
+          <div className="p-6 bg-surface border border-border rounded flex flex-col items-center shadow-2xs hover:border-slate-300 transition-colors">
             <div className="text-3xl font-serif text-primary font-black mb-1.5">&lt; 2.4 Hrs</div>
             <div className="text-[10px] font-bold text-primary uppercase tracking-wider mb-2">Mean Resolution Time</div>
             <div className="text-xs text-muted-text text-center max-w-[200px] leading-relaxed font-medium">Smart categorization & dispatch workflows</div>
           </div>
-          <div className="p-6 bg-white border border-border rounded flex flex-col items-center shadow-2xs hover:border-slate-300 transition-colors">
+          <div className="p-6 bg-surface border border-border rounded flex flex-col items-center shadow-2xs hover:border-slate-300 transition-colors">
             <div className="text-3xl font-serif text-primary font-black mb-1.5">35% Reduction</div>
             <div className="text-[10px] font-bold text-primary uppercase tracking-wider mb-2">Machinery Downtime</div>
             <div className="text-xs text-muted-text text-center max-w-[200px] leading-relaxed font-medium">Continuous health analysis of boilers, pumps & generators</div>
@@ -98,7 +100,7 @@ export default function LandingPage() {
         <h2 className="text-2xl font-serif font-bold text-center text-primary mb-12">Core Operational Modules</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="p-6 bg-white border border-border rounded flex flex-col items-start text-left shadow-2xs hover:border-slate-300 transition-colors">
+          <div className="p-6 bg-surface border border-border rounded flex flex-col items-start text-left shadow-2xs hover:border-slate-300 transition-colors">
             <div className="p-2.5 bg-background text-primary rounded mb-5 border border-border">
               <Clipboard className="w-5 h-5" />
             </div>
@@ -108,7 +110,7 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="p-6 bg-white border border-border rounded flex flex-col items-start text-left shadow-2xs hover:border-slate-300 transition-colors">
+          <div className="p-6 bg-surface border border-border rounded flex flex-col items-start text-left shadow-2xs hover:border-slate-300 transition-colors">
             <div className="p-2.5 bg-background text-primary rounded mb-5 border border-border">
               <Activity className="w-5 h-5" />
             </div>
@@ -118,7 +120,7 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="p-6 bg-white border border-border rounded flex flex-col items-start text-left shadow-2xs hover:border-slate-300 transition-colors">
+          <div className="p-6 bg-surface border border-border rounded flex flex-col items-start text-left shadow-2xs hover:border-slate-300 transition-colors">
             <div className="p-2.5 bg-background text-secondary rounded mb-5 border border-border">
               <CheckCircle2 className="w-5 h-5" />
             </div>
@@ -131,7 +133,7 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer id="footer" className="relative z-10 w-full border-t border-border bg-white md:border-x max-w-7xl mx-auto px-10 py-16 font-sans scroll-mt-24">
+      <footer id="footer" className="relative z-10 w-full border-t border-border bg-surface md:border-x max-w-7xl mx-auto px-10 py-16 font-sans scroll-mt-24">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-left">
           <div className="space-y-4">
             <div className="flex items-center gap-3">
@@ -170,7 +172,7 @@ export default function LandingPage() {
             </ul>
           </div>
         </div>
-        <div className="border-t border-slate-100 mt-12 pt-6 text-center text-[10px] font-bold text-muted-text uppercase tracking-wider">
+        <div className="border-t border-border/40 mt-12 pt-6 text-center text-[10px] font-bold text-muted-text uppercase tracking-wider">
           &copy; {new Date().getFullYear()} NivasaAI Community Systems. All rights reserved.
         </div>
       </footer>

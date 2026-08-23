@@ -94,7 +94,7 @@ export default function AuthModal({ isOpen, onClose, defaultIsSignUp = false }: 
         className="absolute inset-0 bg-transparent cursor-default" 
         onClick={onClose} 
       />
-      <div className="relative z-10 w-full max-w-md p-8 rounded-2xl border border-border bg-white shadow-2xl space-y-6 animate-in zoom-in-95 duration-200">
+      <div className="relative z-10 w-full max-w-md p-8 rounded-2xl border border-border bg-surface shadow-2xl space-y-6 animate-in zoom-in-95 duration-200">
         
         {/* Close Button */}
         <button 
@@ -156,7 +156,7 @@ export default function AuthModal({ isOpen, onClose, defaultIsSignUp = false }: 
                     onChange={(e) => setFullName(e.target.value)}
                     required
                     placeholder="John Doe"
-                    className="w-full pl-9 pr-3 py-2 bg-white border border-border rounded text-xs text-text placeholder-muted-text/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all shadow-3xs font-semibold"
+                    className="w-full pl-9 pr-3 py-2 bg-surface border border-border rounded text-xs text-text placeholder-muted-text/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all shadow-3xs font-semibold"
                   />
                 </div>
               </div>
@@ -176,7 +176,7 @@ export default function AuthModal({ isOpen, onClose, defaultIsSignUp = false }: 
                       onChange={(e) => setFlatNumber(e.target.value)}
                       required
                       placeholder="e.g. Wing B-402"
-                      className="w-full pl-9 pr-3 py-2 bg-white border border-border rounded text-xs text-text placeholder-muted-text/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all shadow-3xs font-semibold"
+                      className="w-full pl-9 pr-3 py-2 bg-surface border border-border rounded text-xs text-text placeholder-muted-text/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all shadow-3xs font-semibold"
                     />
                   </div>
                 </div>
@@ -194,7 +194,7 @@ export default function AuthModal({ isOpen, onClose, defaultIsSignUp = false }: 
                       value={phoneNumber}
                       onChange={(e) => setPhoneNumber(e.target.value)}
                       placeholder="e.g. +91 98765"
-                      className="w-full pl-9 pr-3 py-2 bg-white border border-border rounded text-xs text-text placeholder-muted-text/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all shadow-3xs font-semibold"
+                      className="w-full pl-9 pr-3 py-2 bg-surface border border-border rounded text-xs text-text placeholder-muted-text/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all shadow-3xs font-semibold"
                     />
                   </div>
                 </div>
@@ -216,7 +216,7 @@ export default function AuthModal({ isOpen, onClose, defaultIsSignUp = false }: 
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 placeholder="email@example.com"
-                className="w-full pl-9 pr-3 py-2 bg-white border border-border rounded text-xs text-text placeholder-muted-text/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all shadow-3xs font-semibold"
+                className="w-full pl-9 pr-3 py-2 bg-surface border border-border rounded text-xs text-text placeholder-muted-text/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all shadow-3xs font-semibold"
               />
             </div>
           </div>
@@ -233,13 +233,13 @@ export default function AuthModal({ isOpen, onClose, defaultIsSignUp = false }: 
               <label className="block text-[10px] font-bold text-primary/85 uppercase tracking-wider mb-1.5">
                 Account Level Role
               </label>
-              <div className="grid grid-cols-2 gap-1 p-1 bg-slate-50 border border-border rounded-xl">
+              <div className="grid grid-cols-2 gap-1 p-1 bg-background border border-border rounded-xl">
                 <button
                   type="button"
                   onClick={() => setRole("resident")}
                   className={`py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                     role === "resident"
-                      ? "bg-white text-primary border border-border/80 shadow-3xs font-bold"
+                      ? "bg-surface text-primary border border-border/80 shadow-3xs font-bold"
                       : "text-muted-text hover:text-primary"
                   }`}
                 >
@@ -250,7 +250,7 @@ export default function AuthModal({ isOpen, onClose, defaultIsSignUp = false }: 
                   onClick={() => setRole("admin")}
                   className={`py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                     role === "admin"
-                      ? "bg-white text-primary border border-border/80 shadow-3xs font-bold"
+                      ? "bg-surface text-primary border border-border/80 shadow-3xs font-bold"
                       : "text-muted-text hover:text-primary"
                   }`}
                 >
@@ -291,7 +291,7 @@ export default function AuthModal({ isOpen, onClose, defaultIsSignUp = false }: 
         </form>
 
         {/* Toggle Mode Link */}
-        <div className="mt-6 text-center border-t border-slate-100 pt-4 font-sans">
+        <div className="mt-6 text-center border-t border-border/40 pt-4 font-sans">
           <button
             type="button"
             onClick={() => {

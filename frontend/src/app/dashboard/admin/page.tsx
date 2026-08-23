@@ -12,6 +12,7 @@ import {
 import {
   ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, Tooltip
 } from "recharts";
+import ThemeToggle from "@/components/ThemeToggle";
 
 // Consistent visual colors: Spruce Green, Muted Clay, and Slate Gray
 const COLORS = ["#253C2C", "#7F624C", "#5B665E", "#8A948E", "#A07C64", "#D5D8D3"];
@@ -329,7 +330,7 @@ export default function AdminDashboard() {
   if (pageLoading) {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center text-text font-sans">
-        <div className="flex flex-col items-center gap-3 bg-white p-6 rounded border border-border shadow-2xs">
+        <div className="flex flex-col items-center gap-3 bg-surface p-6 rounded border border-border shadow-2xs">
           <RefreshCw className="w-6 h-6 animate-spin text-primary" />
           <span className="text-xs font-bold text-muted-text">Loading Operations Console...</span>
         </div>
@@ -413,8 +414,8 @@ export default function AdminDashboard() {
         }}
         className={`w-full flex items-center gap-2.5 px-3 py-2 text-xs font-bold transition-all rounded cursor-pointer ${
           activeTab === "overview" && !selectedComplaint
-            ? "text-primary bg-slate-50 border-l-2 border-l-primary rounded-r font-bold"
-            : "text-muted-text hover:text-primary hover:bg-slate-50/50"
+            ? "text-primary bg-background border-l-2 border-l-primary rounded-r font-bold"
+            : "text-muted-text hover:text-primary hover:bg-background/50"
         }`}
       >
         <Building className="w-4.5 h-4.5" />
@@ -428,8 +429,8 @@ export default function AdminDashboard() {
         }}
         className={`w-full flex items-center gap-2.5 px-3 py-2 text-xs font-bold transition-all rounded cursor-pointer ${
           activeTab === "complaints" && !selectedComplaint
-            ? "text-primary bg-slate-50 border-l-2 border-l-primary rounded-r font-bold"
-            : "text-muted-text hover:text-primary hover:bg-slate-50/50"
+            ? "text-primary bg-background border-l-2 border-l-primary rounded-r font-bold"
+            : "text-muted-text hover:text-primary hover:bg-background/50"
         }`}
       >
         <ClipboardList className="w-4.5 h-4.5" />
@@ -443,8 +444,8 @@ export default function AdminDashboard() {
         }}
         className={`w-full flex items-center gap-2.5 px-3 py-2 text-xs font-bold transition-all rounded cursor-pointer ${
           activeTab === "notices"
-            ? "text-primary bg-slate-50 border-l-2 border-l-primary rounded-r font-bold"
-            : "text-muted-text hover:text-primary hover:bg-slate-50/50"
+            ? "text-primary bg-background border-l-2 border-l-primary rounded-r font-bold"
+            : "text-muted-text hover:text-primary hover:bg-background/50"
         }`}
       >
         <Bell className="w-4.5 h-4.5" />
@@ -468,9 +469,9 @@ export default function AdminDashboard() {
       <div className="absolute inset-0 z-0 opacity-[0.03] bg-[linear-gradient(to_right,#5B665E_1px,transparent_1px),linear-gradient(to_bottom,#5B665E_1px,transparent_1px)] bg-[size:48px_48px] pointer-events-none" />
 
       {/* Sidebar - Desktop */}
-      <aside className="hidden md:flex md:flex-col md:w-64 bg-white border-r border-border h-screen sticky top-0 z-20 shrink-0 justify-between p-5 shadow-3xs">
+      <aside className="hidden md:flex md:flex-col md:w-64 bg-surface border-r border-border h-screen sticky top-0 z-20 shrink-0 justify-between p-5 shadow-3xs">
         <div className="space-y-6">
-          <div className="flex items-center gap-2.5 px-2 py-1.5 border-b border-slate-100 pb-4">
+          <div className="flex items-center gap-2.5 px-2 py-1.5 border-b border-border/40 pb-4">
             <div className="p-1.5 bg-primary rounded flex items-center justify-center">
               <Building className="w-4.5 h-4.5 text-white" />
             </div>
@@ -486,19 +487,22 @@ export default function AdminDashboard() {
         </div>
 
         {/* Desktop Profile / Logout Section */}
-        <div className="border-t border-slate-100 pt-4 mt-auto space-y-3.5">
-          <div className="flex items-center gap-3 px-2">
-            <div className="w-8 h-8 rounded bg-background flex items-center justify-center border border-border">
-              <User className="w-4 h-4 text-primary" />
+        <div className="border-t border-border/40 pt-4 mt-auto space-y-3.5 font-sans">
+          <div className="flex items-center justify-between gap-3 px-2">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="w-8 h-8 rounded bg-background flex items-center justify-center border border-border">
+                <User className="w-4 h-4 text-primary" />
+              </div>
+              <div className="text-left min-w-0">
+                <div className="text-xs font-bold text-text truncate leading-none">{user?.full_name}</div>
+                <div className="text-[10px] text-muted-text font-bold leading-none mt-1 truncate">Administrator</div>
+              </div>
             </div>
-            <div className="text-left min-w-0">
-              <div className="text-xs font-bold text-text truncate leading-none">{user?.full_name}</div>
-              <div className="text-[10px] text-muted-text font-bold leading-none mt-1 truncate">Administrator</div>
-            </div>
+            <ThemeToggle />
           </div>
           <button 
             onClick={handleLogout} 
-            className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-muted-text hover:text-status-danger hover:bg-slate-50 rounded transition-colors cursor-pointer"
+            className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-muted-text hover:text-status-danger hover:bg-background rounded transition-colors cursor-pointer"
           >
             <LogOut className="w-3.5 h-3.5" />
             <span>Sign Out</span>
@@ -507,18 +511,21 @@ export default function AdminDashboard() {
       </aside>
 
       {/* Mobile Top Header Banner */}
-      <div className="md:hidden flex items-center justify-between bg-white border-b border-border px-4 py-3 sticky top-0 z-40 shadow-3xs">
+      <div className="md:hidden flex items-center justify-between bg-surface border-b border-border px-4 py-3 sticky top-0 z-40 shadow-3xs">
         <div className="flex items-center gap-2">
           <Building className="w-4 h-4 text-primary" />
           <span className="font-serif font-bold text-sm tracking-tight text-primary">Nivasa<span className="font-sans font-normal text-secondary italic">AI</span></span>
         </div>
         
-        <button 
-          onClick={() => setMenuOpen(!menuOpen)} 
-          className="p-1.5 text-muted-text hover:text-primary hover:bg-slate-100/50 rounded transition-colors"
-        >
-          {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <button 
+            onClick={() => setMenuOpen(!menuOpen)} 
+            className="p-1.5 text-muted-text hover:text-primary hover:bg-background/50 rounded transition-colors"
+          >
+            {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Drawer Sidebar */}
@@ -528,9 +535,9 @@ export default function AdminDashboard() {
             onClick={() => setMenuOpen(false)}
             className="fixed inset-0 bg-slate-900/25 z-40 backdrop-blur-3xs md:hidden"
           />
-          <aside className="fixed inset-y-0 left-0 w-64 bg-white border-r border-border z-50 p-5 flex flex-col justify-between shadow-lg md:hidden animate-in slide-in-from-left duration-200">
+          <aside className="fixed inset-y-0 left-0 w-64 bg-surface border-r border-border z-50 p-5 flex flex-col justify-between shadow-lg md:hidden animate-in slide-in-from-left duration-200">
             <div className="space-y-6">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+              <div className="flex items-center justify-between border-b border-border/40 pb-4">
                 <div className="flex items-center gap-2">
                   <Building className="w-4 h-4 text-primary" />
                   <span className="font-serif font-bold text-sm tracking-tight text-primary">Nivasa<span className="font-sans font-normal text-secondary italic">AI</span></span>
@@ -546,7 +553,7 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            <div className="border-t border-slate-100 pt-4 space-y-3.5">
+            <div className="border-t border-border/40 pt-4 space-y-3.5">
               <div className="flex items-center gap-3 px-2">
                 <div className="w-8 h-8 rounded bg-background flex items-center justify-center border border-border">
                   <User className="w-4 h-4 text-primary" />
@@ -558,7 +565,7 @@ export default function AdminDashboard() {
               </div>
               <button 
                 onClick={handleLogout} 
-                className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-muted-text hover:text-status-danger hover:bg-slate-50 rounded transition-colors cursor-pointer"
+                className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-muted-text hover:text-status-danger hover:bg-background rounded transition-colors cursor-pointer"
               >
                 <LogOut className="w-3.5 h-3.5" />
                 <span>Sign Out</span>
@@ -572,7 +579,7 @@ export default function AdminDashboard() {
         <main className="flex-1 max-w-7xl w-full mx-auto px-8 py-10 md:px-10 space-y-8">
           
           {/* Top Operational Health Strip */}
-          <div className="flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-slate-200 border border-border bg-white rounded shadow-3xs overflow-hidden">
+          <div className="flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-border/60 border border-border bg-surface rounded shadow-3xs overflow-hidden">
             
             <div className="flex-1 p-5 text-center sm:text-left">
               <span className="text-[9px] font-bold text-muted-text uppercase tracking-widest block">Total Cases Logged</span>
@@ -580,7 +587,7 @@ export default function AdminDashboard() {
               <span className="text-[9.5px] text-muted-text font-medium mt-1 block">Lifetime volume logged</span>
             </div>
 
-            <div className="flex-1 p-5 text-center sm:text-left bg-slate-50/20">
+            <div className="flex-1 p-5 text-center sm:text-left bg-background/20">
               <span className="text-[9px] font-bold text-muted-text uppercase tracking-widest block font-sans">Unresolved Active Queue</span>
               <div className="text-3xl font-bold font-serif text-primary mt-1.5">{analytics?.active_complaints}</div>
               <span className="text-[9.5px] text-muted-text font-medium mt-1 block">Open & In Progress tickets</span>
@@ -601,7 +608,7 @@ export default function AdminDashboard() {
               <span className="text-[9.5px] text-muted-text font-medium mt-1 block">Pending resolution &gt; 48 hours</span>
             </div>
 
-            <div className="flex-1 p-5 text-center sm:text-left bg-slate-50/20">
+            <div className="flex-1 p-5 text-center sm:text-left bg-background/20">
               <span className="text-[9px] font-bold text-muted-text uppercase tracking-widest block">Unresolved High Priority</span>
               <div className={`text-3xl font-bold font-serif mt-1.5 flex items-baseline justify-center sm:justify-start gap-1 ${
                 unresolvedHighPriorityCount > 0 ? "text-status-danger" : "text-primary"
@@ -625,8 +632,8 @@ export default function AdminDashboard() {
             <div className="space-y-8 animate-in fade-in duration-200">
               
               {/* Table with name and complaints (Simplified view, full-width) */}
-              <div className="p-6 bg-white border border-border rounded shadow-2xs space-y-4">
-                <div className="flex justify-between items-center border-b border-slate-100 pb-2.5">
+              <div className="p-6 bg-surface border border-border rounded shadow-2xs space-y-4">
+                <div className="flex justify-between items-center border-b border-border/40 pb-2.5">
                   <h3 className="text-xs font-bold text-primary uppercase tracking-wider font-sans">
                     Recent Service Requests
                   </h3>
@@ -637,7 +644,7 @@ export default function AdminDashboard() {
                     View All Tickets &rarr;
                   </button>
                 </div>
-                <div className="overflow-x-auto border border-border rounded shadow-3xs bg-white">
+                <div className="overflow-x-auto border border-border rounded shadow-3xs bg-surface">
                   <table className="w-full text-xs text-left">
                     <thead className="table-header text-[10px] font-bold">
                       <tr>
@@ -651,7 +658,7 @@ export default function AdminDashboard() {
                     </thead>
                     <tbody className="divide-y divide-slate-100 font-semibold text-text">
                       {complaints.slice(0, 5).map((c) => (
-                        <tr key={c.id} className="hover:bg-slate-50/40 transition-colors">
+                        <tr key={c.id} className="hover:bg-background/40 transition-colors">
                           <td className="px-6 py-4 font-bold text-muted-text">#COM-{1000 + c.id}</td>
                           <td className="px-6 py-4">
                             <span className="font-bold text-text">{c.resident.full_name}</span>
@@ -685,7 +692,7 @@ export default function AdminDashboard() {
                       ))}
                       {complaints.length === 0 && (
                         <tr>
-                          <td colSpan={6} className="text-center text-muted-text py-8 bg-slate-50/10 font-medium">
+                          <td colSpan={6} className="text-center text-muted-text py-8 bg-background/10 font-medium">
                             No tickets registered yet.
                           </td>
                         </tr>
@@ -698,8 +705,8 @@ export default function AdminDashboard() {
               {/* Side-by-side Graph and Chart below the table */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Seasonal Load Forecast Graph */}
-                <div className="p-6 bg-white border border-border rounded shadow-2xs space-y-4">
-                  <h3 className="text-xs font-bold text-primary uppercase tracking-wider border-b border-slate-100 pb-2.5 font-sans">
+                <div className="p-6 bg-surface border border-border rounded shadow-2xs space-y-4">
+                  <h3 className="text-xs font-bold text-primary uppercase tracking-wider border-b border-border/40 pb-2.5 font-sans">
                     30-Day Seasonal Load Forecast
                   </h3>
                   <div className="h-56">
@@ -725,8 +732,8 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* Category Ticket Distribution Chart */}
-                <div className="p-6 bg-white border border-border rounded shadow-2xs space-y-4">
-                  <h3 className="text-xs font-bold text-primary uppercase tracking-wider border-b border-slate-100 pb-2.5 font-sans">
+                <div className="p-6 bg-surface border border-border rounded shadow-2xs space-y-4">
+                  <h3 className="text-xs font-bold text-primary uppercase tracking-wider border-b border-border/40 pb-2.5 font-sans">
                     Category Ticket Distribution
                   </h3>
                   <div className="h-56 flex items-center justify-center">
@@ -772,9 +779,9 @@ export default function AdminDashboard() {
               
               {/* Notice Creator Form (lg:col-span-4) */}
               <div className="lg:col-span-4 space-y-6">
-                <div className="p-6 bg-white border border-border rounded shadow-2xs space-y-4">
+                <div className="p-6 bg-surface border border-border rounded shadow-2xs space-y-4">
                   <div>
-                    <h3 className="text-xs font-bold text-primary uppercase tracking-wider border-b border-slate-100 pb-2.5 font-sans">
+                    <h3 className="text-xs font-bold text-primary uppercase tracking-wider border-b border-border/40 pb-2.5 font-sans">
                       Broadcast Announcement
                     </h3>
                     <p className="text-[10.5px] text-muted-text mt-1.5 font-medium leading-relaxed">
@@ -794,7 +801,7 @@ export default function AdminDashboard() {
                         onChange={(e) => setNoticeTitle(e.target.value)}
                         required
                         placeholder="e.g. Schedule Water Tank Cleaning"
-                        className="w-full px-4 py-2.5 bg-white border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary/20 focus:border-primary text-text placeholder-muted-text/35 transition-all shadow-3xs font-semibold"
+                        className="w-full px-4 py-2.5 bg-surface border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary/20 focus:border-primary text-text placeholder-muted-text/35 transition-all shadow-3xs font-semibold"
                       />
                     </div>
                     
@@ -809,11 +816,11 @@ export default function AdminDashboard() {
                         required
                         rows={5}
                         placeholder="Provide details. (e.g. Water supply will be suspended on Tuesday from 10:00 AM to 2:00 PM for tank maintenance.)"
-                        className="w-full px-4 py-2.5 bg-white border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary/20 focus:border-primary text-text placeholder-muted-text/35 transition-all shadow-3xs leading-relaxed font-semibold font-sans animate-none"
+                        className="w-full px-4 py-2.5 bg-surface border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary/20 focus:border-primary text-text placeholder-muted-text/35 transition-all shadow-3xs leading-relaxed font-semibold font-sans animate-none"
                       />
                     </div>
                     
-                    <div className="space-y-3.5 pt-2 border-t border-slate-100/60 font-sans">
+                    <div className="space-y-3.5 pt-2 border-t border-border/40/60 font-sans">
                       <label className="flex items-center gap-2 cursor-pointer select-none">
                         <input
                           type="checkbox"
@@ -856,8 +863,8 @@ export default function AdminDashboard() {
               
               {/* Active Notices Table (lg:col-span-8) */}
               <div className="lg:col-span-8 space-y-6">
-                <div className="p-6 bg-white border border-border rounded shadow-2xs space-y-4">
-                  <div className="flex justify-between items-center border-b border-slate-100 pb-2.5">
+                <div className="p-6 bg-surface border border-border rounded shadow-2xs space-y-4">
+                  <div className="flex justify-between items-center border-b border-border/40 pb-2.5">
                     <h3 className="text-xs font-bold text-primary uppercase tracking-wider font-sans">
                       Active Bulletins Ledger
                     </h3>
@@ -866,7 +873,7 @@ export default function AdminDashboard() {
                     </span>
                   </div>
                   
-                  <div className="overflow-x-auto border border-border rounded shadow-3xs bg-white font-sans">
+                  <div className="overflow-x-auto border border-border rounded shadow-3xs bg-surface font-sans">
                     <table className="w-full text-xs text-left">
                       <thead className="table-header text-[10px] font-bold">
                         <tr>
@@ -878,7 +885,7 @@ export default function AdminDashboard() {
                       </thead>
                       <tbody className="divide-y divide-slate-100 font-semibold text-text">
                         {notices.map((n) => (
-                          <tr key={n.id} className="hover:bg-slate-50/40 transition-colors">
+                          <tr key={n.id} className="hover:bg-background/40 transition-colors">
                             <td className="px-6 py-4 text-muted-text font-semibold">
                               {new Date(n.created_at).toLocaleDateString()}
                             </td>
@@ -899,7 +906,7 @@ export default function AdminDashboard() {
                                   </span>
                                 )}
                                 {!n.is_important && !n.is_pinned && (
-                                  <span className="text-[8px] px-1.5 py-0.5 rounded bg-slate-100 text-muted-text border border-border font-bold uppercase tracking-wider">
+                                  <span className="text-[8px] px-1.5 py-0.5 rounded bg-background text-muted-text border border-border font-bold uppercase tracking-wider">
                                     Standard
                                   </span>
                                 )}
@@ -909,7 +916,7 @@ export default function AdminDashboard() {
                               <button
                                 type="button"
                                 onClick={() => handleDeleteNotice(n.id)}
-                                className="px-2.5 py-1 bg-white hover:bg-slate-50 border border-border hover:border-status-danger hover:text-status-danger rounded text-[9.5px] font-bold text-muted-text transition-all shadow-3xs cursor-pointer"
+                                className="px-2.5 py-1 bg-surface hover:bg-background border border-border hover:border-status-danger hover:text-status-danger rounded text-[9.5px] font-bold text-muted-text transition-all shadow-3xs cursor-pointer"
                               >
                                 Delete
                               </button>
@@ -918,7 +925,7 @@ export default function AdminDashboard() {
                         ))}
                         {notices.length === 0 && (
                           <tr>
-                            <td colSpan={4} className="text-center text-muted-text py-8 bg-slate-50/10 font-medium font-sans">
+                            <td colSpan={4} className="text-center text-muted-text py-8 bg-background/10 font-medium font-sans">
                               No bulletins currently published.
                             </td>
                           </tr>
@@ -937,10 +944,10 @@ export default function AdminDashboard() {
             <div className="space-y-6 animate-in fade-in duration-200">
               
               {/* Coherent Filter Toolbar & Table Controls Card */}
-              <div className="p-6 bg-white border border-border rounded shadow-2xs space-y-4">
+              <div className="p-6 bg-surface border border-border rounded shadow-2xs space-y-4">
                 
                 {/* Header Title & Result Count */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-border/40 pb-2.5">
                   <h3 className="text-xs font-bold text-primary uppercase tracking-wider font-sans">
                     Maintenance Tickets Ledger
                   </h3>
@@ -951,7 +958,7 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* Coherent Filter Toolbar Container */}
-                <div className="p-4 bg-slate-50 border border-border rounded flex flex-col gap-3 shadow-3xs font-sans">
+                <div className="p-4 bg-background border border-border rounded flex flex-col gap-3 shadow-3xs font-sans">
                   
                   {/* Row 1: Search, Category, Status, Priority */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -962,14 +969,14 @@ export default function AdminDashboard() {
                         value={search}
                         onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
                         placeholder="Search ID, Flat, keyword..."
-                        className="w-full pl-8 pr-3 py-1.5 bg-white border border-border rounded text-xs placeholder-muted-text/50 focus:outline-none focus:border-primary text-text transition-all"
+                        className="w-full pl-8 pr-3 py-1.5 bg-surface border border-border rounded text-xs placeholder-muted-text/50 focus:outline-none focus:border-primary text-text transition-all"
                       />
                     </div>
 
                     <select
                       value={categoryFilter}
                       onChange={(e) => { setCategoryFilter(e.target.value); setCurrentPage(1); }}
-                      className="px-2.5 py-1.5 bg-white border border-border rounded text-xs text-text focus:outline-none focus:border-primary cursor-pointer font-bold shadow-3xs"
+                      className="px-2.5 py-1.5 bg-surface border border-border rounded text-xs text-text focus:outline-none focus:border-primary cursor-pointer font-bold shadow-3xs"
                     >
                       <option value="">All Categories</option>
                       <option value="Plumbing">Plumbing</option>
@@ -982,7 +989,7 @@ export default function AdminDashboard() {
                     <select
                       value={statusFilter}
                       onChange={(e) => { setStatusFilter(e.target.value); setCurrentPage(1); }}
-                      className="px-2.5 py-1.5 bg-white border border-border rounded text-xs text-text focus:outline-none focus:border-primary cursor-pointer font-bold shadow-3xs"
+                      className="px-2.5 py-1.5 bg-surface border border-border rounded text-xs text-text focus:outline-none focus:border-primary cursor-pointer font-bold shadow-3xs"
                     >
                       <option value="">All Statuses</option>
                       <option value="Open">Open</option>
@@ -993,7 +1000,7 @@ export default function AdminDashboard() {
                     <select
                       value={priorityFilter}
                       onChange={(e) => { setPriorityFilter(e.target.value); setCurrentPage(1); }}
-                      className="px-2.5 py-1.5 bg-white border border-border rounded text-xs text-text focus:outline-none focus:border-primary cursor-pointer font-bold shadow-3xs"
+                      className="px-2.5 py-1.5 bg-surface border border-border rounded text-xs text-text focus:outline-none focus:border-primary cursor-pointer font-bold shadow-3xs"
                     >
                       <option value="">All Priorities</option>
                       <option value="High">High</option>
@@ -1003,7 +1010,7 @@ export default function AdminDashboard() {
                   </div>
 
                   {/* Row 2: Date Filters, Overdue Toggle, Clear Actions */}
-                  <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3 pt-2 border-t border-slate-200/60 flex-wrap">
+                  <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3 pt-2 border-t border-border/60/60 flex-wrap">
                     <div className="flex flex-wrap items-center gap-3">
                       <div className="flex items-center gap-1.5">
                         <span className="text-[10px] font-bold text-primary uppercase">From:</span>
@@ -1011,7 +1018,7 @@ export default function AdminDashboard() {
                           type="date"
                           value={startDate}
                           onChange={(e) => { setStartDate(e.target.value); setCurrentPage(1); }}
-                          className="px-2.5 py-1 bg-white border border-border rounded text-xs text-text focus:outline-none focus:border-primary"
+                          className="px-2.5 py-1 bg-surface border border-border rounded text-xs text-text focus:outline-none focus:border-primary"
                         />
                       </div>
                       <div className="flex items-center gap-1.5">
@@ -1020,7 +1027,7 @@ export default function AdminDashboard() {
                           type="date"
                           value={endDate}
                           onChange={(e) => { setEndDate(e.target.value); setCurrentPage(1); }}
-                          className="px-2.5 py-1 bg-white border border-border rounded text-xs text-text focus:outline-none focus:border-primary"
+                          className="px-2.5 py-1 bg-surface border border-border rounded text-xs text-text focus:outline-none focus:border-primary"
                         />
                       </div>
                     </div>
@@ -1048,13 +1055,13 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* Scannable Ledger Table (Desktop View) */}
-                <div className="overflow-x-auto border border-border rounded shadow-3xs bg-white">
+                <div className="overflow-x-auto border border-border rounded shadow-3xs bg-surface">
                   <table className="w-full text-xs text-left">
                     <thead className="table-header text-[10px] font-bold">
                       <tr>
                         <th 
                           onClick={() => handleSort("id")}
-                          className="px-6 py-4 w-16 cursor-pointer hover:bg-slate-100 select-none"
+                          className="px-6 py-4 w-16 cursor-pointer hover:bg-background select-none"
                         >
                           <div className="flex items-center gap-1">
                             ID {sortBy === "id" && (sortOrder === "asc" ? "↑" : "↓")}
@@ -1065,7 +1072,7 @@ export default function AdminDashboard() {
                         <th className="px-6 py-4 w-28">Resident</th>
                         <th 
                           onClick={() => handleSort("created_at")}
-                          className="px-6 py-4 w-24 cursor-pointer hover:bg-slate-100 select-none"
+                          className="px-6 py-4 w-24 cursor-pointer hover:bg-background select-none"
                         >
                           <div className="flex items-center gap-1">
                             Logged Date {sortBy === "created_at" && (sortOrder === "asc" ? "↑" : "↓")}
@@ -1073,7 +1080,7 @@ export default function AdminDashboard() {
                         </th>
                         <th 
                           onClick={() => handleSort("priority")}
-                          className="px-6 py-4 w-20 cursor-pointer hover:bg-slate-100 select-none"
+                          className="px-6 py-4 w-20 cursor-pointer hover:bg-background select-none"
                         >
                           <div className="flex items-center gap-1">
                             Priority {sortBy === "priority" && (sortOrder === "asc" ? "↑" : "↓")}
@@ -1081,7 +1088,7 @@ export default function AdminDashboard() {
                         </th>
                         <th 
                           onClick={() => handleSort("status")}
-                          className="px-6 py-4 w-24 text-right cursor-pointer hover:bg-slate-100 select-none"
+                          className="px-6 py-4 w-24 text-right cursor-pointer hover:bg-background select-none"
                         >
                           <div className="flex items-center justify-end gap-1">
                             Status {sortBy === "status" && (sortOrder === "asc" ? "↑" : "↓")}
@@ -1094,7 +1101,7 @@ export default function AdminDashboard() {
                         const overdue = isOverdue(c.created_at, c.status);
                         
                         return (
-                          <tr key={c.id} className="hover:bg-slate-50/40 transition-colors group">
+                          <tr key={c.id} className="hover:bg-background/40 transition-colors group">
                             <td className="px-6 py-4.5 font-bold text-muted-text">#COM-{1000 + c.id}</td>
                             <td className="px-6 py-4.5">
                               <div className="flex items-center gap-1.5">
@@ -1142,7 +1149,7 @@ export default function AdminDashboard() {
                                     setUpdatePriority(c.priority);
                                     setImgError(false);
                                   }}
-                                  className="px-2.5 py-1 bg-white hover:bg-slate-50 border border-border rounded text-[9.5px] font-bold text-primary opacity-90 group-hover:opacity-100 transition-all shadow-3xs cursor-pointer font-sans"
+                                  className="px-2.5 py-1 bg-surface hover:bg-background border border-border rounded text-[9.5px] font-bold text-primary opacity-90 group-hover:opacity-100 transition-all shadow-3xs cursor-pointer font-sans"
                                 >
                                   Manage
                                 </button>
@@ -1153,7 +1160,7 @@ export default function AdminDashboard() {
                       })}
                       {paginatedComplaints.length === 0 && (
                         <tr>
-                          <td colSpan={7} className="text-center text-muted-text py-8 bg-slate-50/10 font-medium font-sans">
+                          <td colSpan={7} className="text-center text-muted-text py-8 bg-background/10 font-medium font-sans">
                             No active tickets match the search queries.
                           </td>
                         </tr>
@@ -1170,10 +1177,10 @@ export default function AdminDashboard() {
                     return (
                       <div 
                         key={c.id} 
-                        className="bg-white border border-border rounded p-4 shadow-3xs space-y-3"
+                        className="bg-surface border border-border rounded p-4 shadow-3xs space-y-3"
                       >
                         {/* Header: Category & Status */}
-                        <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                        <div className="flex items-center justify-between border-b border-border/40 pb-2">
                           <span className="text-xs font-bold text-primary">{c.category}</span>
                           <div className="flex items-center gap-1.5">
                             {overdue && (
@@ -1201,7 +1208,7 @@ export default function AdminDashboard() {
                         </div>
 
                         {/* Footer details & Action */}
-                        <div className="flex items-center justify-between text-[9px] text-muted-text font-semibold border-t border-slate-100 pt-2 font-sans">
+                        <div className="flex items-center justify-between text-[9px] text-muted-text font-semibold border-t border-border/40 pt-2 font-sans">
                           <div>Logged: <span className="text-text">{new Date(c.created_at).toLocaleDateString()}</span></div>
                           <div className="flex items-center gap-2">
                             <span className="font-bold text-text uppercase">{c.priority}</span>
@@ -1213,7 +1220,7 @@ export default function AdminDashboard() {
                                 setUpdatePriority(c.priority);
                                 setImgError(false);
                               }}
-                              className="px-2 py-0.5 bg-white hover:bg-slate-50 border border-border rounded text-[9px] font-bold text-primary cursor-pointer shadow-3xs"
+                              className="px-2 py-0.5 bg-surface hover:bg-background border border-border rounded text-[9px] font-bold text-primary cursor-pointer shadow-3xs"
                             >
                               Manage
                             </button>
@@ -1223,7 +1230,7 @@ export default function AdminDashboard() {
                     );
                   })}
                   {paginatedComplaints.length === 0 && (
-                    <div className="text-center text-xs text-muted-text py-6 font-medium bg-slate-50 rounded border border-dashed border-border/60 font-sans">
+                    <div className="text-center text-xs text-muted-text py-6 font-medium bg-background rounded border border-dashed border-border/60 font-sans">
                       No active tickets match the search queries.
                     </div>
                   )}
@@ -1231,11 +1238,11 @@ export default function AdminDashboard() {
 
                 {/* Pagination Controls */}
                 {totalPages > 1 && (
-                  <div className="flex items-center justify-between pt-4 border-t border-slate-100 text-xs font-sans">
+                  <div className="flex items-center justify-between pt-4 border-t border-border/40 text-xs font-sans">
                     <button
                       onClick={() => setCurrentPage(currentPage - 1)}
                       disabled={currentPage === 1}
-                      className="px-3 py-1.5 bg-white border border-border rounded hover:bg-slate-50 text-primary font-bold flex items-center gap-1 transition-colors disabled:opacity-50 cursor-pointer shadow-3xs"
+                      className="px-3 py-1.5 bg-surface border border-border rounded hover:bg-background text-primary font-bold flex items-center gap-1 transition-colors disabled:opacity-50 cursor-pointer shadow-3xs"
                     >
                       <ChevronLeft className="w-3.5 h-3.5" /> Previous
                     </button>
@@ -1248,7 +1255,7 @@ export default function AdminDashboard() {
                           className={`w-7 h-7 rounded border text-[11px] font-bold flex items-center justify-center transition-colors cursor-pointer ${
                             pg === currentPage
                               ? "bg-primary text-white border-primary"
-                              : "bg-white border-border hover:bg-slate-50 text-muted-text"
+                              : "bg-surface border-border hover:bg-background text-muted-text"
                           }`}
                         >
                           {pg}
@@ -1263,7 +1270,7 @@ export default function AdminDashboard() {
                     <button
                       onClick={() => setCurrentPage(currentPage + 1)}
                       disabled={currentPage === totalPages}
-                      className="px-3 py-1.5 bg-white border border-border rounded hover:bg-slate-50 text-primary font-bold flex items-center gap-1 transition-colors disabled:opacity-50 cursor-pointer shadow-3xs"
+                      className="px-3 py-1.5 bg-surface border border-border rounded hover:bg-background text-primary font-bold flex items-center gap-1 transition-colors disabled:opacity-50 cursor-pointer shadow-3xs"
                     >
                       Next <ChevronRight className="w-3.5 h-3.5" />
                     </button>
@@ -1291,9 +1298,9 @@ export default function AdminDashboard() {
 
         {/* AI Assistant Chat Panel */}
         {chatOpen && (
-          <div className="absolute bottom-16 right-0 w-80 bg-white border border-border rounded shadow-md overflow-hidden flex flex-col h-[450px] animate-in fade-in duration-200">
+          <div className="absolute bottom-16 right-0 w-80 bg-surface border border-border rounded shadow-md overflow-hidden flex flex-col h-[450px] animate-in fade-in duration-200">
             {/* Header */}
-            <div className="p-3 bg-slate-50 border-b border-border/60 flex items-center justify-between">
+            <div className="p-3 bg-background border-b border-border/60 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Building className="w-4 h-4 text-primary" />
                 <div>
@@ -1307,24 +1314,24 @@ export default function AdminDashboard() {
             </div>
 
             {/* Message Body */}
-            <div className="flex-1 p-3.5 overflow-y-auto space-y-3.5 bg-slate-50/20">
+            <div className="flex-1 p-3.5 overflow-y-auto space-y-3.5 bg-background/20">
               {chatHistory.map((msg, i) => (
                 <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div className={`p-3 rounded max-w-[85%] text-xs space-y-2 leading-relaxed border shadow-3xs ${
                     msg.role === 'user' 
                       ? 'bg-primary text-white border-primary rounded-tr-none' 
-                      : 'bg-white border-border text-text rounded-tl-none font-sans font-medium opacity-95'
+                      : 'bg-surface border-border text-text rounded-tl-none font-sans font-medium opacity-95'
                   }`}>
                     <p className="whitespace-pre-wrap">{msg.text}</p>
                     
                     {/* Suggested Action Tags */}
                     {msg.actions && msg.actions.length > 0 && (
-                      <div className="flex flex-wrap gap-1 border-t border-slate-100 pt-2.5 mt-1.5">
+                      <div className="flex flex-wrap gap-1 border-t border-border/40 pt-2.5 mt-1.5">
                         {msg.actions.map((act: string, idx: number) => (
                           <button
                             key={idx}
                             onClick={() => setChatMessage(act)}
-                            className="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-primary border border-border rounded text-[9px] font-bold transition-all cursor-pointer shadow-3xs"
+                            className="px-2 py-0.5 bg-background hover:bg-slate-200 text-primary border border-border rounded text-[9px] font-bold transition-all cursor-pointer shadow-3xs"
                           >
                             {act}
                           </button>
@@ -1336,7 +1343,7 @@ export default function AdminDashboard() {
               ))}
               {chatLoading && (
                 <div className="flex justify-start">
-                  <div className="p-3 bg-white border border-border rounded flex items-center gap-1.5 text-xs text-muted-text font-medium shadow-3xs">
+                  <div className="p-3 bg-surface border border-border rounded flex items-center gap-1.5 text-xs text-muted-text font-medium shadow-3xs">
                     <RefreshCw className="w-3.5 h-3.5 animate-spin text-primary" /> Analyzing logs...
                   </div>
                 </div>
@@ -1344,13 +1351,13 @@ export default function AdminDashboard() {
             </div>
 
             {/* Input Bar */}
-            <form onSubmit={handleSendChatMessage} className="p-2.5 bg-white border-t border-slate-100 flex gap-2">
+            <form onSubmit={handleSendChatMessage} className="p-2.5 bg-surface border-t border-border/40 flex gap-2">
               <input
                 type="text"
                 value={chatMessage}
                 onChange={(e) => setChatMessage(e.target.value)}
                 placeholder="Query complaints, recurring issues..."
-                className="flex-1 px-3 py-2 bg-slate-50/50 border border-border rounded text-xs placeholder-muted-text/50 focus:outline-none focus:border-primary text-text transition-all"
+                className="flex-1 px-3 py-2 bg-background/50 border border-border rounded text-xs placeholder-muted-text/50 focus:outline-none focus:border-primary text-text transition-all"
               />
               <button
                 type="submit"
@@ -1367,12 +1374,12 @@ export default function AdminDashboard() {
       {/* Redesigned Service Ticket Work Order Console Modal */}
       {selectedComplaint && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/30 backdrop-blur-3xs px-4">
-          <div className="bg-white border border-border rounded shadow-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto relative animate-in fade-in duration-150 flex flex-col justify-between gap-6">
+          <div className="bg-surface border border-border rounded shadow-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto relative animate-in fade-in duration-150 flex flex-col justify-between gap-6">
             
             {/* Modal Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/40 pb-4">
               <div>
-                <span className="text-[10px] font-bold text-muted-text uppercase tracking-widest bg-slate-50 px-2.5 py-1 rounded border border-border">
+                <span className="text-[10px] font-bold text-muted-text uppercase tracking-widest bg-background px-2.5 py-1 rounded border border-border">
                   Work Order Ticket #COM-{1000 + selectedComplaint.id}
                 </span>
                 <h2 className="text-base font-serif font-bold text-primary mt-1.5">{selectedComplaint.title}</h2>
@@ -1401,13 +1408,13 @@ export default function AdminDashboard() {
               <div className="space-y-4">
                 
                 {/* Complaint Summary details */}
-                <div className="p-4 bg-slate-50/50 border border-border rounded shadow-3xs space-y-3.5 text-xs">
+                <div className="p-4 bg-background/50 border border-border rounded shadow-3xs space-y-3.5 text-xs">
                   <div>
                     <span className="text-[9px] font-bold text-primary uppercase tracking-widest block mb-1">Issue Details</span>
                     <p className="text-text font-medium leading-relaxed font-sans opacity-95">{selectedComplaint.description}</p>
                   </div>
                   
-                  <div className="grid grid-cols-2 gap-4 border-t border-slate-100 pt-3 text-text font-semibold">
+                  <div className="grid grid-cols-2 gap-4 border-t border-border/40 pt-3 text-text font-semibold">
                     <div>
                       <span className="text-[9px] font-bold text-muted-text uppercase block">Specific Location</span>
                       <span className="mt-0.5 block">{selectedComplaint.location}</span>
@@ -1418,7 +1425,7 @@ export default function AdminDashboard() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4 border-t border-slate-100 pt-3 text-text font-semibold">
+                  <div className="grid grid-cols-2 gap-4 border-t border-border/40 pt-3 text-text font-semibold">
                     <div>
                       <span className="text-[9px] font-bold text-muted-text uppercase block">Date Filed</span>
                       <span className="mt-0.5 block">{new Date(selectedComplaint.created_at).toLocaleDateString()}</span>
@@ -1431,8 +1438,8 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* Resident Profile details */}
-                <div className="p-4 border border-border bg-slate-50/20 rounded shadow-3xs text-xs space-y-2">
-                  <span className="text-[9px] font-bold text-primary uppercase tracking-widest block border-b border-slate-100 pb-1 flex items-center gap-1.5">
+                <div className="p-4 border border-border bg-background/20 rounded shadow-3xs text-xs space-y-2">
+                  <span className="text-[9px] font-bold text-primary uppercase tracking-widest block border-b border-border/40 pb-1 flex items-center gap-1.5">
                     <User className="w-3.5 h-3.5" /> Reporting Resident Information
                   </span>
                   <div className="grid grid-cols-2 gap-4 text-text font-semibold">
@@ -1449,7 +1456,7 @@ export default function AdminDashboard() {
 
                 {/* Visual Attachment Photo Reference */}
                 <div className="p-4 border border-border rounded shadow-3xs text-xs space-y-2">
-                  <span className="text-[9px] font-bold text-primary uppercase tracking-widest block border-b border-slate-100 pb-1 flex items-center gap-1.5">
+                  <span className="text-[9px] font-bold text-primary uppercase tracking-widest block border-b border-border/40 pb-1 flex items-center gap-1.5">
                     <ImageIcon className="w-3.5 h-3.5" /> Photo Reference Attachment
                   </span>
                   {selectedComplaint.photo_url && !imgError ? (
@@ -1462,7 +1469,7 @@ export default function AdminDashboard() {
                       />
                     </div>
                   ) : (
-                    <div className="p-6 bg-slate-50 border border-dashed border-border rounded flex flex-col items-center justify-center text-center text-xs text-muted-text gap-1.5 shadow-3xs">
+                    <div className="p-6 bg-background border border-dashed border-border rounded flex flex-col items-center justify-center text-center text-xs text-muted-text gap-1.5 shadow-3xs">
                       <ImageIcon className="w-7 h-7 text-muted-text/30" />
                       <div>
                         <span className="font-bold text-primary block">No Attachment Reference</span>
@@ -1476,20 +1483,20 @@ export default function AdminDashboard() {
               
               {/* Right Column: History Timeline */}
               <div className="space-y-4">
-                <div className="p-4 border border-border bg-white rounded shadow-3xs text-xs space-y-3.5 max-h-[380px] overflow-y-auto">
-                  <span className="text-[9px] font-bold text-primary uppercase tracking-widest block border-b border-slate-100 pb-2">
+                <div className="p-4 border border-border bg-surface rounded shadow-3xs text-xs space-y-3.5 max-h-[380px] overflow-y-auto">
+                  <span className="text-[9px] font-bold text-primary uppercase tracking-widest block border-b border-border/40 pb-2">
                     Service History Logs Timeline
                   </span>
                   
                   <div className="space-y-4 relative pl-1.5 mt-2">
                     {selectedComplaint.history.map((h: any) => (
                       <div key={h.id} className="relative pl-5 border-l border-border text-xs pb-3.5 last:border-l-transparent last:pb-0">
-                        <div className="absolute top-1.5 -left-1.5 w-3 h-3 rounded-full bg-white border border-primary flex items-center justify-center shadow-3xs">
+                        <div className="absolute top-1.5 -left-1.5 w-3 h-3 rounded-full bg-surface border border-primary flex items-center justify-center shadow-3xs">
                           <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                         </div>
                         
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-[9px] text-muted-text font-bold mb-1.5">
-                          <span className="bg-slate-100 px-1.5 py-0.5 border border-border rounded uppercase tracking-wider inline-block">
+                          <span className="bg-background px-1.5 py-0.5 border border-border rounded uppercase tracking-wider inline-block">
                             {h.status_from} &rarr; {h.status_to}
                           </span>
                           <span>
@@ -1497,7 +1504,7 @@ export default function AdminDashboard() {
                           </span>
                         </div>
                         
-                        <p className="text-text font-sans font-medium leading-relaxed opacity-95 bg-slate-50/50 p-2.5 rounded border border-slate-100">
+                        <p className="text-text font-sans font-medium leading-relaxed opacity-95 bg-background/50 p-2.5 rounded border border-border/40">
                           {h.comment}
                         </p>
                         <div className="text-[8.5px] text-muted-text mt-1.5 font-bold">
@@ -1518,7 +1525,7 @@ export default function AdminDashboard() {
             </div>
 
             {/* Separated Operations Update Controls Form */}
-            <div className="bg-slate-50 border border-border p-4.5 rounded shadow-3xs space-y-4">
+            <div className="bg-background border border-border p-4.5 rounded shadow-3xs space-y-4">
               <div className="flex items-center gap-1.5 text-[9px] font-bold text-primary uppercase tracking-widest border-b border-border/10 pb-1">
                 <ShieldAlert className="w-4 h-4 text-primary" /> Update Work Order Status (Operational Action)
               </div>
@@ -1531,7 +1538,7 @@ export default function AdminDashboard() {
                       id="modal-status"
                       value={updateStatus}
                       onChange={(e) => setUpdateStatus(e.target.value)}
-                      className="w-full px-2.5 py-1.5 bg-white border border-border rounded text-xs text-text focus:outline-none focus:border-primary cursor-pointer font-bold shadow-3xs"
+                      className="w-full px-2.5 py-1.5 bg-surface border border-border rounded text-xs text-text focus:outline-none focus:border-primary cursor-pointer font-bold shadow-3xs"
                     >
                       <option value="Open">Open</option>
                       <option value="In Progress">In Progress</option>
@@ -1544,7 +1551,7 @@ export default function AdminDashboard() {
                       id="modal-priority"
                       value={updatePriority}
                       onChange={(e) => setUpdatePriority(e.target.value)}
-                      className="w-full px-2.5 py-1.5 bg-white border border-border rounded text-xs text-text focus:outline-none focus:border-primary cursor-pointer font-bold shadow-3xs"
+                      className="w-full px-2.5 py-1.5 bg-surface border border-border rounded text-xs text-text focus:outline-none focus:border-primary cursor-pointer font-bold shadow-3xs"
                     >
                       <option value="High">High</option>
                       <option value="Medium">Medium</option>
@@ -1562,15 +1569,15 @@ export default function AdminDashboard() {
                     required
                     rows={2}
                     placeholder="Provide audit notes explaining the change. (e.g. Dispatched elevator technician to Floor 4. Verified lift sensor calibration.)"
-                    className="w-full px-3 py-2 bg-white border border-border rounded text-xs text-text focus:outline-none focus:ring-1 focus:ring-primary/20 focus:border-primary placeholder-muted-text/45 transition-all shadow-3xs"
+                    className="w-full px-3 py-2 bg-surface border border-border rounded text-xs text-text focus:outline-none focus:ring-1 focus:ring-primary/20 focus:border-primary placeholder-muted-text/45 transition-all shadow-3xs"
                   />
                 </div>
 
-                <div className="flex justify-end gap-2 border-t border-slate-200/60 pt-3">
+                <div className="flex justify-end gap-2 border-t border-border/60/60 pt-3">
                   <button
                     type="button"
                     onClick={() => { setSelectedComplaint(null); setImgError(false); }}
-                    className="px-4 py-2 bg-white hover:bg-slate-50 border border-border text-primary rounded text-xs font-bold transition-all cursor-pointer active:scale-95 shadow-3xs"
+                    className="px-4 py-2 bg-surface hover:bg-background border border-border text-primary rounded text-xs font-bold transition-all cursor-pointer active:scale-95 shadow-3xs"
                   >
                     Cancel
                   </button>

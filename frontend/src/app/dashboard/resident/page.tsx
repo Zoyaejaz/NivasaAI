@@ -3,6 +3,7 @@
 import { useEffect, useState, Fragment } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import ThemeToggle from "@/components/ThemeToggle";
 import { 
   Building, User, LogOut, CheckCircle, Clock, Info, AlertTriangle, 
   Plus, MessageSquare, Image as ImageIcon, Send, Bell, ClipboardList, AlertCircle, RefreshCw, Sparkles,
@@ -284,34 +285,34 @@ export default function ResidentDashboard() {
       <div className="min-h-screen flex bg-background text-text font-sans relative">
         <div className="absolute inset-0 z-0 opacity-[0.03] bg-[linear-gradient(to_right,#5B665E_1px,transparent_1px),linear-gradient(to_bottom,#5B665E_1px,transparent_1px)] bg-[size:48px_48px] pointer-events-none" />
 
-        <aside className="hidden md:flex md:flex-col md:w-64 bg-white border-r border-border h-screen sticky top-0 p-5 justify-between shrink-0 z-20">
+        <aside className="hidden md:flex md:flex-col md:w-64 bg-surface border-r border-border h-screen sticky top-0 p-5 justify-between shrink-0 z-20">
           <div className="space-y-6">
-            <div className="flex items-center gap-2.5 px-2 py-1.5 border-b border-slate-100 pb-4">
-              <div className="w-8 h-8 rounded bg-slate-100 animate-pulse" />
-              <div className="h-4 w-28 bg-slate-100 rounded animate-pulse" />
+            <div className="flex items-center gap-2.5 px-2 py-1.5 border-b border-border/40 pb-4">
+              <div className="w-8 h-8 rounded bg-background animate-pulse" />
+              <div className="h-4 w-28 bg-background rounded animate-pulse" />
             </div>
             <div className="space-y-2">
-              <div className="h-3 w-16 bg-slate-100 rounded animate-pulse mb-3" />
-              <div className="h-8 bg-slate-100 rounded animate-pulse w-full" />
+              <div className="h-3 w-16 bg-background rounded animate-pulse mb-3" />
+              <div className="h-8 bg-background rounded animate-pulse w-full" />
             </div>
           </div>
-          <div className="border-t border-slate-100 pt-4 mt-auto space-y-3">
+          <div className="border-t border-border/40 pt-4 mt-auto space-y-3">
             <div className="flex items-center gap-3 px-2">
-              <div className="w-8 h-8 rounded-full bg-slate-100 animate-pulse" />
+              <div className="w-8 h-8 rounded-full bg-background animate-pulse" />
               <div className="space-y-1.5">
-                <div className="h-3 w-20 bg-slate-100 rounded animate-pulse" />
-                <div className="h-2.5 w-14 bg-slate-100 rounded animate-pulse" />
+                <div className="h-3 w-20 bg-background rounded animate-pulse" />
+                <div className="h-2.5 w-14 bg-background rounded animate-pulse" />
               </div>
             </div>
           </div>
         </aside>
 
         <div className="flex-1 flex flex-col min-w-0 z-10">
-          <section className="bg-white border-b border-border/85 px-8 py-8">
+          <section className="bg-surface border-b border-border/85 px-8 py-8">
             <div className="max-w-7xl w-full mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div className="space-y-2">
                 <div className="h-7 w-56 bg-slate-200/60 rounded animate-pulse" />
-                <div className="h-3.5 w-96 bg-slate-100 rounded animate-pulse" />
+                <div className="h-3.5 w-96 bg-background rounded animate-pulse" />
               </div>
               <div className="h-9 w-32 bg-slate-200/60 rounded animate-pulse shrink-0" />
             </div>
@@ -320,24 +321,24 @@ export default function ResidentDashboard() {
           <div className="max-w-7xl w-full mx-auto px-8 py-10 grid grid-cols-1 lg:grid-cols-12 gap-10">
             <div className="lg:col-span-8 space-y-6">
               <div className="h-4 w-32 bg-slate-200/60 rounded animate-pulse" />
-              <div className="border border-border rounded bg-white overflow-hidden shadow-2xs">
-                <div className="p-4 border-b border-slate-100 bg-slate-50 flex gap-4">
-                  <div className="h-3.5 w-12 bg-slate-100 rounded animate-pulse" />
-                  <div className="h-3.5 w-48 bg-slate-100 rounded animate-pulse" />
+              <div className="border border-border rounded bg-surface overflow-hidden shadow-2xs">
+                <div className="p-4 border-b border-border/40 bg-background flex gap-4">
+                  <div className="h-3.5 w-12 bg-background rounded animate-pulse" />
+                  <div className="h-3.5 w-48 bg-background rounded animate-pulse" />
                 </div>
                 <div className="p-5 space-y-5">
-                  <div className="h-10 bg-slate-50 rounded animate-pulse w-full" />
-                  <div className="h-10 bg-slate-50 rounded animate-pulse w-full" />
-                  <div className="h-10 bg-slate-50 rounded animate-pulse w-full" />
+                  <div className="h-10 bg-background rounded animate-pulse w-full" />
+                  <div className="h-10 bg-background rounded animate-pulse w-full" />
+                  <div className="h-10 bg-background rounded animate-pulse w-full" />
                 </div>
               </div>
             </div>
 
             <div className="lg:col-span-4 space-y-6">
-              <div className="p-5 bg-white border border-border rounded shadow-2xs space-y-4">
-                <div className="h-4 w-32 bg-slate-200/60 rounded animate-pulse border-b border-slate-100 pb-2.5" />
-                <div className="h-20 bg-slate-50 rounded animate-pulse" />
-                <div className="h-20 bg-slate-50 rounded animate-pulse" />
+              <div className="p-5 bg-surface border border-border rounded shadow-2xs space-y-4">
+                <div className="h-4 w-32 bg-slate-200/60 rounded animate-pulse border-b border-border/40 pb-2.5" />
+                <div className="h-20 bg-background rounded animate-pulse" />
+                <div className="h-20 bg-background rounded animate-pulse" />
               </div>
             </div>
           </div>
@@ -367,8 +368,8 @@ export default function ResidentDashboard() {
         }}
         className={`w-full flex items-center gap-2.5 px-3 py-2 text-xs font-bold transition-all rounded cursor-pointer ${
           activeTab === "overview" && !selectedTicket
-            ? "text-primary bg-slate-50 border-l-2 border-l-primary rounded-r font-bold"
-            : "text-muted-text hover:text-primary hover:bg-slate-50/50"
+            ? "text-primary bg-background border-l-2 border-l-primary rounded-r font-bold"
+            : "text-muted-text hover:text-primary hover:bg-background/50"
         }`}
       >
         <ClipboardList className="w-4 h-4" />
@@ -382,8 +383,8 @@ export default function ResidentDashboard() {
         }}
         className={`w-full flex items-center gap-2.5 px-3 py-2 text-xs font-bold transition-all rounded cursor-pointer ${
           activeTab === "logs"
-            ? "text-primary bg-slate-50 border-l-2 border-l-primary rounded-r font-bold"
-            : "text-muted-text hover:text-primary hover:bg-slate-50/50"
+            ? "text-primary bg-background border-l-2 border-l-primary rounded-r font-bold"
+            : "text-muted-text hover:text-primary hover:bg-background/50"
         }`}
       >
         <Clock className="w-4 h-4" />
@@ -399,9 +400,9 @@ export default function ResidentDashboard() {
       <div className="absolute inset-0 z-0 opacity-[0.03] bg-[linear-gradient(to_right,#5B665E_1px,transparent_1px),linear-gradient(to_bottom,#5B665E_1px,transparent_1px)] bg-[size:48px_48px] pointer-events-none" />
 
       {/* Sidebar - Desktop */}
-      <aside className="hidden md:flex md:flex-col md:w-64 bg-white border-r border-border h-screen sticky top-0 z-20 shrink-0 justify-between p-5 shadow-3xs">
+      <aside className="hidden md:flex md:flex-col md:w-64 bg-surface border-r border-border h-screen sticky top-0 z-20 shrink-0 justify-between p-5 shadow-3xs">
         <div className="space-y-6">
-          <div className="flex items-center gap-2.5 px-2 py-1.5 border-b border-slate-100 pb-4">
+          <div className="flex items-center gap-2.5 px-2 py-1.5 border-b border-border/40 pb-4">
             <div className="p-1.5 bg-primary rounded flex items-center justify-center">
               <Building className="w-4.5 h-4.5 text-white" />
             </div>
@@ -416,19 +417,22 @@ export default function ResidentDashboard() {
           </div>
         </div>
 
-        <div className="border-t border-slate-100 pt-4 mt-auto space-y-3.5">
-          <div className="flex items-center gap-3 px-2">
-            <div className="w-8 h-8 rounded bg-background flex items-center justify-center border border-border">
-              <User className="w-4 h-4 text-primary" />
+        <div className="border-t border-border/40 pt-4 mt-auto space-y-3.5 font-sans">
+          <div className="flex items-center justify-between gap-3 px-2">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="w-8 h-8 rounded bg-background flex items-center justify-center border border-border">
+                <User className="w-4 h-4 text-primary" />
+              </div>
+              <div className="text-left min-w-0">
+                <div className="text-xs font-bold text-text truncate leading-none">{user?.full_name}</div>
+                <div className="text-[10px] text-muted-text font-bold leading-none mt-1 truncate">Flat {user?.flat_number}</div>
+              </div>
             </div>
-            <div className="text-left min-w-0">
-              <div className="text-xs font-bold text-text truncate leading-none">{user?.full_name}</div>
-              <div className="text-[10px] text-muted-text font-bold leading-none mt-1 truncate">Flat {user?.flat_number}</div>
-            </div>
+            <ThemeToggle />
           </div>
           <button 
             onClick={handleLogout} 
-            className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-muted-text hover:text-status-danger hover:bg-slate-50 rounded transition-colors cursor-pointer"
+            className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-muted-text hover:text-status-danger hover:bg-background rounded transition-colors cursor-pointer"
           >
             <LogOut className="w-3.5 h-3.5" />
             <span>Sign Out</span>
@@ -437,22 +441,23 @@ export default function ResidentDashboard() {
       </aside>
 
       {/* Mobile Top Header Banner */}
-      <div className="md:hidden flex items-center justify-between bg-white border-b border-border px-4 py-3 sticky top-0 z-40 shadow-3xs">
+      <div className="md:hidden flex items-center justify-between bg-surface border-b border-border px-4 py-3 sticky top-0 z-40 shadow-3xs">
         <div className="flex items-center gap-2">
           <Building className="w-4 h-4 text-primary" />
           <span className="font-serif font-bold text-sm tracking-tight text-primary">Nivasa<span className="font-sans font-normal text-secondary italic">AI</span></span>
         </div>
         
         <div className="flex items-center gap-3">
+          <ThemeToggle />
           <div className="relative group">
-            <button className="relative p-1.5 text-muted-text hover:text-primary transition-colors cursor-pointer rounded hover:bg-slate-100/50">
+            <button className="relative p-1.5 text-muted-text hover:text-primary transition-colors cursor-pointer rounded hover:bg-background/50">
               <Bell className="w-4.5 h-4.5" />
               {unreadNotis.length > 0 && (
                 <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-status-danger rounded-full" />
               )}
             </button>
-            <div className="absolute right-0 mt-2 w-72 bg-white border border-border rounded shadow-md p-4 hidden group-hover:block z-50 animate-in fade-in duration-100">
-              <div className="flex justify-between items-center mb-3 pb-2 border-b border-slate-100">
+            <div className="absolute right-0 mt-2 w-72 bg-surface border border-border rounded shadow-md p-4 hidden group-hover:block z-50 animate-in fade-in duration-100">
+              <div className="flex justify-between items-center mb-3 pb-2 border-b border-border/40">
                 <span className="text-xs font-bold text-primary">Notifications</span>
                 {unreadNotis.length > 0 && (
                   <button onClick={handleMarkNotificationsRead} className="text-[9px] text-secondary hover:underline cursor-pointer font-bold uppercase tracking-wider">Mark read</button>
@@ -463,7 +468,7 @@ export default function ResidentDashboard() {
                   <div className="text-center text-xs text-muted-text py-4">No notifications</div>
                 ) : (
                   notifications.map(n => (
-                    <div key={n.id} className="p-2 rounded border border-slate-100 text-xs bg-slate-50/50">
+                    <div key={n.id} className="p-2 rounded border border-border/40 text-xs bg-background/50">
                       <div className="font-bold text-primary mb-0.5">{n.title}</div>
                       <div className="font-sans text-[10px] text-muted-text">{n.message}</div>
                     </div>
@@ -475,7 +480,7 @@ export default function ResidentDashboard() {
           
           <button 
             onClick={() => setMenuOpen(!menuOpen)} 
-            className="p-1.5 text-muted-text hover:text-primary hover:bg-slate-100/50 rounded transition-colors"
+            className="p-1.5 text-muted-text hover:text-primary hover:bg-background/50 rounded transition-colors"
           >
             {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -489,9 +494,9 @@ export default function ResidentDashboard() {
             onClick={() => setMenuOpen(false)}
             className="fixed inset-0 bg-slate-900/25 z-40 backdrop-blur-3xs md:hidden"
           />
-          <aside className="fixed inset-y-0 left-0 w-64 bg-white border-r border-border z-50 p-5 flex flex-col justify-between shadow-lg md:hidden animate-in slide-in-from-left duration-200">
+          <aside className="fixed inset-y-0 left-0 w-64 bg-surface border-r border-border z-50 p-5 flex flex-col justify-between shadow-lg md:hidden animate-in slide-in-from-left duration-200">
             <div className="space-y-6">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+              <div className="flex items-center justify-between border-b border-border/40 pb-4">
                 <div className="flex items-center gap-2">
                   <Building className="w-4 h-4 text-primary" />
                   <span className="font-serif font-bold text-sm tracking-tight text-primary">Nivasa<span className="font-sans font-normal text-secondary italic">AI</span></span>
@@ -507,7 +512,7 @@ export default function ResidentDashboard() {
               </div>
             </div>
 
-            <div className="border-t border-slate-100 pt-4 space-y-3.5">
+            <div className="border-t border-border/40 pt-4 space-y-3.5">
               <div className="flex items-center gap-3 px-2">
                 <div className="w-8 h-8 rounded bg-background flex items-center justify-center border border-border">
                   <User className="w-4 h-4 text-primary" />
@@ -519,7 +524,7 @@ export default function ResidentDashboard() {
               </div>
               <button 
                 onClick={handleLogout} 
-                className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-muted-text hover:text-status-danger hover:bg-slate-50 rounded transition-colors cursor-pointer"
+                className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-muted-text hover:text-status-danger hover:bg-background rounded transition-colors cursor-pointer"
               >
                 <LogOut className="w-3.5 h-3.5" />
                 <span>Sign Out</span>
@@ -538,7 +543,7 @@ export default function ResidentDashboard() {
           /* Dedicated Service Request Details Tracker View */
           <div className="flex-1 flex flex-col min-w-0 bg-background animate-in fade-in duration-200">
             {/* Header back button strip */}
-            <section className="bg-white border-b border-border/80 px-8 py-6 md:px-10">
+            <section className="bg-surface border-b border-border/80 px-8 py-6 md:px-10">
               <div className="max-w-7xl w-full mx-auto flex items-center justify-between gap-4">
                 <button 
                   onClick={() => {
@@ -550,7 +555,7 @@ export default function ResidentDashboard() {
                   <ArrowLeft className="w-4 h-4" /> Back to Tickets Ledger
                 </button>
                 
-                <span className="text-[10px] font-bold text-muted-text uppercase tracking-widest bg-slate-50 px-2.5 py-1 rounded border border-border">
+                <span className="text-[10px] font-bold text-muted-text uppercase tracking-widest bg-background px-2.5 py-1 rounded border border-border">
                   Ticket #COM-{1000 + selectedTicket.id}
                 </span>
               </div>
@@ -559,7 +564,7 @@ export default function ResidentDashboard() {
             <main className="flex-1 max-w-7xl w-full mx-auto px-8 py-10 md:px-10 space-y-8">
               
               {/* Stepper Status Banner */}
-              <div className="p-8 bg-white border border-border rounded shadow-2xs space-y-8">
+              <div className="p-8 bg-surface border border-border rounded shadow-2xs space-y-8">
                 
                 {/* Stepper Header Title */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -584,11 +589,11 @@ export default function ResidentDashboard() {
                 </div>
 
                 {/* Progress bar connector */}
-                <div className="relative border-t border-slate-100 pt-8">
+                <div className="relative border-t border-border/40 pt-8">
                   <div className="max-w-xl mx-auto flex items-center justify-between relative">
                     
                     {/* Background connecting bar */}
-                    <div className="absolute top-4 left-0 right-0 h-0.5 bg-slate-100 z-0" />
+                    <div className="absolute top-4 left-0 right-0 h-0.5 bg-background z-0" />
                     
                     {/* Active fill connecting bar */}
                     <div className={`absolute top-4 left-0 h-0.5 bg-primary transition-all duration-300 z-0 ${
@@ -612,7 +617,7 @@ export default function ResidentDashboard() {
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-colors shadow-3xs ${
                         selectedTicket.status === "In Progress" || selectedTicket.status === "Resolved"
                           ? "bg-primary text-white"
-                          : "bg-white border border-border text-muted-text"
+                          : "bg-surface border border-border text-muted-text"
                       }`}>
                         2
                       </div>
@@ -628,7 +633,7 @@ export default function ResidentDashboard() {
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-colors shadow-3xs ${
                         selectedTicket.status === "Resolved"
                           ? "bg-status-success text-white"
-                          : "bg-white border border-border text-muted-text"
+                          : "bg-surface border border-border text-muted-text"
                       }`}>
                         3
                       </div>
@@ -650,8 +655,8 @@ export default function ResidentDashboard() {
                 <div className="lg:col-span-6 space-y-6">
                   
                   {/* Summary Card */}
-                  <div className="p-8 bg-white border border-border rounded shadow-2xs space-y-6">
-                    <h3 className="text-xs font-bold text-primary uppercase tracking-widest border-b border-slate-100 pb-2">
+                  <div className="p-8 bg-surface border border-border rounded shadow-2xs space-y-6">
+                    <h3 className="text-xs font-bold text-primary uppercase tracking-widest border-b border-border/40 pb-2">
                       Request Summary
                     </h3>
                     
@@ -661,7 +666,7 @@ export default function ResidentDashboard() {
                         <p className="text-text mt-1.5 font-medium font-sans leading-relaxed opacity-95">{selectedTicket.description}</p>
                       </div>
                       
-                      <div className="grid grid-cols-2 gap-4 border-t border-slate-100 pt-3 font-semibold text-text">
+                      <div className="grid grid-cols-2 gap-4 border-t border-border/40 pt-3 font-semibold text-text">
                         <div>
                           <span className="text-[10px] font-bold text-muted-text uppercase tracking-wider block">Specific Location</span>
                           <span className="mt-1 block">{selectedTicket.location}</span>
@@ -672,7 +677,7 @@ export default function ResidentDashboard() {
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-4 border-t border-slate-100 pt-3 font-semibold text-text">
+                      <div className="grid grid-cols-2 gap-4 border-t border-border/40 pt-3 font-semibold text-text">
                         <div>
                           <span className="text-[10px] font-bold text-muted-text uppercase tracking-wider block">Created Date</span>
                           <span className="mt-1 block">{new Date(selectedTicket.created_at).toLocaleDateString()}</span>
@@ -683,7 +688,7 @@ export default function ResidentDashboard() {
                         </div>
                       </div>
 
-                      <div className="border-t border-slate-100 pt-3 font-semibold text-text">
+                      <div className="border-t border-border/40 pt-3 font-semibold text-text">
                         <span className="text-[10px] font-bold text-muted-text uppercase tracking-wider block">Priority Classification</span>
                         <span className={`text-[9px] px-2 py-0.5 rounded border inline-block mt-1 font-bold uppercase tracking-wider ${
                           selectedTicket.priority === 'High' 
@@ -699,8 +704,8 @@ export default function ResidentDashboard() {
                   </div>
 
                   {/* Photo Visual Reference Card */}
-                  <div className="p-8 bg-white border border-border rounded shadow-2xs space-y-6">
-                    <h3 className="text-xs font-bold text-primary uppercase tracking-widest border-b border-slate-100 pb-2">
+                  <div className="p-8 bg-surface border border-border rounded shadow-2xs space-y-6">
+                    <h3 className="text-xs font-bold text-primary uppercase tracking-widest border-b border-border/40 pb-2">
                       Reference Photo Attachment
                     </h3>
                     
@@ -714,7 +719,7 @@ export default function ResidentDashboard() {
                         />
                       </div>
                     ) : (
-                      <div className="p-8 bg-slate-50 border border-dashed border-border rounded flex flex-col items-center justify-center text-center text-xs text-muted-text gap-2 shadow-3xs">
+                      <div className="p-8 bg-background border border-dashed border-border rounded flex flex-col items-center justify-center text-center text-xs text-muted-text gap-2 shadow-3xs">
                         <ImageIcon className="w-8 h-8 text-muted-text/30" />
                         <div>
                           <span className="font-bold text-primary block">No Attachment Reference</span>
@@ -727,20 +732,20 @@ export default function ResidentDashboard() {
 
                 {/* Right Side: Chronological History Timeline (lg:col-span-6) */}
                 <div className="lg:col-span-6 space-y-6">
-                  <div className="p-8 bg-white border border-border rounded shadow-2xs space-y-6">
-                    <h3 className="text-xs font-bold text-primary uppercase tracking-widest border-b border-slate-100 pb-2">
+                  <div className="p-8 bg-surface border border-border rounded shadow-2xs space-y-6">
+                    <h3 className="text-xs font-bold text-primary uppercase tracking-widest border-b border-border/40 pb-2">
                       Chronological History Timeline
                     </h3>
                     
                     <div className="space-y-5 relative pl-1.5 mt-2">
                       {selectedTicket.history.map((h: any) => (
                         <div key={h.id} className="relative pl-6 border-l border-border text-xs pb-5.5 last:border-l-transparent last:pb-0">
-                          <div className="absolute top-1.5 -left-1.5 w-3 h-3 rounded-full bg-white border border-primary flex items-center justify-center shadow-3xs">
+                          <div className="absolute top-1.5 -left-1.5 w-3 h-3 rounded-full bg-surface border border-primary flex items-center justify-center shadow-3xs">
                             <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                           </div>
                           
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-[9px] text-muted-text font-bold mb-1.5">
-                            <span className="bg-slate-100 px-2 py-0.5 border border-border rounded uppercase tracking-wider inline-block">
+                            <span className="bg-background px-2 py-0.5 border border-border rounded uppercase tracking-wider inline-block">
                               {h.status_from} &rarr; {h.status_to}
                             </span>
                             <span>
@@ -748,7 +753,7 @@ export default function ResidentDashboard() {
                             </span>
                           </div>
                           
-                          <p className="text-text font-sans font-medium leading-relaxed opacity-95 bg-slate-50/50 p-2.5 rounded border border-slate-100">
+                          <p className="text-text font-sans font-medium leading-relaxed opacity-95 bg-background/50 p-2.5 rounded border border-border/40">
                             {h.comment}
                           </p>
                           
@@ -777,7 +782,7 @@ export default function ResidentDashboard() {
            /* System Logs Dedicated Page */
            <>
              {/* Header */}
-             <section className="bg-white border-b border-border/80 px-8 py-10 md:px-10">
+             <section className="bg-surface border-b border-border/80 px-8 py-10 md:px-10">
                <div className="max-w-7xl w-full mx-auto">
                  <h1 className="text-2xl md:text-3xl font-serif font-bold text-primary tracking-tight">
                    System Activity Logs
@@ -789,10 +794,10 @@ export default function ResidentDashboard() {
              </section>
 
              <main className="flex-1 max-w-7xl w-full mx-auto px-8 py-10 md:px-10 space-y-6">
-               <div className="p-8 bg-white border border-border rounded shadow-2xs space-y-8">
+               <div className="p-8 bg-surface border border-border rounded shadow-2xs space-y-8">
                  <div className="space-y-4">
                    {recentActivity.length === 0 ? (
-                     <div className="text-center text-xs text-muted-text py-12 font-medium bg-slate-50 rounded border border-dashed border-border/60">
+                     <div className="text-center text-xs text-muted-text py-12 font-medium bg-background rounded border border-dashed border-border/60">
                        No system updates or ticket activities recorded yet.
                      </div>
                    ) : (
@@ -800,7 +805,7 @@ export default function ResidentDashboard() {
                        {recentActivity.map((log: any, idx: number) => (
                          <div 
                            key={idx} 
-                           className="p-5 rounded border border-border bg-slate-50/10 text-xs space-y-2.5 shadow-3xs cursor-pointer hover:bg-slate-50 transition-colors"
+                           className="p-5 rounded border border-border bg-background/10 text-xs space-y-2.5 shadow-3xs cursor-pointer hover:bg-background transition-colors"
                            onClick={() => {
                              const ticket = complaints.find(c => c.id === log.ticketId);
                              if (ticket) {
@@ -808,7 +813,7 @@ export default function ResidentDashboard() {
                              }
                            }}
                          >
-                           <div className="flex justify-between items-center gap-2 border-b border-slate-100/50 pb-2">
+                           <div className="flex justify-between items-center gap-2 border-b border-border/40/50 pb-2">
                              <span className="text-primary font-bold text-xs truncate max-w-[200px] hover:underline">
                                {log.ticketTitle}
                              </span>
@@ -816,11 +821,11 @@ export default function ResidentDashboard() {
                                {new Date(log.created_at).toLocaleDateString()} {new Date(log.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                              </span>
                            </div>
-                           <p className="text-text font-sans font-medium leading-relaxed bg-white p-3 rounded border border-border/40">
+                           <p className="text-text font-sans font-medium leading-relaxed bg-surface p-3 rounded border border-border/40">
                              {log.comment}
                            </p>
                            <div className="text-[10px] text-muted-text font-bold flex justify-between items-center pt-1">
-                             <span>Change: <span className="bg-slate-100 px-2 py-0.5 border border-border rounded uppercase text-[8.5px] font-bold">{log.status_from} &rarr; {log.status_to}</span></span>
+                             <span>Change: <span className="bg-background px-2 py-0.5 border border-border rounded uppercase text-[8.5px] font-bold">{log.status_from} &rarr; {log.status_to}</span></span>
                              <span>Logged by: <span className="text-primary font-bold">{log.changed_by.full_name}</span></span>
                            </div>
                          </div>
@@ -837,7 +842,7 @@ export default function ResidentDashboard() {
            /* Overview & Tickets Page (Full Width, with Pinned Announcements) */
            <>
              {/* Editorial Header Greeting Area */}
-             <section className="bg-white border-b border-border/80 px-8 py-10 md:px-10">
+             <section className="bg-surface border-b border-border/80 px-8 py-10 md:px-10">
                <div className="max-w-7xl w-full mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6">
                  <div>
                    <h1 className="text-2xl md:text-3xl font-serif font-bold text-primary tracking-tight">
@@ -867,7 +872,7 @@ export default function ResidentDashboard() {
 
              {/* Pinned Announcements Grid - Full Width, Right Below Header */}
              {notices.length > 0 && (
-               <section className="bg-white border-b border-border/50 px-8 py-6 md:px-10">
+               <section className="bg-surface border-b border-border/50 px-8 py-6 md:px-10">
                  <div className="max-w-7xl w-full mx-auto">
                    <h3 className="text-[10px] font-bold text-primary uppercase tracking-wider mb-4 flex items-center gap-2">
                      <Bell className="w-4 h-4 text-secondary animate-pulse" /> Pinned Announcements
@@ -878,8 +883,8 @@ export default function ResidentDashboard() {
                          key={n.id} 
                          className={`p-5 rounded border shadow-3xs space-y-2.5 transition-all ${
                            n.is_pinned || n.is_important
-                             ? "bg-slate-50/40 border-border/80 border-l-2 border-l-primary"
-                             : "bg-white border-border"
+                             ? "bg-background/40 border-border/80 border-l-2 border-l-primary"
+                             : "bg-surface border-border"
                          }`}
                        >
                          <div className="flex items-center justify-between gap-2">
@@ -928,8 +933,8 @@ export default function ResidentDashboard() {
                
                {/* Redesigned Raise Complaint Form Panel (Full Width) */}
                {showRaiseForm && (
-                 <div className="p-8 bg-white border border-border rounded shadow-xs animate-in fade-in slide-in-from-top-3 duration-250 space-y-6">
-                   <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                 <div className="p-8 bg-surface border border-border rounded shadow-xs animate-in fade-in slide-in-from-top-3 duration-250 space-y-6">
+                   <div className="flex items-center justify-between border-b border-border/40 pb-3">
                      <div>
                        <h3 className="text-sm font-serif font-bold text-primary flex items-center gap-2">
                          <Plus className="w-4.5 h-4.5 text-primary" /> File a Maintenance Request
@@ -966,7 +971,7 @@ export default function ResidentDashboard() {
                            onChange={(e) => setTitle(e.target.value)}
                            required
                            placeholder="e.g. flickering elevator light bulb"
-                           className="w-full px-4 py-2.5 bg-white border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary/20 focus:border-primary text-text placeholder-muted-text/30 transition-all shadow-3xs"
+                           className="w-full px-4 py-2.5 bg-surface border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary/20 focus:border-primary text-text placeholder-muted-text/30 transition-all shadow-3xs"
                          />
                        </div>
                        <div>
@@ -980,7 +985,7 @@ export default function ResidentDashboard() {
                            onChange={(e) => setLocation(e.target.value)}
                            required
                            placeholder="e.g. Lobby corridor Floor 4"
-                           className="w-full px-4 py-2.5 bg-white border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary/20 focus:border-primary text-text placeholder-muted-text/30 transition-all shadow-3xs"
+                           className="w-full px-4 py-2.5 bg-surface border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary/20 focus:border-primary text-text placeholder-muted-text/30 transition-all shadow-3xs"
                          />
                        </div>
                      </div>
@@ -994,7 +999,7 @@ export default function ResidentDashboard() {
                          id="ticket-category"
                          value={category}
                          onChange={(e) => setCategory(e.target.value)}
-                         className="w-full px-4 py-2.5 bg-white border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary/20 focus:border-primary text-text cursor-pointer transition-all shadow-3xs font-semibold"
+                         className="w-full px-4 py-2.5 bg-surface border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary/20 focus:border-primary text-text cursor-pointer transition-all shadow-3xs font-semibold"
                        >
                          <option value="Plumbing">Plumbing</option>
                          <option value="Electrical">Electrical</option>
@@ -1017,7 +1022,7 @@ export default function ResidentDashboard() {
                          required
                          rows={4}
                          placeholder="e.g. The lobby light has been flashing constantly and now completely failed. Hallway is pitch black."
-                         className="w-full px-4 py-2.5 bg-white border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary/20 focus:border-primary text-text placeholder-muted-text/30 transition-all shadow-3xs leading-relaxed"
+                         className="w-full px-4 py-2.5 bg-surface border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary/20 focus:border-primary text-text placeholder-muted-text/30 transition-all shadow-3xs leading-relaxed"
                        />
                      </div>
 
@@ -1036,7 +1041,7 @@ export default function ResidentDashboard() {
                        />
                        
                        {photoPreview ? (
-                         <div className="p-3 border border-border bg-slate-50/50 rounded flex items-center justify-between gap-4 shadow-3xs animate-in fade-in duration-100">
+                         <div className="p-3 border border-border bg-background/50 rounded flex items-center justify-between gap-4 shadow-3xs animate-in fade-in duration-100">
                            <div className="flex items-center gap-3">
                              <img 
                                src={photoPreview} 
@@ -1052,7 +1057,7 @@ export default function ResidentDashboard() {
                            <button
                              type="button"
                              onClick={handleRemovePhoto}
-                             className="text-[10px] font-bold text-status-danger hover:underline cursor-pointer px-2 py-1 rounded hover:bg-slate-100/50 transition-colors"
+                             className="text-[10px] font-bold text-status-danger hover:underline cursor-pointer px-2 py-1 rounded hover:bg-background/50 transition-colors"
                            >
                              Remove Photo
                            </button>
@@ -1060,7 +1065,7 @@ export default function ResidentDashboard() {
                        ) : (
                          <label 
                            htmlFor="file-uploader"
-                           className="border-dashed border-2 border-slate-200 hover:border-primary/50 bg-white rounded p-5 text-center cursor-pointer transition-colors flex flex-col items-center justify-center gap-2 group shadow-3xs"
+                           className="border-dashed border-2 border-border/60 hover:border-primary/50 bg-surface rounded p-5 text-center cursor-pointer transition-colors flex flex-col items-center justify-center gap-2 group shadow-3xs"
                          >
                            <ImageIcon className="w-6 h-6 text-muted-text/50 group-hover:text-primary/75 transition-colors" />
                            <div>
@@ -1079,12 +1084,12 @@ export default function ResidentDashboard() {
 
                      {/* AI NLP Predictions Box */}
                      {aiPreview && (
-                       <div className="p-4 bg-slate-50 border border-border rounded space-y-2.5 shadow-3xs animate-in fade-in duration-150">
+                       <div className="p-4 bg-background border border-border rounded space-y-2.5 shadow-3xs animate-in fade-in duration-150">
                          <div className="flex items-center justify-between">
                            <span className="text-[11px] font-bold text-primary flex items-center gap-1 font-serif">
                              <Sparkles className="w-3.5 h-3.5 text-secondary animate-pulse" /> NLP Validation Report
                            </span>
-                           <span className="text-[9px] font-bold text-muted-text bg-white px-2 py-0.5 border border-border rounded-full">Confidence: {(aiPreview.confidence * 100).toFixed(0)}%</span>
+                           <span className="text-[9px] font-bold text-muted-text bg-surface px-2 py-0.5 border border-border rounded-full">Confidence: {(aiPreview.confidence * 100).toFixed(0)}%</span>
                          </div>
                          <div className="grid grid-cols-2 gap-4 text-xs border-y border-border/20 py-2 font-semibold">
                            <div>
@@ -1109,12 +1114,12 @@ export default function ResidentDashboard() {
                      )}
 
                      {/* Form Actions area */}
-                     <div className="flex justify-between items-center gap-4 border-t border-slate-100 pt-4 flex-wrap">
+                     <div className="flex justify-between items-center gap-4 border-t border-border/40 pt-4 flex-wrap">
                        <button
                          type="button"
                          onClick={handleAIValidation}
                          disabled={analyzing || formLoading}
-                         className="px-3.5 py-2 bg-white hover:bg-slate-50 border border-border text-primary rounded text-xs font-bold flex items-center gap-1.5 transition-colors disabled:opacity-50 cursor-pointer shadow-3xs"
+                         className="px-3.5 py-2 bg-surface hover:bg-background border border-border text-primary rounded text-xs font-bold flex items-center gap-1.5 transition-colors disabled:opacity-50 cursor-pointer shadow-3xs"
                        >
                          {analyzing ? <RefreshCw className="w-3.5 h-3.5 animate-spin text-primary" /> : <Sparkles className="w-3.5 h-3.5 text-secondary" />}
                          {analyzing ? "Running diagnostic..." : "Validate with Assistant"}
@@ -1124,7 +1129,7 @@ export default function ResidentDashboard() {
                          <button
                            type="button"
                            onClick={() => setShowRaiseForm(false)}
-                           className="px-4 py-2 bg-slate-50 hover:bg-slate-100 border border-border text-primary rounded text-xs font-bold transition-all cursor-pointer active:scale-95 shadow-3xs"
+                           className="px-4 py-2 bg-background hover:bg-background border border-border text-primary rounded text-xs font-bold transition-all cursor-pointer active:scale-95 shadow-3xs"
                          >
                            Cancel
                          </button>
@@ -1151,14 +1156,14 @@ export default function ResidentDashboard() {
 
                {/* Complaints Ledger List Section */}
                <div className="space-y-4">
-                 <h2 className="text-xs font-bold text-primary uppercase tracking-widest border-b border-slate-100 pb-2">
+                 <h2 className="text-xs font-bold text-primary uppercase tracking-widest border-b border-border/40 pb-2">
                    My Maintenance Tickets
                  </h2>
 
                  {/* Polished Empty State */}
                  {complaints.length === 0 && !error && (
-                   <div className="p-8 bg-white border border-border rounded text-center max-w-xl mx-auto space-y-4 shadow-2xs mt-4 animate-in fade-in duration-200">
-                     <div className="mx-auto w-12 h-12 bg-slate-50 text-muted-text border border-border rounded-full flex items-center justify-center shadow-3xs">
+                   <div className="p-8 bg-surface border border-border rounded text-center max-w-xl mx-auto space-y-4 shadow-2xs mt-4 animate-in fade-in duration-200">
+                     <div className="mx-auto w-12 h-12 bg-background text-muted-text border border-border rounded-full flex items-center justify-center shadow-3xs">
                        <ClipboardList className="w-5.5 h-5.5 text-muted-text/80" />
                      </div>
                      <div className="space-y-1.5">
@@ -1174,7 +1179,7 @@ export default function ResidentDashboard() {
                  {complaints.length > 0 && (
                    <>
                      {/* Desktop Table View */}
-                     <div className="hidden md:block overflow-x-auto border border-border rounded shadow-2xs bg-white">
+                     <div className="hidden md:block overflow-x-auto border border-border rounded shadow-2xs bg-surface">
                        <table className="w-full text-xs text-left">
                          <thead className="table-header text-[10px] font-bold">
                            <tr>
@@ -1194,7 +1199,7 @@ export default function ResidentDashboard() {
                              
                              return (
                                <Fragment key={c.id}>
-                                 <tr className="hover:bg-slate-50/50 transition-colors">
+                                 <tr className="hover:bg-background/50 transition-colors">
                                    <td 
                                      onClick={() => setSelectedTicket(c)}
                                      className="px-6 py-4.5 font-bold text-primary hover:underline cursor-pointer"
@@ -1244,7 +1249,7 @@ export default function ResidentDashboard() {
                                            e.stopPropagation();
                                            setExpandedTicketId(active ? null : c.id);
                                          }}
-                                         className="p-1 hover:bg-slate-100 rounded transition-colors"
+                                         className="p-1 hover:bg-background rounded transition-colors"
                                        >
                                          {active ? <ChevronUp className="w-3.5 h-3.5 text-muted-text" /> : <ChevronDown className="w-3.5 h-3.5 text-muted-text" />}
                                        </button>
@@ -1254,7 +1259,7 @@ export default function ResidentDashboard() {
                                  
                                  {/* Expandable row for details */}
                                  {active && (
-                                   <tr className="bg-slate-50/30 animate-in fade-in duration-100">
+                                   <tr className="bg-background/30 animate-in fade-in duration-100">
                                      <td colSpan={7} className="px-8 py-6 border-l-2 border-l-primary/60">
                                        <div className="space-y-4">
                                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1262,14 +1267,14 @@ export default function ResidentDashboard() {
                                              <div className="text-[10px] font-bold text-primary uppercase tracking-widest">Description details</div>
                                              <p className="text-xs text-text font-medium leading-relaxed font-sans opacity-95">{c.description}</p>
                                            </div>
-                                           <div className="p-5 bg-white border border-border rounded space-y-3 shadow-3xs">
-                                             <div className="text-[9px] font-bold text-primary uppercase tracking-widest border-b border-slate-100 pb-1 flex items-center gap-1.5">
+                                           <div className="p-5 bg-surface border border-border rounded space-y-3 shadow-3xs">
+                                             <div className="text-[9px] font-bold text-primary uppercase tracking-widest border-b border-border/40 pb-1 flex items-center gap-1.5">
                                                <Sparkles className="w-3.5 h-3.5 text-secondary" /> NLP Dispatch Analysis
                                              </div>
                                              <div className="grid grid-cols-2 gap-2 text-xs font-semibold text-muted-text">
                                                <div>
                                                  <span>NLP Conf:</span>
-                                                 <span className="font-bold text-primary bg-slate-50 px-1 border border-border rounded ml-1">{(c.ai_confidence_score * 100).toFixed(0)}%</span>
+                                                 <span className="font-bold text-primary bg-background px-1 border border-border rounded ml-1">{(c.ai_confidence_score * 100).toFixed(0)}%</span>
                                                </div>
                                                <div>
                                                  <span>Location:</span>
@@ -1282,7 +1287,7 @@ export default function ResidentDashboard() {
                                            </div>
                                          </div>
 
-                                         <div className="border-t border-slate-100 pt-3">
+                                         <div className="border-t border-border/40 pt-3">
                                            <div className="flex items-center justify-between mb-2">
                                              <div className="text-[10px] font-bold text-primary uppercase tracking-widest">Service Timeline Logs</div>
                                              <button 
@@ -1295,9 +1300,9 @@ export default function ResidentDashboard() {
                                            <div className="space-y-3 relative pl-1">
                                              {c.history.map((h: any) => (
                                                <div key={h.id} className="relative pl-5 border-l border-border text-xs py-0.5 last:border-l-transparent">
-                                                 <div className="absolute top-1.5 -left-1 w-2 h-2 rounded-full bg-white border border-muted-text flex items-center justify-center" />
+                                                 <div className="absolute top-1.5 -left-1 w-2 h-2 rounded-full bg-surface border border-muted-text flex items-center justify-center" />
                                                  <div className="flex items-center justify-between text-[9px] text-muted-text font-bold mb-0.5">
-                                                   <span className="bg-slate-100 px-1 border border-border rounded">Log: {h.status_from} &rarr; {h.status_to}</span>
+                                                   <span className="bg-background px-1 border border-border rounded">Log: {h.status_from} &rarr; {h.status_to}</span>
                                                    <span>{new Date(h.created_at).toLocaleDateString()}</span>
                                                  </div>
                                                  <p className="text-text font-sans font-medium leading-relaxed">{h.comment}</p>
@@ -1322,8 +1327,8 @@ export default function ResidentDashboard() {
                          const overdue = isOverdue(c.created_at, c.status);
                          
                          return (
-                           <div key={c.id} className="bg-white border border-border rounded p-4 shadow-3xs space-y-3">
-                             <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                           <div key={c.id} className="bg-surface border border-border rounded p-4 shadow-3xs space-y-3">
+                             <div className="flex items-center justify-between border-b border-border/40 pb-2">
                                <span className="text-xs font-bold text-primary">{c.category}</span>
                                <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold border uppercase tracking-wider ${
                                  c.status === 'Resolved' 
@@ -1346,7 +1351,7 @@ export default function ResidentDashboard() {
                                <p className="text-[10px] text-muted-text mt-1 font-medium leading-relaxed line-clamp-2">{c.description}</p>
                              </div>
 
-                             <div className="flex items-center justify-between text-[9px] text-muted-text font-semibold border-t border-slate-100 pt-2 flex-wrap gap-1">
+                             <div className="flex items-center justify-between text-[9px] text-muted-text font-semibold border-t border-border/40 pt-2 flex-wrap gap-1">
                                <div>Filed: <span className="text-text">{new Date(c.created_at).toLocaleDateString()}</span></div>
                                <div>Priority: <span className="font-bold text-text uppercase">{c.priority}</span></div>
                                <div>Activity: <span className="text-text">{getLastUpdated(c)}</span></div>

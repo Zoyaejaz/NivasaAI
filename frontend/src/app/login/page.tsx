@@ -105,7 +105,7 @@ export default function Login() {
       <div className="absolute inset-0 z-0 opacity-[0.03] bg-[linear-gradient(to_right,#5B665E_1px,transparent_1px),linear-gradient(to_bottom,#5B665E_1px,transparent_1px)] bg-[size:48px_48px] pointer-events-none" />
 
       {/* Main card container */}
-      <div className="relative z-10 w-full max-w-md p-8 rounded border border-border bg-white shadow-xs space-y-6">
+      <div className="relative z-10 w-full max-w-md p-8 rounded border border-border bg-surface shadow-xs space-y-6">
         
         {/* Branding & Logo */}
         <div className="text-center">
@@ -158,7 +158,7 @@ export default function Login() {
                     onChange={(e) => setFullName(e.target.value)}
                     required
                     placeholder="John Doe"
-                    className="w-full pl-9 pr-3 py-2 bg-white border border-border rounded text-xs text-text placeholder-muted-text/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all shadow-3xs font-semibold"
+                    className="w-full pl-9 pr-3 py-2 bg-surface border border-border rounded text-xs text-text placeholder-muted-text/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all shadow-3xs font-semibold"
                   />
                 </div>
               </div>
@@ -178,7 +178,7 @@ export default function Login() {
                       onChange={(e) => setFlatNumber(e.target.value)}
                       required
                       placeholder="e.g. Wing B-402"
-                      className="w-full pl-9 pr-3 py-2 bg-white border border-border rounded text-xs text-text placeholder-muted-text/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all shadow-3xs font-semibold"
+                      className="w-full pl-9 pr-3 py-2 bg-surface border border-border rounded text-xs text-text placeholder-muted-text/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all shadow-3xs font-semibold"
                     />
                   </div>
                 </div>
@@ -196,7 +196,7 @@ export default function Login() {
                       value={phoneNumber}
                       onChange={(e) => setPhoneNumber(e.target.value)}
                       placeholder="e.g. +91 98765"
-                      className="w-full pl-9 pr-3 py-2 bg-white border border-border rounded text-xs text-text placeholder-muted-text/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all shadow-3xs font-semibold"
+                      className="w-full pl-9 pr-3 py-2 bg-surface border border-border rounded text-xs text-text placeholder-muted-text/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all shadow-3xs font-semibold"
                     />
                   </div>
                 </div>
@@ -218,7 +218,7 @@ export default function Login() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 placeholder="email@example.com"
-                className="w-full pl-9 pr-3 py-2 bg-white border border-border rounded text-xs text-text placeholder-muted-text/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all shadow-3xs font-semibold"
+                className="w-full pl-9 pr-3 py-2 bg-surface border border-border rounded text-xs text-text placeholder-muted-text/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all shadow-3xs font-semibold"
               />
             </div>
           </div>
@@ -237,7 +237,7 @@ export default function Login() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 placeholder="••••••••"
-                className="w-full pl-9 pr-10 py-2 bg-white border border-border rounded text-xs text-text placeholder-muted-text/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all shadow-3xs font-semibold"
+                className="w-full pl-9 pr-10 py-2 bg-surface border border-border rounded text-xs text-text placeholder-muted-text/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all shadow-3xs font-semibold"
               />
               <button
                 type="button"
@@ -260,13 +260,13 @@ export default function Login() {
               <label className="block text-[10px] font-bold text-primary/85 uppercase tracking-wider mb-1.5">
                 Account Level Role
               </label>
-              <div className="grid grid-cols-2 gap-1 p-1 bg-slate-50 border border-border rounded">
+              <div className="grid grid-cols-2 gap-1 p-1 bg-background border border-border rounded">
                 <button
                   type="button"
                   onClick={() => setRole("resident")}
                   className={`py-1.5 text-xs font-bold rounded transition-all cursor-pointer ${
                     role === "resident"
-                      ? "bg-white text-primary border border-border/80 shadow-3xs font-bold"
+                      ? "bg-surface text-primary border border-border/80 shadow-3xs font-bold"
                       : "text-muted-text hover:text-primary"
                   }`}
                 >
@@ -277,7 +277,7 @@ export default function Login() {
                   onClick={() => setRole("admin")}
                   className={`py-1.5 text-xs font-bold rounded transition-all cursor-pointer ${
                     role === "admin"
-                      ? "bg-white text-primary border border-border/80 shadow-3xs font-bold"
+                      ? "bg-surface text-primary border border-border/80 shadow-3xs font-bold"
                       : "text-muted-text hover:text-primary"
                   }`}
                 >
@@ -318,7 +318,7 @@ export default function Login() {
         </form>
 
         {/* Toggle Mode Link */}
-        <div className="mt-6 text-center border-t border-slate-100 pt-4">
+        <div className="mt-6 text-center border-t border-border/40 pt-4">
           <button
             type="button"
             onClick={() => {
