@@ -263,6 +263,32 @@ export default function ResidentDashboard() {
     if (!token) return;
 
     try {
+      let finalPhotoUrl = null;
+
+      // 1. Upload file if selected
+      const fileInput = document.getElementById("file-uploader") as HTMLInputElement;
+      const file = fileInput?.files?.[0];
+      if (file) {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const uploadRes = await fetch(`${API_BASE_URL}/api/complaints/upload`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+          body: formData
+        });
+
+        if (!uploadRes.ok) {
+          throw new Error("Failed to upload image attachment to server");
+        }
+
+        const uploadData = await uploadRes.json();
+        finalPhotoUrl = uploadData.photo_url;
+      }
+
+      // 2. Submit the complaint
       const response = await fetch(`${API_BASE_URL}/api/complaints`, {
         method: "POST",
         headers: {
@@ -274,7 +300,7 @@ export default function ResidentDashboard() {
           description,
           category,
           location,
-          photo_url: photoPreview || null
+          photo_url: finalPhotoUrl
         })
       });
 

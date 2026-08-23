@@ -1,5 +1,7 @@
+import os
+import shutil
 import datetime
-from fastapi import APIRouter, Depends, HTTPException, status, Query
+from fastapi import APIRouter, Depends, HTTPException, status, Query, UploadFile, File
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from database import get_db
@@ -9,6 +11,22 @@ from auth import get_current_user, require_admin
 from services.ml import predict_complaint_attributes, detect_recurring_complaint, analyze_uploaded_photo
 
 router = APIRouter(prefix="/complaints", tags=["Complaints"])
+
+@router.post("/upload")
+def upload_complaint_photo(file: UploadFile = File(...)):
+    try:
+        os.makedirs("static", exist_ok=True)
+        # Add timestamp to name to prevent override collisions
+        timestamp = int(datetime.datetime.utcnow().timestamp())
+        safe_filename = f"{timestamp}_{file.filename.replace(' ', '_')}"
+        file_path = os.path.join("static", safe_filename)
+        
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+            
+        return {"photo_url": safe_filename}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to upload photo attachment: {str(e)}")
 
 @router.post("", response_model=ComplaintOut, status_code=status.HTTP_201_CREATED)
 def create_complaint(complaint_in: ComplaintCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):

@@ -41,6 +41,10 @@ app.include_router(analytics.router, prefix="/api")
 app.include_router(assistant.router, prefix="/api")
 app.include_router(notifications.router, prefix="/api")
 
+# Serve uploaded static files
+os.makedirs("static", exist_ok=True)
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 @app.get("/")
 def read_root():
     return {
