@@ -1472,8 +1472,12 @@ export default function AdminDashboard() {
                     <div className="p-6 bg-background border border-dashed border-border rounded flex flex-col items-center justify-center text-center text-xs text-muted-text gap-1.5 shadow-3xs">
                       <ImageIcon className="w-7 h-7 text-muted-text/30" />
                       <div>
-                        <span className="font-bold text-primary block">No Attachment Reference</span>
-                        <span className="block mt-0.5 font-medium opacity-80 text-[10px]">No verification photo was uploaded with this complaint.</span>
+                        <span className="font-bold text-primary block">{selectedComplaint.photo_url ? "Attachment Unavailable" : "No Attachment Reference"}</span>
+                        <span className="block mt-0.5 font-medium opacity-80 text-[10px]">
+                          {selectedComplaint.photo_url 
+                            ? "This photo is missing or was submitted before the file upload update." 
+                            : "No verification photo was uploaded with this complaint."}
+                        </span>
                       </div>
                     </div>
                   )}

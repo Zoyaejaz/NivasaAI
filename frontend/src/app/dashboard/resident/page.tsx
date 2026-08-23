@@ -800,8 +800,12 @@ export default function ResidentDashboard() {
                       <div className="p-8 bg-background border border-dashed border-border rounded flex flex-col items-center justify-center text-center text-xs text-muted-text gap-2 shadow-3xs">
                         <ImageIcon className="w-8 h-8 text-muted-text/30" />
                         <div>
-                          <span className="font-bold text-primary block">No Attachment Reference</span>
-                          <span className="block mt-0.5 font-medium opacity-80 text-[11px]">No verification photo was uploaded with this complaint.</span>
+                          <span className="font-bold text-primary block">{selectedTicket.photo_url ? "Attachment Unavailable" : "No Attachment Reference"}</span>
+                          <span className="block mt-0.5 font-medium opacity-80 text-[11px]">
+                            {selectedTicket.photo_url 
+                              ? "This photo is missing or was submitted before the file upload update." 
+                              : "No verification photo was uploaded with this complaint."}
+                          </span>
                         </div>
                       </div>
                     )}
