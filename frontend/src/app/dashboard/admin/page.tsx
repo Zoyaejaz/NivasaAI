@@ -1462,7 +1462,7 @@ export default function AdminDashboard() {
                   {selectedComplaint.photo_url && !imgError ? (
                     <div className="relative rounded overflow-hidden border border-border shadow-3xs">
                       <img 
-                        src={selectedComplaint.photo_url.startsWith('http') ? selectedComplaint.photo_url : `${API_BASE_URL}/static/${selectedComplaint.photo_url}`} 
+                        src={selectedComplaint.photo_url.startsWith('http') || selectedComplaint.photo_url.startsWith('data:') ? selectedComplaint.photo_url : `${API_BASE_URL}/static/${selectedComplaint.photo_url}`} 
                         onError={() => setImgError(true)} 
                         className="w-full h-44 object-cover"
                         alt="Work order reference attachment"

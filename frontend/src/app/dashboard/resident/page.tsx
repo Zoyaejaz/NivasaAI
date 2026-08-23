@@ -274,7 +274,7 @@ export default function ResidentDashboard() {
           description,
           category,
           location,
-          photo_url: photoUrl || null
+          photo_url: photoPreview || null
         })
       });
 
@@ -764,7 +764,7 @@ export default function ResidentDashboard() {
                     {selectedTicket.photo_url && !imgError ? (
                       <div className="relative rounded overflow-hidden border border-border shadow-3xs">
                         <img 
-                          src={selectedTicket.photo_url.startsWith('http') ? selectedTicket.photo_url : `${API_BASE_URL}/static/${selectedTicket.photo_url}`} 
+                          src={selectedTicket.photo_url.startsWith('http') || selectedTicket.photo_url.startsWith('data:') ? selectedTicket.photo_url : `${API_BASE_URL}/static/${selectedTicket.photo_url}`} 
                           onError={() => setImgError(true)} 
                           className="w-full h-52 object-cover"
                           alt="Service request reference image"
