@@ -94,7 +94,7 @@ export default function AuthModal({ isOpen, onClose, defaultIsSignUp = false }: 
         className="absolute inset-0 bg-transparent cursor-default" 
         onClick={onClose} 
       />
-      <div className="relative z-10 w-full max-w-md p-8 rounded border border-border bg-white shadow-2xl space-y-6 animate-in zoom-in-95 duration-200">
+      <div className="relative z-10 w-full max-w-md p-8 rounded-2xl border border-border bg-white shadow-2xl space-y-6 animate-in zoom-in-95 duration-200">
         
         {/* Close Button */}
         <button 
@@ -233,11 +233,11 @@ export default function AuthModal({ isOpen, onClose, defaultIsSignUp = false }: 
               <label className="block text-[10px] font-bold text-primary/85 uppercase tracking-wider mb-1.5">
                 Account Level Role
               </label>
-              <div className="grid grid-cols-2 gap-1 p-1 bg-slate-50 border border-border rounded">
+              <div className="grid grid-cols-2 gap-1 p-1 bg-slate-50 border border-border rounded-xl">
                 <button
                   type="button"
                   onClick={() => setRole("resident")}
-                  className={`py-1.5 text-xs font-bold rounded transition-all cursor-pointer ${
+                  className={`py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                     role === "resident"
                       ? "bg-white text-primary border border-border/80 shadow-3xs font-bold"
                       : "text-muted-text hover:text-primary"
@@ -248,7 +248,7 @@ export default function AuthModal({ isOpen, onClose, defaultIsSignUp = false }: 
                 <button
                   type="button"
                   onClick={() => setRole("admin")}
-                  className={`py-1.5 text-xs font-bold rounded transition-all cursor-pointer ${
+                  className={`py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                     role === "admin"
                       ? "bg-white text-primary border border-border/80 shadow-3xs font-bold"
                       : "text-muted-text hover:text-primary"

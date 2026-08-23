@@ -9,24 +9,31 @@ export default function LandingPage() {
 
   return (
     <div className="relative min-h-screen flex flex-col bg-background text-text font-sans">
-      {/* Subtle organic linen grid pattern overlay - understated backdrop */}
-      <div className="absolute inset-0 z-0 opacity-5 bg-[linear-gradient(to_right,#5B665E_1px,transparent_1px),linear-gradient(to_bottom,#5B665E_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
+      {/* Subtle organic linen grid pattern overlay - understated backdrop with a smooth fade out */}
+      <div 
+        className="absolute inset-0 z-0 opacity-[0.06] bg-[linear-gradient(to_right,#5B665E_1px,transparent_1px),linear-gradient(to_bottom,#5B665E_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" 
+        style={{
+          maskImage: "linear-gradient(to bottom, black 30%, transparent 60%)",
+          WebkitMaskImage: "linear-gradient(to bottom, black 30%, transparent 60%)"
+        }}
+      />
       
-      {/* Header - Simple clean banner */}
-      <header className="relative z-10 w-full max-w-7xl mx-auto px-6 py-4 flex items-center justify-between border-b border-border bg-white mt-0 md:mt-4 md:rounded-lg md:border md:shadow-2xs">
+      {/* Header - Floating Capsule Navbar */}
+      <header className="sticky top-4 z-20 w-full max-w-7xl mx-auto px-8 py-3.5 flex items-center justify-between border border-border bg-white/90 backdrop-blur-md rounded-full shadow-md mt-4 transition-all">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-primary rounded flex items-center justify-center">
-            <Building className="w-5 h-5 text-white" />
+          <div className="w-9 h-9 bg-primary rounded-full flex items-center justify-center shadow-3xs border border-white/10">
+            <Building className="w-4.5 h-4.5 text-white" />
           </div>
-          <span className="text-lg font-serif tracking-tight text-primary font-bold">
+          <span className="text-base font-serif tracking-tight text-primary font-bold">
             Nivasa<span className="font-sans font-normal text-secondary italic ml-0.5">AI</span>
           </span>
         </div>
         
-        <div>
+        {/* Center/Right Links */}
+        <div className="flex items-center gap-8">
           <button 
             onClick={() => setShowAuthPopup(true)}
-            className="px-4 py-2 text-xs font-bold uppercase tracking-wider bg-primary hover:bg-primary/95 text-white rounded transition-colors cursor-pointer"
+            className="px-5 py-2 text-[10px] font-bold uppercase tracking-wider bg-primary hover:bg-primary/95 text-white rounded-full transition-all cursor-pointer shadow-3xs active:scale-95"
           >
             Access Portal
           </button>
@@ -67,7 +74,7 @@ export default function LandingPage() {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full border-t border-border pt-16">
+        <div id="stats" className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full border-t border-border pt-16 scroll-mt-24">
           <div className="p-6 bg-white border border-border rounded flex flex-col items-center shadow-2xs hover:border-slate-300 transition-colors">
             <div className="text-3xl font-serif text-secondary font-black mb-1.5">98.4%</div>
             <div className="text-[10px] font-bold text-primary uppercase tracking-wider mb-2">SLA Target Met</div>
@@ -87,7 +94,7 @@ export default function LandingPage() {
       </main>
 
       {/* Features Section */}
-      <section id="features" className="relative z-10 w-full max-w-7xl mx-auto px-6 py-12 border-t border-border bg-white md:rounded-t-lg md:border-x">
+      <section id="features" className="relative z-10 w-full max-w-7xl mx-auto px-6 py-16 scroll-mt-24">
         <h2 className="text-2xl font-serif font-bold text-center text-primary mb-12">Core Operational Modules</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -124,7 +131,7 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 w-full border-t border-border bg-white md:border-x max-w-7xl mx-auto px-10 py-16 font-sans">
+      <footer id="footer" className="relative z-10 w-full border-t border-border bg-white md:border-x max-w-7xl mx-auto px-10 py-16 font-sans scroll-mt-24">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-left">
           <div className="space-y-4">
             <div className="flex items-center gap-3">
