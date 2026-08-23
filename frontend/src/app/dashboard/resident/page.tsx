@@ -7,7 +7,7 @@ import ThemeToggle from "@/components/ThemeToggle";
 import { 
   Building, User, LogOut, CheckCircle, Clock, Info, AlertTriangle, 
   Plus, MessageSquare, Image as ImageIcon, Send, Bell, ClipboardList, AlertCircle, RefreshCw, Sparkles,
-  Menu, X, ChevronDown, ChevronUp, ArrowLeft
+  Menu, X, ChevronDown, ChevronUp, ArrowLeft, Mic, MicOff
 } from "lucide-react";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -51,6 +51,10 @@ export default function ResidentDashboard() {
   const [formLoading, setFormLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
   const [error, setError] = useState("");
+  
+  // Voice dictation states
+  const [listeningTitle, setListeningTitle] = useState(false);
+  const [listeningDesc, setListeningDesc] = useState(false);
   
   const router = useRouter();
 
@@ -200,6 +204,54 @@ export default function ResidentDashboard() {
     } finally {
       setAnalyzing(false);
     }
+  };
+
+  const startSpeechRecognition = (field: "title" | "description") => {
+    setError("");
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      setError("Speech recognition is not supported in your browser. Please try Google Chrome, Microsoft Edge, or Apple Safari.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onstart = () => {
+      if (field === "title") setListeningTitle(true);
+      else setListeningDesc(true);
+    };
+
+    recognition.onerror = (event: any) => {
+      console.error(event);
+      setError("Voice command failed: " + event.error);
+      setListeningTitle(false);
+      setListeningDesc(false);
+    };
+
+    recognition.onend = () => {
+      setListeningTitle(false);
+      setListeningDesc(false);
+    };
+
+    recognition.onresult = (event: any) => {
+      const speechToText = event.results[0][0].transcript;
+      if (field === "title") {
+        setTitle(speechToText);
+      } else {
+        setDescription(speechToText);
+        // Auto-predict details if they dictate the description details!
+        const words = speechToText.split(" ");
+        if (!title && words.length > 0) {
+          const autoTitle = words.slice(0, 5).join(" ") + (words.length > 5 ? "..." : "");
+          setTitle(autoTitle);
+        }
+      }
+    };
+
+    recognition.start();
   };
 
   const handleCreateComplaint = async (e: React.FormEvent) => {
@@ -949,46 +1001,66 @@ export default function ResidentDashboard() {
                        <X className="w-4.5 h-4.5" />
                      </button>
                    </div>
+                    {error && (
+                      <div className="p-3 bg-status-danger/5 border border-status-danger/20 rounded text-status-danger text-xs flex items-center gap-2">
+                        <AlertCircle className="w-4.5 h-4.5 shrink-0" /> <span className="font-bold">{error}</span>
+                      </div>
+                    )}
 
-                   {error && (
-                     <div className="p-3 bg-status-danger/5 border border-status-danger/20 rounded text-status-danger text-xs flex items-center gap-2">
-                       <AlertCircle className="w-4.5 h-4.5 shrink-0" /> <span className="font-bold">{error}</span>
-                     </div>
-                   )}
-
-                   <form onSubmit={handleCreateComplaint} className="space-y-4">
-                     
-                     {/* Grid: Subject, Location & Category Selection */}
-                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                       <div>
-                         <label htmlFor="ticket-title" className="block text-[10px] font-bold text-primary/85 uppercase tracking-wider mb-1.5">
-                           Short Subject
-                         </label>
-                         <input
-                           id="ticket-title"
-                           type="text"
-                           value={title}
-                           onChange={(e) => setTitle(e.target.value)}
-                           required
-                           placeholder="e.g. flickering elevator light bulb"
-                           className="w-full px-4 py-2.5 bg-surface border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary/20 focus:border-primary text-text placeholder-muted-text/30 transition-all shadow-3xs"
-                         />
-                       </div>
-                       <div>
-                         <label htmlFor="ticket-location" className="block text-[10px] font-bold text-primary/85 uppercase tracking-wider mb-1.5">
-                           Location Unit Area
-                         </label>
-                         <input
-                           id="ticket-location"
-                           type="text"
-                           value={location}
-                           onChange={(e) => setLocation(e.target.value)}
-                           required
-                           placeholder="e.g. Lobby corridor Floor 4"
-                           className="w-full px-4 py-2.5 bg-surface border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary/20 focus:border-primary text-text placeholder-muted-text/30 transition-all shadow-3xs"
-                         />
-                       </div>
-                     </div>
+                    <form onSubmit={handleCreateComplaint} className="space-y-4">
+                      
+                      {/* Grid: Subject, Location & Category Selection */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                          <div className="flex items-center justify-between mb-1.5 font-sans">
+                            <label htmlFor="ticket-title" className="block text-[10px] font-bold text-primary/85 uppercase tracking-wider">
+                              Short Subject
+                            </label>
+                            <button
+                              type="button"
+                              onClick={() => startSpeechRecognition("title")}
+                              className={`px-2 py-0.5 border rounded text-[9px] font-bold flex items-center gap-1 transition-all cursor-pointer shadow-3xs uppercase tracking-wider ${
+                                listeningTitle 
+                                  ? 'bg-status-danger/10 text-status-danger border-status-danger/30 animate-pulse' 
+                                  : 'bg-surface text-muted-text border-border hover:text-primary hover:bg-background'
+                              }`}
+                            >
+                              {listeningTitle ? (
+                                <>
+                                  <MicOff className="w-3 h-3" /> Listening...
+                                </>
+                              ) : (
+                                <>
+                                  <Mic className="w-3 h-3" /> Dictate Subject
+                                </>
+                              )}
+                            </button>
+                          </div>
+                          <input
+                            id="ticket-title"
+                            type="text"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            required
+                            placeholder="e.g. flickering elevator light bulb"
+                            className="w-full px-4 py-2.5 bg-surface border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary/20 focus:border-primary text-text placeholder-muted-text/30 transition-all shadow-3xs font-semibold"
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="ticket-location" className="block text-[10px] font-bold text-primary/85 uppercase tracking-wider mb-1.5">
+                            Location Unit Area
+                          </label>
+                          <input
+                            id="ticket-location"
+                            type="text"
+                            value={location}
+                            onChange={(e) => setLocation(e.target.value)}
+                            required
+                            placeholder="e.g. Lobby corridor Floor 4"
+                            className="w-full px-4 py-2.5 bg-surface border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary/20 focus:border-primary text-text placeholder-muted-text/30 transition-all shadow-3xs"
+                          />
+                        </div>
+                      </div>
 
                      {/* Dropdown Category Selector */}
                      <div>
@@ -1012,9 +1084,30 @@ export default function ResidentDashboard() {
 
                      {/* Description Area */}
                      <div>
-                       <label htmlFor="ticket-description" className="block text-[10px] font-bold text-primary/85 uppercase tracking-wider mb-1.5">
-                         Description Details
-                       </label>
+                       <div className="flex items-center justify-between mb-1.5 font-sans">
+                         <label htmlFor="ticket-description" className="block text-[10px] font-bold text-primary/85 uppercase tracking-wider">
+                           Description Details
+                         </label>
+                         <button
+                           type="button"
+                           onClick={() => startSpeechRecognition("description")}
+                           className={`px-2 py-0.5 border rounded text-[9px] font-bold flex items-center gap-1 transition-all cursor-pointer shadow-3xs uppercase tracking-wider ${
+                             listeningDesc 
+                               ? 'bg-status-danger/10 text-status-danger border-status-danger/30 animate-pulse' 
+                               : 'bg-surface text-muted-text border-border hover:text-primary hover:bg-background'
+                           }`}
+                         >
+                           {listeningDesc ? (
+                             <>
+                               <MicOff className="w-3 h-3" /> Listening...
+                             </>
+                           ) : (
+                             <>
+                               <Mic className="w-3 h-3" /> Dictate details
+                             </>
+                           )}
+                         </button>
+                       </div>
                        <textarea
                          id="ticket-description"
                          value={description}
@@ -1022,7 +1115,7 @@ export default function ResidentDashboard() {
                          required
                          rows={4}
                          placeholder="e.g. The lobby light has been flashing constantly and now completely failed. Hallway is pitch black."
-                         className="w-full px-4 py-2.5 bg-surface border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary/20 focus:border-primary text-text placeholder-muted-text/30 transition-all shadow-3xs leading-relaxed"
+                         className="w-full px-4 py-2.5 bg-surface border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary/20 focus:border-primary text-text placeholder-muted-text/30 transition-all shadow-3xs leading-relaxed font-semibold font-sans"
                        />
                      </div>
 
