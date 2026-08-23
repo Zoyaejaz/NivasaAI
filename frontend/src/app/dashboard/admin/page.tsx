@@ -56,6 +56,7 @@ export default function AdminDashboard() {
 
   // Tab Control State
   const [activeTab, setActiveTab] = useState("complaints");
+  const [ledgerTab, setLedgerTab] = useState<"active" | "completed">("active");
 
   // Notice board management states
   const [notices, setNotices] = useState<any[]>([]);
@@ -63,6 +64,7 @@ export default function AdminDashboard() {
   const [noticeContent, setNoticeContent] = useState("");
   const [noticePinned, setNoticePinned] = useState(false);
   const [noticeImportant, setNoticeImportant] = useState(false);
+  const [noticeExpiry, setNoticeExpiry] = useState("never");
   const [noticeLoading, setNoticeLoading] = useState(false);
 
   // Chat Copilot State
@@ -99,7 +101,8 @@ export default function AdminDashboard() {
     try {
       // 1. Fetch Analytics
       const resAnalytics = await fetch(`${API_BASE_URL}/api/analytics`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
+        cache: "no-store"
       });
       if (resAnalytics.ok) {
         setAnalytics(await resAnalytics.json());
@@ -107,7 +110,8 @@ export default function AdminDashboard() {
       
       // 2. Fetch Complaints
       const resComplaints = await fetch(`${API_BASE_URL}/api/complaints`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
+        cache: "no-store"
       });
       if (resComplaints.ok) {
         const fetchedComplaints = await resComplaints.json();
@@ -122,7 +126,8 @@ export default function AdminDashboard() {
 
       // 3. Fetch Assets
       const resAssets = await fetch(`${API_BASE_URL}/api/assets`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
+        cache: "no-store"
       });
       if (resAssets.ok) {
         setAssets(await resAssets.json());
@@ -130,10 +135,20 @@ export default function AdminDashboard() {
 
       // 4. Fetch Notifications
       const resNotis = await fetch(`${API_BASE_URL}/api/notifications`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
+        cache: "no-store"
       });
       if (resNotis.ok) {
         setNotifications(await resNotis.json());
+      }
+
+      // 5. Fetch Notices
+      const resNotices = await fetch(`${API_BASE_URL}/api/notices`, {
+        headers: { Authorization: `Bearer ${token}` },
+        cache: "no-store"
+      });
+      if (resNotices.ok) {
+        setNotices(await resNotices.json());
       }
     } catch (err) {
       console.error("Error loading admin dashboard data", err);
@@ -157,6 +172,14 @@ export default function AdminDashboard() {
     if (!token) return;
 
     try {
+      let expires_at = null;
+      if (noticeExpiry !== "never") {
+        const days = parseInt(noticeExpiry);
+        const date = new Date();
+        date.setDate(date.getDate() + days);
+        expires_at = date.toISOString();
+      }
+
       const response = await fetch(`${API_BASE_URL}/api/notices`, {
         method: "POST",
         headers: {
@@ -167,7 +190,8 @@ export default function AdminDashboard() {
           title: noticeTitle.trim(),
           content: noticeContent.trim(),
           is_pinned: noticePinned,
-          is_important: noticeImportant
+          is_important: noticeImportant,
+          expires_at
         })
       });
 
@@ -179,6 +203,7 @@ export default function AdminDashboard() {
       setNoticeContent("");
       setNoticePinned(false);
       setNoticeImportant(false);
+      setNoticeExpiry("never");
       fetchData(token);
     } catch (err) {
       console.error(err);
@@ -200,7 +225,10 @@ export default function AdminDashboard() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to delete notice");
+        const errorData = await response.json().catch(() => ({ detail: "Unknown error" }));
+        const errorMessage = errorData.detail || "Failed to delete notice";
+        alert(`Error: ${errorMessage}`);
+        throw new Error(errorMessage);
       }
 
       fetchData(token);
@@ -351,6 +379,7 @@ export default function AdminDashboard() {
     const matchesCategory = categoryFilter ? c.category === categoryFilter : true;
     const matchesStatus = statusFilter ? c.status === statusFilter : true;
     const matchesPriority = priorityFilter ? c.priority === priorityFilter : true;
+    const matchesLedgerTab = ledgerTab === "active" ? c.status !== "Resolved" : c.status === "Resolved";
     
     // Overdue constraint
     const matchesOverdue = overdueOnly ? isOverdue(c.created_at, c.status) : true;
@@ -359,7 +388,7 @@ export default function AdminDashboard() {
     const matchesStartDate = startDate ? new Date(c.created_at) >= new Date(startDate) : true;
     const matchesEndDate = endDate ? new Date(c.created_at) <= new Date(endDate + "T23:59:59") : true;
     
-    return matchesSearch && matchesCategory && matchesStatus && matchesPriority && matchesOverdue && matchesStartDate && matchesEndDate;
+    return matchesSearch && matchesCategory && matchesStatus && matchesPriority && matchesOverdue && matchesStartDate && matchesEndDate && matchesLedgerTab;
   });
 
   // Sort complaints list dynamically
@@ -657,7 +686,7 @@ export default function AdminDashboard() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 font-semibold text-text">
-                      {complaints.slice(0, 5).map((c) => (
+                      {complaints.filter(c => c.status !== "Resolved").slice(0, 5).map((c) => (
                         <tr key={c.id} className="hover:bg-background/40 transition-colors">
                           <td className="px-6 py-4 font-bold text-muted-text">#COM-{1000 + c.id}</td>
                           <td className="px-6 py-4">
@@ -690,10 +719,10 @@ export default function AdminDashboard() {
                           </td>
                         </tr>
                       ))}
-                      {complaints.length === 0 && (
+                      {complaints.filter(c => c.status !== "Resolved").length === 0 && (
                         <tr>
                           <td colSpan={6} className="text-center text-muted-text py-8 bg-background/10 font-medium">
-                            No tickets registered yet.
+                            No active tickets registered yet.
                           </td>
                         </tr>
                       )}
@@ -840,6 +869,23 @@ export default function AdminDashboard() {
                         />
                         <span className="text-[10px] font-bold text-primary uppercase tracking-wide">Pin Bulletin to Top</span>
                       </label>
+
+                      <div className="pt-2 border-t border-border/40/60">
+                        <label htmlFor="notice-expiry" className="block text-[10px] font-bold text-primary/85 uppercase tracking-wider mb-1.5">
+                          Expires In (Auto-Delete)
+                        </label>
+                        <select
+                          id="notice-expiry"
+                          value={noticeExpiry}
+                          onChange={(e) => setNoticeExpiry(e.target.value)}
+                          className="w-full px-2.5 py-1.5 bg-surface border border-border rounded text-xs text-text focus:outline-none focus:border-primary cursor-pointer font-bold shadow-3xs"
+                        >
+                          <option value="never">Never (Keep Forever)</option>
+                          <option value="1">1 Day</option>
+                          <option value="3">3 Days</option>
+                          <option value="7">7 Days</option>
+                        </select>
+                      </div>
                     </div>
                     
                     <button
@@ -905,7 +951,12 @@ export default function AdminDashboard() {
                                     Pinned
                                   </span>
                                 )}
-                                {!n.is_important && !n.is_pinned && (
+                                {n.expires_at && (
+                                  <span className="text-[8px] px-1.5 py-0.5 rounded bg-background text-status-warning border border-status-warning/20 font-bold uppercase tracking-wider">
+                                    Expires: {new Date(n.expires_at).toLocaleDateString()}
+                                  </span>
+                                )}
+                                {!n.is_important && !n.is_pinned && !n.expires_at && (
                                   <span className="text-[8px] px-1.5 py-0.5 rounded bg-background text-muted-text border border-border font-bold uppercase tracking-wider">
                                     Standard
                                   </span>
@@ -957,6 +1008,30 @@ export default function AdminDashboard() {
                   </span>
                 </div>
 
+                {/* Sub-tab Switcher for Active vs Completed */}
+                <div className="flex border-b border-border/40 pb-1 -mt-2">
+                  <button
+                    onClick={() => { setLedgerTab("active"); setStatusFilter(""); setCurrentPage(1); }}
+                    className={`px-4 py-2 text-xs font-bold transition-all border-b-2 -mb-[5px] cursor-pointer ${
+                      ledgerTab === "active"
+                        ? "border-primary text-primary"
+                        : "border-transparent text-muted-text hover:text-primary"
+                    }`}
+                  >
+                    Active Tickets ({complaints.filter(c => c.status !== "Resolved").length})
+                  </button>
+                  <button
+                    onClick={() => { setLedgerTab("completed"); setStatusFilter(""); setCurrentPage(1); }}
+                    className={`px-4 py-2 text-xs font-bold transition-all border-b-2 -mb-[5px] cursor-pointer ${
+                      ledgerTab === "completed"
+                        ? "border-primary text-primary"
+                        : "border-transparent text-muted-text hover:text-primary"
+                    }`}
+                  >
+                    Completed Tickets ({complaints.filter(c => c.status === "Resolved").length})
+                  </button>
+                </div>
+
                 {/* Coherent Filter Toolbar Container */}
                 <div className="p-4 bg-background border border-border rounded flex flex-col gap-3 shadow-3xs font-sans">
                   
@@ -986,16 +1061,21 @@ export default function AdminDashboard() {
                       <option value="Cleanliness">Cleanliness</option>
                     </select>
 
-                    <select
-                      value={statusFilter}
-                      onChange={(e) => { setStatusFilter(e.target.value); setCurrentPage(1); }}
-                      className="px-2.5 py-1.5 bg-surface border border-border rounded text-xs text-text focus:outline-none focus:border-primary cursor-pointer font-bold shadow-3xs"
-                    >
-                      <option value="">All Statuses</option>
-                      <option value="Open">Open</option>
-                      <option value="In Progress">In Progress</option>
-                      <option value="Resolved">Resolved</option>
-                    </select>
+                    {ledgerTab === "active" ? (
+                      <select
+                        value={statusFilter}
+                        onChange={(e) => { setStatusFilter(e.target.value); setCurrentPage(1); }}
+                        className="px-2.5 py-1.5 bg-surface border border-border rounded text-xs text-text focus:outline-none focus:border-primary cursor-pointer font-bold shadow-3xs"
+                      >
+                        <option value="">All Active Statuses</option>
+                        <option value="Open">Open</option>
+                        <option value="In Progress">In Progress</option>
+                      </select>
+                    ) : (
+                      <div className="px-2.5 py-1.5 bg-background border border-border rounded text-xs text-muted-text font-bold shadow-3xs flex items-center justify-between">
+                        Status: Resolved
+                      </div>
+                    )}
 
                     <select
                       value={priorityFilter}

@@ -76,7 +76,8 @@ export default function ResidentDashboard() {
       setError("");
       // 1. Fetch complaints
       const resComplaints = await fetch(`${API_BASE_URL}/api/complaints`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
+        cache: "no-store"
       });
       if (!resComplaints.ok) throw new Error("Failed to load complaints");
       const fetchedComplaints = await resComplaints.json();
@@ -90,7 +91,8 @@ export default function ResidentDashboard() {
       
       // 2. Fetch notices
       const resNotices = await fetch(`${API_BASE_URL}/api/notices`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
+        cache: "no-store"
       });
       if (resNotices.ok) {
         setNotices(await resNotices.json());
@@ -98,7 +100,8 @@ export default function ResidentDashboard() {
 
       // 3. Fetch notifications
       const resNotis = await fetch(`${API_BASE_URL}/api/notifications`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
+        cache: "no-store"
       });
       if (resNotis.ok) {
         setNotifications(await resNotis.json());
@@ -429,6 +432,8 @@ export default function ResidentDashboard() {
 
   // Group active vs unresolved for headers
   const activeComplaintsCount = complaints.filter(c => c.status !== "Resolved").length;
+  const activeComplaints = complaints.filter(c => c.status !== "Resolved");
+  const completedComplaints = complaints.filter(c => c.status === "Resolved");
 
   // Derive Global Recent Activity Feed from history updates
   const recentActivity = complaints
@@ -915,6 +920,196 @@ export default function ResidentDashboard() {
                      </div>
                    )}
                  </div>
+                 
+                 {/* Completed Complaints Section */}
+                 <div className="space-y-4 pt-6 border-t border-border/40">
+                   <h2 className="text-xs font-bold text-primary uppercase tracking-widest border-b border-border/40 pb-2">
+                     Completed Tickets
+                   </h2>
+
+                   {/* Polished Empty State for Completed */}
+                   {completedComplaints.length === 0 && !error && (
+                     <div className="p-8 bg-surface/50 border border-border rounded text-center max-w-xl mx-auto space-y-4 shadow-3xs mt-2 opacity-80">
+                       <div className="mx-auto w-12 h-12 bg-background text-muted-text border border-border rounded-full flex items-center justify-center shadow-3xs">
+                         <CheckCircle className="w-5.5 h-5.5 text-muted-text/85" />
+                       </div>
+                       <div className="space-y-1.5">
+                         <h4 className="text-sm font-serif font-bold text-primary">No Completed Requests</h4>
+                         <p className="text-xs text-muted-text max-w-xs mx-auto leading-relaxed font-medium">
+                           Once your submitted requests are successfully addressed and resolved, they will appear here as part of your completed ledger.
+                         </p>
+                       </div>
+                     </div>
+                   )}
+
+                   {completedComplaints.length > 0 && (
+                     <>
+                       {/* Desktop Table View for Completed */}
+                       <div className="hidden md:block overflow-x-auto border border-border rounded shadow-2xs bg-surface opacity-90">
+                         <table className="w-full text-xs text-left">
+                           <thead className="table-header text-[10px] font-bold">
+                             <tr>
+                               <th className="px-6 py-4 w-16">ID</th>
+                               <th className="px-6 py-4">Subject</th>
+                               <th className="px-6 py-4 w-28">Category</th>
+                               <th className="px-6 py-4 w-24">Date Logged</th>
+                               <th className="px-6 py-4 w-24">Resolved Date</th>
+                               <th className="px-6 py-4 w-20">Priority</th>
+                               <th className="px-6 py-4 w-24 text-right">Status</th>
+                             </tr>
+                           </thead>
+                           <tbody className="divide-y divide-slate-100">
+                             {completedComplaints.map((c) => {
+                               const active = expandedTicketId === c.id;
+                               return (
+                                 <Fragment key={c.id}>
+                                   <tr className="hover:bg-background/50 transition-colors">
+                                     <td 
+                                       onClick={() => setSelectedTicket(c)}
+                                       className="px-6 py-4.5 font-bold text-primary hover:underline cursor-pointer"
+                                     >
+                                       #COM-{1000 + c.id}
+                                     </td>
+                                     <td 
+                                       onClick={() => setSelectedTicket(c)}
+                                       className="px-6 py-4.5 cursor-pointer"
+                                     >
+                                       <span className="font-bold text-text hover:text-primary text-xs line-through opacity-70">{c.title}</span>
+                                     </td>
+                                     <td className="px-6 py-4.5 font-semibold text-text">{c.category}</td>
+                                     <td className="px-6 py-4.5 text-muted-text font-semibold">{new Date(c.created_at).toLocaleDateString()}</td>
+                                     <td className="px-6 py-4.5 text-muted-text font-semibold">
+                                       {c.resolved_at ? new Date(c.resolved_at).toLocaleDateString() : new Date(c.created_at).toLocaleDateString()}
+                                     </td>
+                                     <td className="px-6 py-4.5">
+                                       <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold border uppercase tracking-wider ${
+                                         c.priority === 'High' 
+                                           ? 'bg-status-danger/5 text-status-danger border-status-danger/15' 
+                                           : c.priority === 'Medium' 
+                                             ? 'bg-status-warning/5 text-status-warning border-status-warning/15' 
+                                             : 'bg-status-success/5 text-status-success border-status-success/15'
+                                       }`}>
+                                         {c.priority}
+                                       </span>
+                                     </td>
+                                     <td className="px-6 py-4.5 text-right">
+                                       <div className="flex items-center justify-end gap-1.5">
+                                         <span className="text-[9px] px-2 py-0.5 rounded-full font-bold border uppercase tracking-wider bg-status-success/5 text-status-success border-status-success/15">
+                                           {c.status}
+                                         </span>
+                                         <button 
+                                           onClick={(e) => {
+                                             e.stopPropagation();
+                                             setExpandedTicketId(active ? null : c.id);
+                                           }}
+                                           className="p-1 hover:bg-background rounded transition-colors"
+                                         >
+                                           {active ? <ChevronUp className="w-3.5 h-3.5 text-muted-text" /> : <ChevronDown className="w-3.5 h-3.5 text-muted-text" />}
+                                         </button>
+                                       </div>
+                                     </td>
+                                   </tr>
+
+                                   {/* Expandable row for details */}
+                                   {active && (
+                                     <tr className="bg-background/30 animate-in fade-in duration-100">
+                                       <td colSpan={7} className="px-8 py-6 border-l-2 border-l-primary/60">
+                                         <div className="space-y-4">
+                                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                             <div className="space-y-1.5">
+                                               <div className="text-[10px] font-bold text-primary uppercase tracking-widest">Description details</div>
+                                               <p className="text-xs text-text font-medium leading-relaxed font-sans opacity-95">{c.description}</p>
+                                             </div>
+                                             <div className="p-5 bg-surface border border-border rounded space-y-3 shadow-3xs">
+                                               <div className="text-[9px] font-bold text-primary uppercase tracking-widest border-b border-border/40 pb-1 flex items-center gap-1.5">
+                                                 <Sparkles className="w-3.5 h-3.5 text-secondary" /> NLP Dispatch Analysis
+                                               </div>
+                                               <div className="grid grid-cols-2 gap-2 text-xs font-semibold text-muted-text">
+                                                 <div>
+                                                   <span>NLP Conf:</span>
+                                                   <span className="font-bold text-primary bg-background px-1 border border-border rounded ml-1">{(c.ai_confidence_score * 100).toFixed(0)}%</span>
+                                                 </div>
+                                                 <div>
+                                                   <span>Location:</span>
+                                                   <span className="text-text font-bold ml-1">{c.location}</span>
+                                                 </div>
+                                               </div>
+                                               <div className="text-[10px] text-muted-text font-medium leading-relaxed mt-1">
+                                                 <span className="font-bold">AI Diagnostics:</span> {c.ai_explanation}
+                                               </div>
+                                             </div>
+                                           </div>
+
+                                           <div className="border-t border-border/40 pt-3">
+                                             <div className="flex items-center justify-between mb-2">
+                                               <div className="text-[10px] font-bold text-primary uppercase tracking-widest">Service Timeline Logs</div>
+                                               <button 
+                                                 onClick={() => setSelectedTicket(c)}
+                                                 className="text-[9px] font-bold text-secondary hover:underline uppercase tracking-wider"
+                                               >
+                                                 Open Details Tracker &rarr;
+                                               </button>
+                                             </div>
+                                             <div className="space-y-3 relative pl-1">
+                                               {c.history.map((h: any) => (
+                                                 <div key={h.id} className="relative pl-5 border-l border-border text-xs py-0.5 last:border-l-transparent">
+                                                   <div className="absolute top-1.5 -left-1 w-2 h-2 rounded-full bg-surface border border-muted-text flex items-center justify-center" />
+                                                   <div className="flex items-center justify-between text-[9px] text-muted-text font-bold mb-0.5">
+                                                     <span className="bg-background px-1 border border-border rounded">Log: {h.status_from} &rarr; {h.status_to}</span>
+                                                     <span>{new Date(h.created_at).toLocaleDateString()}</span>
+                                                   </div>
+                                                   <p className="text-text font-sans font-medium leading-relaxed">{h.comment}</p>
+                                                 </div>
+                                               ))}
+                                             </div>
+                                           </div>
+                                         </div>
+                                       </td>
+                                     </tr>
+                                   )}
+                                 </Fragment>
+                               );
+                             })}
+                           </tbody>
+                         </table>
+                       </div>
+
+                       {/* Mobile View for Completed */}
+                       <div className="md:hidden space-y-4 opacity-90">
+                         {completedComplaints.map((c) => (
+                           <div key={c.id} className="bg-surface border border-border rounded p-4 shadow-3xs space-y-3">
+                             <div className="flex items-center justify-between border-b border-border/40 pb-2">
+                               <span className="text-xs font-bold text-primary">{c.category}</span>
+                               <span className="text-[9px] px-2 py-0.5 rounded-full font-bold border uppercase tracking-wider bg-status-success/5 text-status-success border-status-success/15">
+                                 {c.status}
+                               </span>
+                             </div>
+
+                             <div onClick={() => setSelectedTicket(c)} className="cursor-pointer">
+                               <h4 className="text-xs font-bold text-text hover:underline line-through opacity-70">{c.title}</h4>
+                               <p className="text-[10px] text-muted-text mt-1 font-medium leading-relaxed line-clamp-2">{c.description}</p>
+                             </div>
+
+                             <div className="flex items-center justify-between text-[9px] text-muted-text font-semibold border-t border-border/40 pt-2 flex-wrap gap-1">
+                               <div>Filed: <span className="text-text">{new Date(c.created_at).toLocaleDateString()}</span></div>
+                               <div>Priority: <span className="font-bold text-text uppercase">{c.priority}</span></div>
+                             </div>
+
+                             <div className="flex items-center justify-between text-[9px] text-muted-text font-bold pt-1.5">
+                               <span>#COM-{1000 + c.id}</span>
+                               <button 
+                                 onClick={() => setSelectedTicket(c)}
+                                 className="text-primary flex items-center gap-0.5 uppercase tracking-wider"
+                               >
+                                 Inspect Tracker &rarr;
+                               </button>
+                             </div>
+                           </div>
+                         ))}
+                       </div>
+                     </>
+                   )}
+                 </div>
                </div>
              </main>
            </>
@@ -1276,226 +1471,227 @@ export default function ResidentDashboard() {
                    </form>
                  </div>
                )}
+                {/* Complaints Ledger List Section */}
+                <div className="space-y-8">
+                  <div className="space-y-4">
+                    <h2 className="text-xs font-bold text-primary uppercase tracking-widest border-b border-border/40 pb-2">
+                      My Active Tickets
+                    </h2>
 
-               {/* Complaints Ledger List Section */}
-               <div className="space-y-4">
-                 <h2 className="text-xs font-bold text-primary uppercase tracking-widest border-b border-border/40 pb-2">
-                   My Maintenance Tickets
-                 </h2>
+                    {/* Polished Empty State */}
+                    {activeComplaints.length === 0 && !error && (
+                      <div className="p-8 bg-surface border border-border rounded text-center max-w-xl mx-auto space-y-4 shadow-2xs mt-4 animate-in fade-in duration-200">
+                        <div className="mx-auto w-12 h-12 bg-background text-muted-text border border-border rounded-full flex items-center justify-center shadow-3xs">
+                          <ClipboardList className="w-5.5 h-5.5 text-muted-text/80" />
+                        </div>
+                        <div className="space-y-1.5">
+                          <h4 className="text-sm font-serif font-bold text-primary">No Active Requests</h4>
+                          <p className="text-xs text-muted-text max-w-xs mx-auto leading-relaxed font-medium">
+                            Your unit is currently running smoothly! If you need to log plumbing issues, elevator queries, or request help, tap the &quot;Raise Complaint&quot; button above.
+                          </p>
+                        </div>
+                      </div>
+                    )}
 
-                 {/* Polished Empty State */}
-                 {complaints.length === 0 && !error && (
-                   <div className="p-8 bg-surface border border-border rounded text-center max-w-xl mx-auto space-y-4 shadow-2xs mt-4 animate-in fade-in duration-200">
-                     <div className="mx-auto w-12 h-12 bg-background text-muted-text border border-border rounded-full flex items-center justify-center shadow-3xs">
-                       <ClipboardList className="w-5.5 h-5.5 text-muted-text/80" />
-                     </div>
-                     <div className="space-y-1.5">
-                       <h4 className="text-sm font-serif font-bold text-primary">No Service Requests Found</h4>
-                       <p className="text-xs text-muted-text max-w-xs mx-auto leading-relaxed font-medium">
-                         Your unit is currently running smoothly! If you need to log plumbing issues, elevator queries, or request help, tap the &quot;Raise Complaint&quot; button above.
-                       </p>
-                     </div>
-                   </div>
-                 )}
+                    {/* Render complaints ledger table/cards */}
+                    {activeComplaints.length > 0 && (
+                      <>
+                        {/* Desktop Table View */}
+                        <div className="hidden md:block overflow-x-auto border border-border rounded shadow-2xs bg-surface">
+                          <table className="w-full text-xs text-left">
+                            <thead className="table-header text-[10px] font-bold">
+                              <tr>
+                                <th className="px-6 py-4 w-16">ID</th>
+                                <th className="px-6 py-4">Subject</th>
+                                <th className="px-6 py-4 w-28">Category</th>
+                                <th className="px-6 py-4 w-24">Date Logged</th>
+                                <th className="px-6 py-4 w-24">Last Update</th>
+                                <th className="px-6 py-4 w-20">Priority</th>
+                                <th className="px-6 py-4 w-24 text-right">Status</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-slate-100">
+                              {activeComplaints.map((c) => {
+                                const active = expandedTicketId === c.id;
+                                const overdue = isOverdue(c.created_at, c.status);
+                                
+                                return (
+                                  <Fragment key={c.id}>
+                                    <tr className="hover:bg-background/50 transition-colors">
+                                      <td 
+                                        onClick={() => setSelectedTicket(c)}
+                                        className="px-6 py-4.5 font-bold text-primary hover:underline cursor-pointer"
+                                      >
+                                        #COM-{1000 + c.id}
+                                      </td>
+                                      <td 
+                                        onClick={() => setSelectedTicket(c)}
+                                        className="px-6 py-4.5 cursor-pointer"
+                                      >
+                                        <div className="flex items-center gap-2">
+                                          <span className="font-bold text-text hover:text-primary text-xs">{c.title}</span>
+                                          {overdue && (
+                                            <span className="text-[8px] font-bold text-status-danger bg-status-danger/5 border border-status-danger/20 px-1.5 py-0.5 rounded-full inline-flex items-center gap-0.5 animate-none">
+                                              <AlertTriangle className="w-2.5 h-2.5" /> SLA Overdue
+                                            </span>
+                                          )}
+                                        </div>
+                                      </td>
+                                      <td className="px-6 py-4.5 font-semibold text-text">{c.category}</td>
+                                      <td className="px-6 py-4.5 text-muted-text font-semibold">{new Date(c.created_at).toLocaleDateString()}</td>
+                                      <td className="px-6 py-4.5 text-muted-text font-semibold">{getLastUpdated(c)}</td>
+                                      <td className="px-6 py-4.5">
+                                        <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold border uppercase tracking-wider ${
+                                          c.priority === 'High' 
+                                            ? 'bg-status-danger/5 text-status-danger border-status-danger/15' 
+                                            : c.priority === 'Medium' 
+                                              ? 'bg-status-warning/5 text-status-warning border-status-warning/15' 
+                                              : 'bg-status-success/5 text-status-success border-status-success/15'
+                                        }`}>
+                                          {c.priority}
+                                        </span>
+                                      </td>
+                                      <td className="px-6 py-4.5 text-right">
+                                        <div className="flex items-center justify-end gap-1.5">
+                                          <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold border uppercase tracking-wider whitespace-nowrap ${
+                                            c.status === 'Resolved' 
+                                              ? 'bg-status-success/5 text-status-success border-status-success/15' 
+                                              : c.status === 'In Progress' 
+                                                ? 'bg-status-warning/5 text-status-warning border-status-warning/15' 
+                                                : 'bg-status-danger/5 text-status-danger border-status-danger/15'
+                                          }`}>
+                                            {c.status}
+                                          </span>
+                                          <button 
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              setExpandedTicketId(active ? null : c.id);
+                                            }}
+                                            className="p-1 hover:bg-background rounded transition-colors"
+                                          >
+                                            {active ? <ChevronUp className="w-3.5 h-3.5 text-muted-text" /> : <ChevronDown className="w-3.5 h-3.5 text-muted-text" />}
+                                          </button>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                    
+                                    {/* Expandable row for details */}
+                                    {active && (
+                                      <tr className="bg-background/30 animate-in fade-in duration-100">
+                                        <td colSpan={7} className="px-8 py-6 border-l-2 border-l-primary/60">
+                                          <div className="space-y-4">
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                              <div className="space-y-1.5">
+                                                <div className="text-[10px] font-bold text-primary uppercase tracking-widest">Description details</div>
+                                                <p className="text-xs text-text font-medium leading-relaxed font-sans opacity-95">{c.description}</p>
+                                              </div>
+                                              <div className="p-5 bg-surface border border-border rounded space-y-3 shadow-3xs">
+                                                <div className="text-[9px] font-bold text-primary uppercase tracking-widest border-b border-border/40 pb-1 flex items-center gap-1.5">
+                                                  <Sparkles className="w-3.5 h-3.5 text-secondary" /> NLP Dispatch Analysis
+                                                </div>
+                                                <div className="grid grid-cols-2 gap-2 text-xs font-semibold text-muted-text">
+                                                  <div>
+                                                    <span>NLP Conf:</span>
+                                                    <span className="font-bold text-primary bg-background px-1 border border-border rounded ml-1">{(c.ai_confidence_score * 100).toFixed(0)}%</span>
+                                                  </div>
+                                                  <div>
+                                                    <span>Location:</span>
+                                                    <span className="text-text font-bold ml-1">{c.location}</span>
+                                                  </div>
+                                                </div>
+                                                <div className="text-[10px] text-muted-text font-medium leading-relaxed mt-1">
+                                                  <span className="font-bold">AI Diagnostics:</span> {c.ai_explanation}
+                                                </div>
+                                              </div>
+                                            </div>
 
-                 {/* Render complaints ledger table/cards */}
-                 {complaints.length > 0 && (
-                   <>
-                     {/* Desktop Table View */}
-                     <div className="hidden md:block overflow-x-auto border border-border rounded shadow-2xs bg-surface">
-                       <table className="w-full text-xs text-left">
-                         <thead className="table-header text-[10px] font-bold">
-                           <tr>
-                             <th className="px-6 py-4 w-16">ID</th>
-                             <th className="px-6 py-4">Subject</th>
-                             <th className="px-6 py-4 w-28">Category</th>
-                             <th className="px-6 py-4 w-24">Date Logged</th>
-                             <th className="px-6 py-4 w-24">Last Update</th>
-                             <th className="px-6 py-4 w-20">Priority</th>
-                             <th className="px-6 py-4 w-24 text-right">Status</th>
-                           </tr>
-                         </thead>
-                         <tbody className="divide-y divide-slate-100">
-                           {complaints.map((c) => {
-                             const active = expandedTicketId === c.id;
-                             const overdue = isOverdue(c.created_at, c.status);
-                             
-                             return (
-                               <Fragment key={c.id}>
-                                 <tr className="hover:bg-background/50 transition-colors">
-                                   <td 
-                                     onClick={() => setSelectedTicket(c)}
-                                     className="px-6 py-4.5 font-bold text-primary hover:underline cursor-pointer"
-                                   >
-                                     #COM-{1000 + c.id}
-                                   </td>
-                                   <td 
-                                     onClick={() => setSelectedTicket(c)}
-                                     className="px-6 py-4.5 cursor-pointer"
-                                   >
-                                     <div className="flex items-center gap-2">
-                                       <span className="font-bold text-text hover:text-primary text-xs">{c.title}</span>
-                                       {overdue && (
-                                         <span className="text-[8px] font-bold text-status-danger bg-status-danger/5 border border-status-danger/20 px-1.5 py-0.5 rounded-full inline-flex items-center gap-0.5 animate-none">
-                                           <AlertTriangle className="w-2.5 h-2.5" /> SLA Overdue
-                                         </span>
-                                       )}
-                                     </div>
-                                   </td>
-                                   <td className="px-6 py-4.5 font-semibold text-text">{c.category}</td>
-                                   <td className="px-6 py-4.5 text-muted-text font-semibold">{new Date(c.created_at).toLocaleDateString()}</td>
-                                   <td className="px-6 py-4.5 text-muted-text font-semibold">{getLastUpdated(c)}</td>
-                                   <td className="px-6 py-4.5">
-                                     <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold border uppercase tracking-wider ${
-                                       c.priority === 'High' 
-                                         ? 'bg-status-danger/5 text-status-danger border-status-danger/15' 
-                                         : c.priority === 'Medium' 
-                                           ? 'bg-status-warning/5 text-status-warning border-status-warning/15' 
-                                           : 'bg-status-success/5 text-status-success border-status-success/15'
-                                     }`}>
-                                       {c.priority}
-                                     </span>
-                                   </td>
-                                   <td className="px-6 py-4.5 text-right">
-                                     <div className="flex items-center justify-end gap-1.5">
-                                       <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold border uppercase tracking-wider whitespace-nowrap ${
-                                         c.status === 'Resolved' 
-                                           ? 'bg-status-success/5 text-status-success border-status-success/15' 
-                                           : c.status === 'In Progress' 
-                                             ? 'bg-status-warning/5 text-status-warning border-status-warning/15' 
-                                             : 'bg-status-danger/5 text-status-danger border-status-danger/15'
-                                       }`}>
-                                         {c.status}
-                                       </span>
-                                       <button 
-                                         onClick={(e) => {
-                                           e.stopPropagation();
-                                           setExpandedTicketId(active ? null : c.id);
-                                         }}
-                                         className="p-1 hover:bg-background rounded transition-colors"
-                                       >
-                                         {active ? <ChevronUp className="w-3.5 h-3.5 text-muted-text" /> : <ChevronDown className="w-3.5 h-3.5 text-muted-text" />}
-                                       </button>
-                                     </div>
-                                   </td>
-                                 </tr>
-                                 
-                                 {/* Expandable row for details */}
-                                 {active && (
-                                   <tr className="bg-background/30 animate-in fade-in duration-100">
-                                     <td colSpan={7} className="px-8 py-6 border-l-2 border-l-primary/60">
-                                       <div className="space-y-4">
-                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                           <div className="space-y-1.5">
-                                             <div className="text-[10px] font-bold text-primary uppercase tracking-widest">Description details</div>
-                                             <p className="text-xs text-text font-medium leading-relaxed font-sans opacity-95">{c.description}</p>
-                                           </div>
-                                           <div className="p-5 bg-surface border border-border rounded space-y-3 shadow-3xs">
-                                             <div className="text-[9px] font-bold text-primary uppercase tracking-widest border-b border-border/40 pb-1 flex items-center gap-1.5">
-                                               <Sparkles className="w-3.5 h-3.5 text-secondary" /> NLP Dispatch Analysis
-                                             </div>
-                                             <div className="grid grid-cols-2 gap-2 text-xs font-semibold text-muted-text">
-                                               <div>
-                                                 <span>NLP Conf:</span>
-                                                 <span className="font-bold text-primary bg-background px-1 border border-border rounded ml-1">{(c.ai_confidence_score * 100).toFixed(0)}%</span>
-                                               </div>
-                                               <div>
-                                                 <span>Location:</span>
-                                                 <span className="text-text font-bold ml-1">{c.location}</span>
-                                               </div>
-                                             </div>
-                                             <div className="text-[10px] text-muted-text font-medium leading-relaxed mt-1">
-                                               <span className="font-bold">AI Diagnostics:</span> {c.ai_explanation}
-                                             </div>
-                                           </div>
-                                         </div>
+                                            <div className="border-t border-border/40 pt-3">
+                                              <div className="flex items-center justify-between mb-2">
+                                                <div className="text-[10px] font-bold text-primary uppercase tracking-widest">Service Timeline Logs</div>
+                                                <button 
+                                                  onClick={() => setSelectedTicket(c)}
+                                                  className="text-[9px] font-bold text-secondary hover:underline uppercase tracking-wider"
+                                                >
+                                                  Open Details Tracker &rarr;
+                                                </button>
+                                              </div>
+                                              <div className="space-y-3 relative pl-1">
+                                                {c.history.map((h: any) => (
+                                                  <div key={h.id} className="relative pl-5 border-l border-border text-xs py-0.5 last:border-l-transparent">
+                                                    <div className="absolute top-1.5 -left-1 w-2 h-2 rounded-full bg-surface border border-muted-text flex items-center justify-center" />
+                                                    <div className="flex items-center justify-between text-[9px] text-muted-text font-bold mb-0.5">
+                                                      <span className="bg-background px-1 border border-border rounded">Log: {h.status_from} &rarr; {h.status_to}</span>
+                                                      <span>{new Date(h.created_at).toLocaleDateString()}</span>
+                                                    </div>
+                                                    <p className="text-text font-sans font-medium leading-relaxed">{h.comment}</p>
+                                                  </div>
+                                                ))}
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    )}
+                                  </Fragment>
+                                );
+                              })}
+                            </tbody>
+                          </table>
+                        </div>
 
-                                         <div className="border-t border-border/40 pt-3">
-                                           <div className="flex items-center justify-between mb-2">
-                                             <div className="text-[10px] font-bold text-primary uppercase tracking-widest">Service Timeline Logs</div>
-                                             <button 
-                                               onClick={() => setSelectedTicket(c)}
-                                               className="text-[9px] font-bold text-secondary hover:underline uppercase tracking-wider"
-                                             >
-                                               Open Details Tracker &rarr;
-                                             </button>
-                                           </div>
-                                           <div className="space-y-3 relative pl-1">
-                                             {c.history.map((h: any) => (
-                                               <div key={h.id} className="relative pl-5 border-l border-border text-xs py-0.5 last:border-l-transparent">
-                                                 <div className="absolute top-1.5 -left-1 w-2 h-2 rounded-full bg-surface border border-muted-text flex items-center justify-center" />
-                                                 <div className="flex items-center justify-between text-[9px] text-muted-text font-bold mb-0.5">
-                                                   <span className="bg-background px-1 border border-border rounded">Log: {h.status_from} &rarr; {h.status_to}</span>
-                                                   <span>{new Date(h.created_at).toLocaleDateString()}</span>
-                                                 </div>
-                                                 <p className="text-text font-sans font-medium leading-relaxed">{h.comment}</p>
-                                               </div>
-                                             ))}
-                                           </div>
-                                         </div>
-                                       </div>
-                                     </td>
-                                   </tr>
-                                 )}
-                               </Fragment>
-                             );
-                           })}
-                         </tbody>
-                       </table>
-                     </div>
+                        {/* Mobile View */}
+                        <div className="md:hidden space-y-4">
+                          {activeComplaints.map((c) => {
+                            const overdue = isOverdue(c.created_at, c.status);
+                            
+                            return (
+                              <div key={c.id} className="bg-surface border border-border rounded p-4 shadow-3xs space-y-3">
+                                <div className="flex items-center justify-between border-b border-border/40 pb-2">
+                                  <span className="text-xs font-bold text-primary">{c.category}</span>
+                                  <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold border uppercase tracking-wider ${
+                                    c.status === 'Resolved' 
+                                      ? 'bg-status-success/5 text-status-success border-status-success/15' 
+                                      : c.status === 'In Progress' 
+                                        ? 'bg-status-warning/5 text-status-warning border-status-warning/15' 
+                                        : 'bg-status-danger/5 text-status-danger border-status-danger/15'
+                                  }`}>
+                                    {c.status}
+                                  </span>
+                                </div>
 
-                     {/* Mobile View */}
-                     <div className="md:hidden space-y-4">
-                       {complaints.map((c) => {
-                         const overdue = isOverdue(c.created_at, c.status);
-                         
-                         return (
-                           <div key={c.id} className="bg-surface border border-border rounded p-4 shadow-3xs space-y-3">
-                             <div className="flex items-center justify-between border-b border-border/40 pb-2">
-                               <span className="text-xs font-bold text-primary">{c.category}</span>
-                               <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold border uppercase tracking-wider ${
-                                 c.status === 'Resolved' 
-                                   ? 'bg-status-success/5 text-status-success border-status-success/15' 
-                                   : c.status === 'In Progress' 
-                                     ? 'bg-status-warning/5 text-status-warning border-status-warning/15' 
-                                     : 'bg-status-danger/5 text-status-danger border-status-danger/15'
-                               }`}>
-                                 {c.status}
-                               </span>
-                             </div>
+                                <div onClick={() => setSelectedTicket(c)} className="cursor-pointer">
+                                  <div className="flex items-center gap-1.5 flex-wrap">
+                                    <h4 className="text-xs font-bold text-text hover:underline">{c.title}</h4>
+                                    {overdue && (
+                                      <span className="text-[8px] font-bold text-status-danger bg-status-danger/5 border border-status-danger/20 px-1.5 py-0.5 rounded-full">SLA Overdue</span>
+                                    )}
+                                  </div>
+                                  <p className="text-[10px] text-muted-text mt-1 font-medium leading-relaxed line-clamp-2">{c.description}</p>
+                                </div>
 
-                             <div onClick={() => setSelectedTicket(c)} className="cursor-pointer">
-                               <div className="flex items-center gap-1.5 flex-wrap">
-                                 <h4 className="text-xs font-bold text-text hover:underline">{c.title}</h4>
-                                 {overdue && (
-                                   <span className="text-[8px] font-bold text-status-danger bg-status-danger/5 border border-status-danger/20 px-1.5 py-0.5 rounded-full">SLA Overdue</span>
-                                 )}
-                               </div>
-                               <p className="text-[10px] text-muted-text mt-1 font-medium leading-relaxed line-clamp-2">{c.description}</p>
-                             </div>
+                                <div className="flex items-center justify-between text-[9px] text-muted-text font-semibold border-t border-border/40 pt-2 flex-wrap gap-1">
+                                  <div>Filed: <span className="text-text">{new Date(c.created_at).toLocaleDateString()}</span></div>
+                                  <div>Priority: <span className="font-bold text-text uppercase">{c.priority}</span></div>
+                                  <div>Activity: <span className="text-text">{getLastUpdated(c)}</span></div>
+                                </div>
 
-                             <div className="flex items-center justify-between text-[9px] text-muted-text font-semibold border-t border-border/40 pt-2 flex-wrap gap-1">
-                               <div>Filed: <span className="text-text">{new Date(c.created_at).toLocaleDateString()}</span></div>
-                               <div>Priority: <span className="font-bold text-text uppercase">{c.priority}</span></div>
-                               <div>Activity: <span className="text-text">{getLastUpdated(c)}</span></div>
-                             </div>
-
-                             <div className="flex items-center justify-between text-[9px] text-muted-text font-bold pt-1.5">
-                               <span>#COM-{1000 + c.id}</span>
-                               <button 
-                                 onClick={() => setSelectedTicket(c)}
-                                 className="text-primary flex items-center gap-0.5 uppercase tracking-wider"
-                               >
-                                 Inspect Tracker &rarr;
-                               </button>
-                             </div>
-                           </div>
-                         );
-                       })}
-                     </div>
-                   </>
-                 )}
-               </div>
+                                <div className="flex items-center justify-between text-[9px] text-muted-text font-bold pt-1.5">
+                                  <span>#COM-{1000 + c.id}</span>
+                                  <button 
+                                    onClick={() => setSelectedTicket(c)}
+                                    className="text-primary flex items-center gap-0.5 uppercase tracking-wider"
+                                  >
+                                    Inspect Tracker &rarr;
+                                  </button>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
              </main>
            </>
          )}

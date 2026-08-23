@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
+import datetime
 from typing import List
 from database import get_db
 from models import User, Notice, AuditLog, Notification
@@ -10,8 +11,11 @@ router = APIRouter(prefix="/notices", tags=["Notice Board"])
 
 @router.get("", response_model=List[NoticeOut])
 def list_notices(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    # Sort pinned first, then important, then created_at desc
-    notices = db.query(Notice).order_by(
+    # Sort pinned first, then important, then created_at desc, and filter out expired notices
+    now = datetime.datetime.utcnow()
+    notices = db.query(Notice).filter(
+        (Notice.expires_at == None) | (Notice.expires_at > now)
+    ).order_by(
         Notice.is_pinned.desc(),
         Notice.is_important.desc(),
         Notice.created_at.desc()
@@ -29,6 +33,7 @@ def create_notice(
         content=notice_in.content,
         is_pinned=notice_in.is_pinned,
         is_important=notice_in.is_important,
+        expires_at=notice_in.expires_at,
         created_by_id=current_user.id
     )
     db.add(new_notice)

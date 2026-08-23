@@ -91,6 +91,7 @@ class NoticeBase(BaseModel):
     content: str
     is_pinned: bool = False
     is_important: bool = False
+    expires_at: Optional[datetime.datetime] = None
 
 class NoticeCreate(NoticeBase):
     pass

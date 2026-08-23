@@ -95,6 +95,7 @@ class Notice(Base):
     created_by_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
+    expires_at = Column(DateTime, nullable=True)
 
     # Relationships
     created_by = relationship("User")
