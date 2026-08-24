@@ -9,8 +9,7 @@ import {
   Menu, X, ClipboardList, ChevronDown, ChevronUp
 } from "lucide-react";
 import LogoIcon from "@/components/LogoIcon";
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+import { API_BASE_URL } from "@/lib/api";
 
 export default function AdminAssets() {
   const [user, setUser] = useState<any>(null);

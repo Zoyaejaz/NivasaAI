@@ -14,11 +14,10 @@ import {
   ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, Tooltip
 } from "recharts";
 import ThemeToggle from "@/components/ThemeToggle";
+import { API_BASE_URL } from "@/lib/api";
 
 // Consistent visual colors: Spruce Green, Muted Clay, and Slate Gray
 const COLORS = ["#253C2C", "#7F624C", "#5B665E", "#8A948E", "#A07C64", "#D5D8D3"];
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 export default function AdminDashboard() {
   const [user, setUser] = useState<any>(null);

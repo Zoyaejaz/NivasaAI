@@ -4,8 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Mail, Lock, AlertCircle, Loader2, User, Home, Phone, ArrowLeft, CheckCircle2, Sparkles, Eye, EyeOff } from "lucide-react";
 import LogoIcon from "@/components/LogoIcon";
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+import { API_BASE_URL } from "@/lib/api";
 
 export default function Login() {
   const [isSignUp, setIsSignUp] = useState(false);

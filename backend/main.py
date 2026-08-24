@@ -4,11 +4,58 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 import os
 
-from database import engine, Base
+from database import engine, Base, SessionLocal
+from models import User
 from routers import auth, complaints, notices, assets, analytics, assistant, notifications
 
 # Auto-create tables on startup
 Base.metadata.create_all(bind=engine)
+
+# Seed default admin & resident users if they do not exist
+def seed_default_users():
+    db = SessionLocal()
+    try:
+        # Check if admin exists
+        admin = db.query(User).filter(User.role == "admin").first()
+        if not admin:
+            print("No admin user found. Seeding default admin user...")
+            from auth import hash_password
+            admin_pwd = hash_password("admin123")
+            admin_user = User(
+                email="admin@nivasa.ai",
+                hashed_password=admin_pwd,
+                full_name="Aarav Sharma",
+                role="admin",
+                flat_number="Tower 1-101",
+                phone_number="9876543210"
+            )
+            db.add(admin_user)
+            
+        # Check if resident exists
+        resident = db.query(User).filter(User.role == "resident").first()
+        if not resident:
+            print("No resident user found. Seeding default resident user...")
+            from auth import hash_password
+            res_pwd = hash_password("resident123")
+            resident_user = User(
+                email="resident@nivasa.ai",
+                hashed_password=res_pwd,
+                full_name="Neha Patel",
+                role="resident",
+                flat_number="Tower 2-504",
+                phone_number="8765432109"
+            )
+            db.add(resident_user)
+            
+        db.commit()
+        print("Database verification/seeding completed.")
+    except Exception as e:
+        print(f"Error seeding default users: {e}")
+        db.rollback()
+    finally:
+        db.close()
+
+seed_default_users()
 
 app = FastAPI(
     title="NivasaAI API",
