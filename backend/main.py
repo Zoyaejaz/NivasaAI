@@ -71,14 +71,21 @@ allowed_origins = [
     "http://127.0.0.1:3000",
     "http://localhost:3001",
     "http://127.0.0.1:3001",
+    "https://nivasa-ai.vercel.app",
 ]
 env_origins = os.getenv("ALLOWED_ORIGINS")
 if env_origins:
-    allowed_origins.extend([origin.strip() for origin in env_origins.split(",") if origin.strip()])
+    for origin in env_origins.split(","):
+        o = origin.strip()
+        if o:
+            if o.endswith("/"):
+                o = o[:-1]
+            allowed_origins.append(o)
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
