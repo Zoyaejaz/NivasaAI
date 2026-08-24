@@ -74,13 +74,6 @@ def get_analytics(db: Session = Depends(get_db), current_user: User = Depends(re
             
     # Sort overdue trends by date
     overdue_trends = [DateCount(date=k, count=v) for k, v in sorted(overdue_map.items())]
-    if not overdue_trends:
-        # Provide visual fallback for chart demonstration
-        today = datetime.date.today()
-        overdue_trends = [
-            DateCount(date=(today - datetime.timedelta(days=i)).strftime("%Y-%m-%d"), count=i % 3)
-            for i in range(5, 0, -1)
-        ]
         
     # Forecast for the next 30 days
     forecast_raw = forecast_complaint_volume(complaints, days_to_forecast=30)

@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Building, Mail, Lock, AlertCircle, Loader2, User, Home, Phone, ArrowLeft, CheckCircle2, Sparkles, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, AlertCircle, Loader2, User, Home, Phone, ArrowLeft, CheckCircle2, Sparkles, Eye, EyeOff } from "lucide-react";
+import LogoIcon from "@/components/LogoIcon";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -110,7 +111,7 @@ export default function Login() {
         {/* Branding & Logo */}
         <div className="text-center">
           <div className="inline-flex p-2.5 bg-primary rounded shadow-3xs mb-3">
-            <Building className="w-5.5 h-5.5 text-white" />
+            <LogoIcon className="w-5.5 h-5.5 text-white" />
           </div>
           <h2 className="text-xl font-serif font-bold tracking-tight text-primary">
             Nivasa<span className="font-sans text-secondary font-normal italic ml-0.5">AI</span> Portal

@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, Building, CheckCircle2, Clipboard, Activity, ShieldCheck, Brain } from "lucide-react";
+import { ArrowRight, CheckCircle2, Clipboard, Activity, ShieldCheck, Brain } from "lucide-react";
 import AuthModal from "@/components/AuthModal";
 import ThemeToggle from "@/components/ThemeToggle";
+import LogoIcon from "@/components/LogoIcon";
 
 export default function LandingPage() {
   const [showAuthPopup, setShowAuthPopup] = useState(false);
@@ -23,7 +24,7 @@ export default function LandingPage() {
       <header className="sticky top-4 z-20 w-full max-w-7xl mx-auto px-8 py-3.5 flex items-center justify-between border border-border bg-surface/90 backdrop-blur-md rounded-full shadow-md mt-4 transition-all">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 bg-primary rounded-full flex items-center justify-center shadow-3xs border border-white/10">
-            <Building className="w-4.5 h-4.5 text-white" />
+            <LogoIcon className="w-4.5 h-4.5 text-white" />
           </div>
           <span className="text-base font-serif tracking-tight text-primary font-bold">
             Nivasa<span className="font-sans font-normal text-secondary italic ml-0.5">AI</span>
@@ -138,7 +139,7 @@ export default function LandingPage() {
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-primary rounded flex items-center justify-center">
-                <Building className="w-4 h-4 text-white" />
+                <LogoIcon className="w-4 h-4 text-white" />
               </div>
               <span className="text-sm font-serif tracking-tight text-primary font-bold">
                 Nivasa<span className="font-sans font-normal text-secondary italic ml-0.5">AI</span>

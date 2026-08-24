@@ -4,10 +4,11 @@ import { useEffect, useState, Fragment } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { 
-  Building, User, LogOut, ArrowLeft, Activity, Calendar, 
+  User, LogOut, ArrowLeft, Activity, Calendar, 
   AlertTriangle, CheckCircle2, ShieldAlert, RefreshCw, Sparkles,
   Menu, X, ClipboardList, ChevronDown, ChevronUp
 } from "lucide-react";
+import LogoIcon from "@/components/LogoIcon";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -106,7 +107,7 @@ export default function AdminAssets() {
         <div className="space-y-6">
           <div className="flex items-center gap-2.5 px-2 py-1.5 border-b border-border/40 pb-4">
             <div className="p-1.5 bg-primary rounded flex items-center justify-center">
-              <Building className="w-4.5 h-4.5 text-white" />
+              <LogoIcon className="w-4.5 h-4.5 text-white" />
             </div>
             <span className="font-serif font-bold text-base tracking-tight text-primary">
               Nivasa<span className="font-sans font-normal text-secondary italic ml-0.5">AI</span>
@@ -143,7 +144,7 @@ export default function AdminAssets() {
       {/* Mobile Top Header Banner */}
       <div className="md:hidden flex items-center justify-between bg-surface border-b border-border px-4 py-3 sticky top-0 z-40 shadow-3xs">
         <div className="flex items-center gap-2">
-          <Building className="w-4 h-4 text-primary" />
+          <LogoIcon className="w-4 h-4 text-primary" />
           <span className="font-serif font-bold text-sm tracking-tight text-primary">Nivasa<span className="font-sans font-normal text-secondary italic">AI</span></span>
         </div>
         
@@ -166,7 +167,7 @@ export default function AdminAssets() {
             <div className="space-y-6">
               <div className="flex items-center justify-between border-b border-border/40 pb-4">
                 <div className="flex items-center gap-2">
-                  <Building className="w-4 h-4 text-primary" />
+                  <LogoIcon className="w-4 h-4 text-primary" />
                   <span className="font-serif font-bold text-sm tracking-tight text-primary">Nivasa<span className="font-sans font-normal text-secondary italic">AI</span></span>
                 </div>
                 <button onClick={() => setMenuOpen(false)} className="text-muted-text hover:text-primary p-1">

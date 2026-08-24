@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { 
-  Building, User, Home, Phone, ArrowLeft, Mail, AlertCircle, Loader2, CheckCircle2, Sparkles, X 
+  User, Home, Phone, ArrowLeft, Mail, AlertCircle, Loader2, CheckCircle2, Sparkles, X 
 } from "lucide-react";
+import LogoIcon from "./LogoIcon";
 import PasswordInput from "./PasswordInput";
 import { api } from "@/lib/api";
 
@@ -108,7 +109,7 @@ export default function AuthModal({ isOpen, onClose, defaultIsSignUp = false }: 
         {/* Branding & Logo */}
         <div className="text-center">
           <div className="inline-flex p-2.5 bg-primary rounded shadow-3xs mb-3">
-            <Building className="w-5.5 h-5.5 text-white" />
+            <LogoIcon className="w-5.5 h-5.5 text-white" />
           </div>
           <h2 className="text-xl font-serif font-bold tracking-tight text-primary font-sans">
             Nivasa<span className="font-sans text-secondary font-normal italic ml-0.5">AI</span> Portal

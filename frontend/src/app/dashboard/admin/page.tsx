@@ -9,6 +9,7 @@ import {
   RefreshCw, ClipboardList, ShieldAlert, Sparkles, Bell,
   Menu, X, ChevronLeft, ChevronRight, Image as ImageIcon
 } from "lucide-react";
+import LogoIcon from "@/components/LogoIcon";
 import {
   ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, Tooltip
 } from "recharts";
@@ -502,7 +503,7 @@ export default function AdminDashboard() {
         <div className="space-y-6">
           <div className="flex items-center gap-2.5 px-2 py-1.5 border-b border-border/40 pb-4">
             <div className="p-1.5 bg-primary rounded flex items-center justify-center">
-              <Building className="w-4.5 h-4.5 text-white" />
+              <LogoIcon className="w-4.5 h-4.5 text-white" />
             </div>
             <span className="font-serif font-bold text-base tracking-tight text-primary">
               Nivasa<span className="font-sans font-normal text-secondary italic ml-0.5">AI</span>
@@ -542,7 +543,7 @@ export default function AdminDashboard() {
       {/* Mobile Top Header Banner */}
       <div className="md:hidden flex items-center justify-between bg-surface border-b border-border px-4 py-3 sticky top-0 z-40 shadow-3xs">
         <div className="flex items-center gap-2">
-          <Building className="w-4 h-4 text-primary" />
+          <LogoIcon className="w-4 h-4 text-primary" />
           <span className="font-serif font-bold text-sm tracking-tight text-primary">Nivasa<span className="font-sans font-normal text-secondary italic">AI</span></span>
         </div>
         
@@ -568,7 +569,7 @@ export default function AdminDashboard() {
             <div className="space-y-6">
               <div className="flex items-center justify-between border-b border-border/40 pb-4">
                 <div className="flex items-center gap-2">
-                  <Building className="w-4 h-4 text-primary" />
+                  <LogoIcon className="w-4 h-4 text-primary" />
                   <span className="font-serif font-bold text-sm tracking-tight text-primary">Nivasa<span className="font-sans font-normal text-secondary italic">AI</span></span>
                 </div>
                 <button onClick={() => setMenuOpen(false)} className="text-muted-text hover:text-primary p-1">
@@ -765,7 +766,7 @@ export default function AdminDashboard() {
                   <h3 className="text-xs font-bold text-primary uppercase tracking-wider border-b border-border/40 pb-2.5 font-sans">
                     Category Ticket Distribution
                   </h3>
-                  <div className="h-56 flex items-center justify-center">
+                  <div className="h-56">
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
                         <Pie
@@ -1382,7 +1383,7 @@ export default function AdminDashboard() {
             {/* Header */}
             <div className="p-3 bg-background border-b border-border/60 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Building className="w-4 h-4 text-primary" />
+                <LogoIcon className="w-4 h-4 text-primary" />
                 <div>
                   <div className="text-xs font-bold text-primary font-serif">Nivasa Ops Query Assistant</div>
                   <div className="text-[8px] text-muted-text flex items-center gap-0.5 font-bold uppercase tracking-wider">

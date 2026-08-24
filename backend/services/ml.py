@@ -214,13 +214,14 @@ def calculate_asset_risk(asset: Any, complaints_list: List[Any]) -> Dict[str, An
 def forecast_complaint_volume(complaints_list: List[Any], days_to_forecast: int = 30) -> List[Dict[str, Any]]:
     """
     Fits a simple regression model to historical daily complaint volumes.
-    Forecasts volumes for the next 30 days.
+    Forecasts volumes for the next 30 days based strictly on filed complaints.
     """
+    today = datetime.datetime.utcnow().date()
+    
+    # If no complaints exist, forecast is strictly 0
     if not complaints_list:
-        # Return fallback flat trend if no complaints exist
-        today = datetime.datetime.utcnow().date()
         return [
-            {"date": (today + datetime.timedelta(days=i)).strftime("%Y-%m-%d"), "count": 2}
+            {"date": (today + datetime.timedelta(days=i)).strftime("%Y-%m-%d"), "count": 0}
             for i in range(1, days_to_forecast + 1)
         ]
         
@@ -234,10 +235,11 @@ def forecast_complaint_volume(complaints_list: List[Any], days_to_forecast: int 
     df["count"] = 1
     df_grouped = df.groupby("date").sum().reset_index()
     
-    # Ensure continuous date series for regression
     if df_grouped.empty:
-        today = datetime.datetime.utcnow().date()
-        return [{"date": (today + datetime.timedelta(days=i)).strftime("%Y-%m-%d"), "count": 1} for i in range(1, days_to_forecast + 1)]
+        return [
+            {"date": (today + datetime.timedelta(days=i)).strftime("%Y-%m-%d"), "count": 0}
+            for i in range(1, days_to_forecast + 1)
+        ]
         
     min_date = df_grouped["date"].min()
     max_date = df_grouped["date"].max()
@@ -246,34 +248,38 @@ def forecast_complaint_volume(complaints_list: List[Any], days_to_forecast: int 
     full_df = pd.DataFrame({"date": all_dates})
     full_df = full_df.merge(df_grouped, on="date", how="left").fillna(0)
     
-    # Perform linear regression to find trend: count = slope * x + intercept
     x = np.arange(len(full_df))
     y = full_df["count"].values
+    mean_y = float(np.mean(y)) if len(y) > 0 else 0.0
     
-    try:
-        slope, intercept = np.polyfit(x, y, 1)
-    except Exception:
-        slope, intercept = 0.0, 2.0
+    # Fit regression if we have at least 2 days of data, else flat line at average
+    if len(x) >= 2:
+        try:
+            slope, intercept = np.polyfit(x, y, 1)
+        except Exception:
+            slope, intercept = 0.0, mean_y
+    else:
+        slope, intercept = 0.0, mean_y
         
     # Project into future
     forecast_results = []
     last_idx = len(full_df)
-    last_date = full_df["date"].max()
+    last_date = full_df["date"].max() if not full_df.empty else today
     
-    # Add seasonal fluctuations (e.g. weekend spikes, weekly cycle)
     for i in range(1, days_to_forecast + 1):
         future_date = last_date + datetime.timedelta(days=i)
         future_idx = last_idx + i
         
-        # Calculate regression trend line
+        # Calculate trend based on actual regression parameters
         trend = slope * future_idx + intercept
         
-        # Add a seasonal sinusoidal component (e.g. week periodicity) + noise
+        # Seasonality component: scale based on actual mean daily complaints (no random noise)
         day_of_week = future_date.weekday()
-        seasonality = 1.2 * np.sin(2 * np.pi * day_of_week / 7.0)
-        random_noise = np.random.normal(0, 0.4)
+        # Seasonality adds/subtracts up to 20% of the mean daily volume based on weekly cycle
+        seasonality = 0.2 * mean_y * np.sin(2 * np.pi * day_of_week / 7.0)
         
-        pred_value = max(0, trend + seasonality + random_noise)
+        pred_value = max(0.0, trend + seasonality)
+        
         forecast_results.append({
             "date": future_date.strftime("%Y-%m-%d"),
             "count": int(round(pred_value))

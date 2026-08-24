@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { ShieldAlert, ArrowLeft, Building } from "lucide-react";
+import { ShieldAlert, ArrowLeft } from "lucide-react";
+import LogoIcon from "@/components/LogoIcon";
 
 export default function Unauthorized() {
   return (
@@ -16,7 +17,7 @@ export default function Unauthorized() {
         {/* Branding & Logo */}
         <div className="flex flex-col items-center">
           <div className="inline-flex p-2 bg-background border border-border/40 rounded mb-2.5">
-            <Building className="w-4 h-4 text-primary" />
+            <LogoIcon className="w-4 h-4 text-primary" />
           </div>
           <span className="text-xs font-serif font-bold tracking-tight text-primary">
             Nivasa<span className="font-sans font-normal text-secondary italic">AI</span>
