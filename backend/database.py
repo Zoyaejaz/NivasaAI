@@ -13,6 +13,8 @@ status = load_dotenv(dotenv_path=dotenv_path, override=True)
 print(f"[DEBUG] load_dotenv() status: {status} using path: {dotenv_path}")
 
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres@localhost:5432/nivasa_ai")
+if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 print(f"[DEBUG] Resolved DATABASE_URL: {DATABASE_URL}")
 
 # Check page checksums / default parameters for local connection
